@@ -78,7 +78,7 @@ const Register = () => {
       <div className="login-card register-card">
 
         <h2>Create Account</h2>
-        <p>Register to get started</p>
+        <p>Sign up to get started</p>
 
         {error && <p className="error-text">{error}</p>}
         {success && <p className="success-text">{success}</p>}
@@ -150,7 +150,7 @@ const Register = () => {
         </form>
 
         <div className="bottom-text">
-          Already have an account? <a href="/">Login</a>
+          Already have an account? <a href="/login">Login</a>
         </div>
 
       </div>

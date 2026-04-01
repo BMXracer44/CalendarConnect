@@ -1,55 +1,41 @@
 /* =========================
-   GLOBAL PAGE BACKGROUND
+   GLOBAL PAGE WRAPPER
 ========================= */
 .login-container {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
   background: linear-gradient(135deg, #667eea, #764ba2);
   font-family: Arial, sans-serif;
+  padding: 20px;
 }
 
 /* =========================
    AUTH CARD (LOGIN + REGISTER)
 ========================= */
 .login-card {
-  width: 100%;
-  max-width: 400px;
   background: #ffffff;
-  padding: 40px 35px;
-  border-radius: 16px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  padding: 40px;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
   text-align: center;
-  animation: fadeIn 0.4s ease-in-out;
 }
 
-/* Card animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* =========================
-   HEADINGS
-========================= */
+/* Titles */
 .login-card h2 {
-  font-size: 26px;
   margin-bottom: 8px;
   color: #333;
+  font-size: 24px;
 }
 
+/* Subtitle */
 .login-card p {
-  font-size: 14px;
   color: #777;
-  margin-bottom: 18px;
+  font-size: 14px;
+  margin-bottom: 15px;
 }
 
 /* =========================
@@ -58,18 +44,18 @@
 .login-card input {
   width: 100%;
   padding: 12px 14px;
-  margin-top: 12px;
+  margin-top: 10px;
   border: 1px solid #ddd;
-  border-radius: 10px;
+  border-radius: 8px;
   font-size: 14px;
   outline: none;
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
 }
 
 /* Focus effect */
 .login-card input:focus {
   border-color: #667eea;
-  box-shadow: 0 0 8px rgba(102, 126, 234, 0.35);
+  box-shadow: 0 0 6px rgba(102, 126, 234, 0.3);
 }
 
 /* =========================
@@ -80,9 +66,9 @@
   padding: 12px;
   margin-top: 18px;
   background: #667eea;
-  color: white;
+  color: #fff;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   font-size: 15px;
   font-weight: bold;
   cursor: pointer;
@@ -92,11 +78,11 @@
 /* Hover effect */
 .login-card button:hover {
   background: #5a67d8;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 /* =========================
-   ERROR & SUCCESS MESSAGES
+   ERROR + SUCCESS MESSAGES
 ========================= */
 .error-text {
   color: #e74c3c;
@@ -114,15 +100,15 @@
    BOTTOM TEXT LINKS
 ========================= */
 .bottom-text {
-  margin-top: 18px;
+  margin-top: 15px;
   font-size: 13px;
   color: #555;
 }
 
 .bottom-text a {
   color: #667eea;
-  font-weight: bold;
   text-decoration: none;
+  font-weight: bold;
 }
 
 .bottom-text a:hover {
@@ -130,8 +116,8 @@
 }
 
 /* =========================
-   REGISTER SPACING (optional)
+   REGISTER EXTRA SPACING
 ========================= */
 .register-extra-spacing input {
-  margin-top: 14px;
+  margin-top: 12px;
 }

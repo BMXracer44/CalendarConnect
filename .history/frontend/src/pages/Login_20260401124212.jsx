@@ -1,20 +1,15 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Login = () => {
-  const navigate = useNavigate();
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8080/api/login", {
+      const response = await fetch("http://localhost:5000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -24,36 +19,25 @@ const Login = () => {
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (data.token) {
         localStorage.setItem("token", data.token);
-
-        setSuccess("Login successful!");
-        setError("");
-
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 1000);
-
+        alert("Login successful!");
+        console.log("JWT Token:", data.token);
       } else {
-        setError(data.message || "Invalid login");
-        setSuccess("");
+        alert(data.message);
       }
 
-    } catch (err) {
-      setError("Server not reachable");
-      setSuccess("");
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Something went wrong!");
     }
   };
 
   return (
     <div className="login-container">
       <div className="login-card">
-
-        <h2>Login</h2>
-        <p>Welcome back</p>
-
-        {error && <p className="error-text">{error}</p>}
-        {success && <p className="success-text">{success}</p>}
+        <h2>Welcome Back</h2>
+        <p>Please login to continue</p>
 
         <form onSubmit={handleSubmit}>
           <input
@@ -61,7 +45,6 @@ const Login = () => {
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            required
           />
 
           <input
@@ -69,16 +52,14 @@ const Login = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
           />
 
           <button type="submit">Login</button>
         </form>
 
         <div className="bottom-text">
-          Don't have an account? <a href="/register">Sign up</a>
+          Don't have an account? <Link to="/register">Register</Link>
         </div>
-
       </div>
     </div>
   );
