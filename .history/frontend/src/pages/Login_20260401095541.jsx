@@ -14,7 +14,7 @@ function Login() {
     <div className="login-container">
       <div className="login-card">
         <h2>Welcome Back</h2>
-        <p>Please register to continue</p>
+        <p>Please sign in to continue</p>
 
         <form onSubmit={handleSubmit}>
           <input
