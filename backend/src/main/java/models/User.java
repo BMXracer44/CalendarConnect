@@ -1,10 +1,20 @@
 import java.util.Arraylist;
 public class User implements event.java{
 
-	String user;
-	String password;
+	int id;
+	String email;
+	String username;
+	String passwordHash;
+	String firstN;
+	String lastN;
+	string birthdate
+	String phoneNum;
+	String bio;
+	String url;
 	ArrayList<String> friends = new ArrayList<String>();
 	ArrayList<event> events = new ArrayList<event>();
+	boolean themePref;
+	
 	
 	
 	User(String user, String password,ArrayList<String> friends,ArrayList<event> events){
