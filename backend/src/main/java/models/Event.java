@@ -3,14 +3,14 @@ public class Event{
 
 	String name;
 	String date;
-  String time; 
+  	String time; 
 	boolean pubEvent;
 	
 	event(String name, String date,String time, boolean pubEvent){
 		this.name = name;
 		this.date = date;
 		this.time = time;
-    this.pubEvent = true;
+    	this.pubEvent = true;
     
 	}
 	public String getName() {
