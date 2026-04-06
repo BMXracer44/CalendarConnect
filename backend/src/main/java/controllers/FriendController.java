@@ -1,4 +1,4 @@
-public class FriendController extends Friend.java{
+public class FriendController extends FriendRequest.java{
 //add friend 
   
 //edit friend
