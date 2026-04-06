@@ -1,14 +1,17 @@
 import java.util.Arraylist;
-public class User{
+public class User implements event.java{
 
 	String user;
 	String password;
 	ArrayList<String> friends = new ArrayList<String>();
+	ArrayList<event> events = new ArrayList<event>();
 	
-	User(String user, String password,ArrayList<String> friends){
+	
+	User(String user, String password,ArrayList<String> friends,ArrayList<event> events){
 		this.user = user;
 		this.password = password;
-		this.friends = friends
+		this.friends = friends;
+		this.events = events;
 	}
 	public String getUser() {
 		return user;
@@ -16,16 +19,22 @@ public class User{
 	public void setUser(String user) {
 		this.user = user;
 	}
-	public String getpassword() {
+	public String getPassword() {
 		return password;
 	}
-	public void setpassword(String password) {
+	public void setPassword(String password) {
 		this.password = password;
 	}
 	public ArrayList getfriends() {
 		return friends;
 	}
-	public void setpassword(ArrayList friends) {
+	public void setFriends(ArrayList<String> friends) {
 		this.friends = friends;
+	}
+	public ArrayList getEvents() {
+		return events;
+	}
+	public void setEvents(ArrayList<event> evnets) {
+		this.events = events;
 	}
 }
