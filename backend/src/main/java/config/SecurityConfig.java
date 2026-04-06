@@ -7,17 +7,17 @@ public class SecurityConfig {
 		
 		if (newUser.containsKey(user)) {
 			System.out.println("Username already exists");
-			return false;																	}//end if
+			return false;																}//end if
 	while(password.isEmpty() || password.length()<= 8) {
 			
 			if(user.equalsIgnoreCase(password)) {
 				System.out.println("Password cannot equal Username");	
-				return false;	}//end if
+				return false;															}//end if
 			if(password.length() <= 8) {
 			System.out.println("Password must be greater than 8 characters"); 
 			return false;		}//end if
 			
-											}//end while
+																						}//end while
 		newUser.put(user, password);
 		System.out.println("User is registered");
 		return true;
