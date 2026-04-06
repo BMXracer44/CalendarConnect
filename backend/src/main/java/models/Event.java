@@ -1,4 +1,4 @@
-import java.util.Arraylist;
+
 public class Event{
 
 	String name;
