@@ -36,7 +36,7 @@ public class Event{
   	public void setTime(String time) {
 		this.time = time;
 	}
-  public void setPub(boolean pubEvent) {
+  	public void setPub(boolean pubEvent) {
 		this.pubEvent = pubEvent;
 	}
 	
