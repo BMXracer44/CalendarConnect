@@ -22,10 +22,10 @@ public class User{
 	public void setpassword(String password) {
 		this.password = password;
 	}
-	public list getfriends() {
+	public ArrayList getfriends() {
 		return friends;
 	}
-	public void setpassword(list friends) {
+	public void setpassword(ArrayList friends) {
 		this.friends = friends;
 	}
 }
