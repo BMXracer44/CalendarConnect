@@ -12,12 +12,12 @@ public class User implements event.java{
 	String bio;
 	String url;
 	ArrayList<String> friends = new ArrayList<String>();
-	ArrayList<event> events = new ArrayList<event>();
+	ArrayList<Event> events = new ArrayList<Event>();
 	boolean themePref;
 	
 	
 	
-	User(String user, String password,ArrayList<String> friends,ArrayList<event> events){
+	User(String user, String password,ArrayList<String> friends,ArrayList<Event> events){
 		this.user = user;
 		this.password = password;
 		this.friends = friends;
@@ -44,7 +44,7 @@ public class User implements event.java{
 	public ArrayList getEvents() {
 		return events;
 	}
-	public void setEvents(ArrayList<event> evnets) {
+	public void setEvents(ArrayList<Event> evnets) {
 		this.events = events;
 	}
 }
