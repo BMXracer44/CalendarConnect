@@ -1,0 +1,75 @@
+* {
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: #eef2ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+}
+
+/* Calendar container */
+.calendar {
+    width: min(900px, 100%);
+    background: rgb(110, 110, 110);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .2);
+    overflow: hidden;
+}
+
+/* Calendar header */
+.calendar-header {
+    background: #abafc0;
+    color: rgb(31, 29, 33);
+    text-align: center;
+    padding: 5px 373px;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* Calendar days of the week */
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: #7788d2;
+    text-align: center;
+    font-weight: 700;
+    padding: 16px 0;
+    gap: 8px;
+}
+
+/* Calendar days of the week text color */
+.calendar-days>div {
+    color: #355591;
+}
+
+/* Calendar dates grid */
+.calendar-dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 20px;
+    gap: 12px;
+}
+
+/* Calendar date boxes */
+.calendar-dates>div {
+    text-align: center;
+    padding: 20px 0;
+    min-height: 90px;
+    border-radius: 14px;
+    background: #f8f9ff;
+    color: #1f2937;
+    cursor: default;
+}
+
+/* Hover boxes for calendar dates when cursor is on top of box */
+.calendar-dates>div:hover {
+    background: #e5e6e9;
+    color: #a8aaac;
+}
