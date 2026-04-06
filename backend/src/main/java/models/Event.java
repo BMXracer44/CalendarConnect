@@ -6,7 +6,7 @@ public class Event{
   	String time; 
 	boolean pubEvent;
 	
-	event(String name, String date,String time, boolean pubEvent){
+	Event(String name, String date,String time, boolean pubEvent){
 		this.name = name;
 		this.date = date;
 		this.time = time;
