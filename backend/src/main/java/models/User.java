@@ -1,11 +1,14 @@
+import java.util.Arraylist;
 public class User{
 
 	String user;
 	String password;
+	ArrayList<String> friends = new ArrayList<String>();
 	
-	User( String user, String password){
+	User(String user, String password,ArrayList<String> friends){
 		this.user = user;
 		this.password = password;
+		this.friends = friends
 	}
 	public String getUser() {
 		return user;
@@ -18,5 +21,11 @@ public class User{
 	}
 	public void setpassword(String password) {
 		this.password = password;
+	}
+	public list getfriends() {
+		return friends;
+	}
+	public void setpassword(list friends) {
+		this.friends = friends;
 	}
 }
