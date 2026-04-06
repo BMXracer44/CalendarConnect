@@ -9,7 +9,7 @@ const Register = () => {
     firstName: "",
     lastName: "",
     dateOfBirth: "",
-    pronouns: "",
+    email: "",
     password: "",
     confirmPassword: ""
   });
@@ -57,7 +57,7 @@ const Register = () => {
           firstName: "",
           lastName: "",
           dateOfBirth: "",
-          pronouns: "",
+          email: "",
           password: "",
           confirmPassword: ""
         });
@@ -122,9 +122,9 @@ const Register = () => {
 
           <input
             type="text"
-            name="pronouns"
-            placeholder="Pronouns"
-            value={formData.pronouns}
+            name="email"
+            placeholder="Email"
+            value={formData.email}
             onChange={handleChange}
           />
 
