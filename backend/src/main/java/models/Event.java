@@ -13,25 +13,27 @@ public class Event{
     	this.pubEvent = true;
     
 	}
+	//getters
 	public String getName() {
 		return name;
 	}
-  public String getDate() {
+  	public String getDate() {
 		return date;
 	}
-  public String getTime() {
+ 	public String getTime() {
 		return time;
 	}
-  public boolean getPub() {
+  	public boolean getPub() {
 		return pubEvent;
 	}
+	//setters
 	public void setUser(String name) {
 		this.name = name;
 	}
-  public void setDate(String date) {
+  	public void setDate(String date) {
 		this.date = date;
 	}
-  public void setTime(String time) {
+  	public void setTime(String time) {
 		this.time = time;
 	}
   public void setPub(boolean pubEvent) {
