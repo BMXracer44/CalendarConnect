@@ -1,6 +1,13 @@
 import java.util.Arraylist;
-public class User implements event.java{
+import javax.persistence.Entity;
+import javax.persistence.GeneratedType;
+import javax.persistence.GeneratedValue;	
+import javax.persistence.Id;
 
+@Entity
+public class User implements event.java{
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 	String email;
 	String username;
@@ -19,7 +26,7 @@ public class User implements event.java{
 	
 	User(String user, String password,ArrayList<String> friends,ArrayList<Event> events){
 		this.user = user;
-		this.password = password;
+		this.passwordHash = passwordHash;
 		this.friends = friends;
 		this.events = events;
 	}
