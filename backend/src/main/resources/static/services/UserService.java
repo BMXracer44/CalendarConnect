@@ -1,4 +1,4 @@
-import java.util.list;
+import java.util.List;
 
 public interface UserService {
     public User saveUser(User User);
