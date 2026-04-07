@@ -135,3 +135,77 @@
 .register-extra-spacing input {
   margin-top: 14px;
 }
+/* =========================
+   NAVBAR
+========================= */
+.navbar {
+  width: 100%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  padding: 12px 25px;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-family: Arial, sans-serif;
+}
+
+/* Logo on the left */
+.navbar .logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Right-side buttons (Login/Register) */
+.navbar .right-section {
+  margin-left: auto; /* pushes this section to the far right */
+  display: flex;
+  align-items: center;
+  gap: 30px; /* spacing between links */
+}
+
+.navbar .right-section a {
+  color: #fff; /* white text */
+  text-decoration: none; /* remove underline */
+  font-weight: 600;
+  font-size: 15px;
+  padding: 6px 0;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.navbar .right-section a:hover {
+  color: #f0f0f0;
+  transform: translateY(-2px);
+}
+
+/* User info if logged in */
+.navbar .user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar .user-info img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+
+.navbar button.logout-btn {
+  background: #e74c3c;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.navbar button.logout-btn:hover {
+  background: #c0392b;
+  transform: translateY(-2px);
+}
