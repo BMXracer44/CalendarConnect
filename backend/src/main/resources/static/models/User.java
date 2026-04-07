@@ -22,7 +22,8 @@ public class User implements event.java{
 	ArrayList<Event> events = new ArrayList<Event>();
 	boolean themePref;
 	
-	
+	public User(){ //Default constructor
+	}
 	
 	User(String user, String password,ArrayList<String> friends,ArrayList<Event> events){
 		this.user = user;
