@@ -13,7 +13,7 @@ const Register = () => {
     last_name: "",
     birthdate: "",
     phone_number: "",
-    bio: "",
+    bio: "", //Bio box does not have same format
     profile_picture_url: "", // Need to change to allow for upload of picture
     theme_preference: "light"
   });
