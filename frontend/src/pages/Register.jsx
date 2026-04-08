@@ -8,14 +8,13 @@ const Register = () => {
     username: "",
     email: "",
     password: "",
-    confirmPassword: "", //There is no confirm password input on the register page
+    confirmPassword: "", 
     first_name: "",
     last_name: "",
     birthdate: "",
     phone_number: "",
     bio: "", //Bio box does not have same format
-    profile_picture_url: "", // Need to change to allow for upload of picture
-    theme_preference: "light"
+    profile_picture_url: ""
   });
 
   const [error, setError] = useState("");
@@ -68,8 +67,7 @@ const Register = () => {
           birthdate: "",
           phone_number: "",
           bio: "",
-          profile_picture_url: "",
-          theme_preference: "light"
+          profile_picture_url: ""
         });
 
       } else {
@@ -147,7 +145,8 @@ const Register = () => {
             onChange={handleChange}
           />
 
-          <textarea
+          <input
+            type="text"
             name="bio"
             placeholder="Short bio (optional)"
             value={formData.bio}
@@ -155,7 +154,7 @@ const Register = () => {
           />
 
           <input
-            type="url"
+            type="file"
             name="profile_picture_url"
             placeholder="Profile Picture URL (optional)"
             value={formData.profile_picture_url}
@@ -172,10 +171,19 @@ const Register = () => {
           )}
 
           <input
-            type="password"
+            type="text"
             name="password"
             placeholder="Password"
             value={formData.password}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            type="text"
+            name="confirmPassword"
+            placeholder="confirm Password"
+            value={formData.confirmPassword}
             onChange={handleChange}
             required
           />
