@@ -8,13 +8,13 @@ const Register = () => {
     username: "",
     email: "",
     password: "",
-    confirmPassword: "",
+    confirmPassword: "", //There is no confirm password input on the register page
     first_name: "",
     last_name: "",
     birthdate: "",
     phone_number: "",
     bio: "",
-    profile_picture_url: "",
+    profile_picture_url: "", // Need to change to allow for upload of picture
     theme_preference: "light"
   });
 
@@ -31,7 +31,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== formData.confirmPassword) { //There is no input box to enter in a second password for confirmation
       setError("Passwords do not match");
       setSuccess("");
       return;
