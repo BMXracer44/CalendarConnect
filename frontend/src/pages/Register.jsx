@@ -54,7 +54,7 @@ const Register = () => {
         setError("");
 
         setTimeout(() => {
-          navigate("/login");
+          navigate("/");
         }, 1000);
 
         setFormData({
