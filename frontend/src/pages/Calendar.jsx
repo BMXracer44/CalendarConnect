@@ -25,9 +25,9 @@ function App() {
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrap5Plugin]}
         initialView="dayGridMonth"
         headerToolbar={{
-          left: 'prev, next today',
+          left: 'prev next today',
           center: 'title',
-          right: 'dayGridMonth, timeGridWeek, timeGridDay'
+          right: 'dayGridMonth timeGridWeek timeGridDay'
         }}
         editable={true}
         selectable={true}
