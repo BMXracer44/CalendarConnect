@@ -2,7 +2,7 @@ package com.calendarconnect.backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class RegisterRequest {
+public class EventRequest {
 
   private String id;
   private String event_id;
@@ -15,38 +15,8 @@ public class RegisterRequest {
   private String created_at;
   private String updated_at;
 
-  @JsonProperty("id")
-  private String id;
-
-  @JsonProperty("event_id")
-  private String event_id;
-
-  @JsonProperty("title")
-  private String title;
-
-  @JsonProperty("description")
-  private String description;
-
-  @JsonProperty("location")
-  private String location;
-
-  @JsonProperty("start_datetime")
-  private String start_datetime;
-
-  @JsonProperty("end_datetime")
-  private String end_datetime;
-
-  @JsonProperty("is_public")
-  private String is_public;
-
-  @JsonProperty("created_at")
-  private String created_at;
-
-  @JsonProperty("updated_at")
-  private String updated_at;
-
   // Constructors
-  public AddEvent() {
+  public EventRequest() {
   }
 
   // Getters and Setters

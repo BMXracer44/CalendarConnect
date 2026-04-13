@@ -17,7 +17,7 @@ import java.util.Map;
 public class EventController {
 
   @Autowired
-  private UserService userService;
+  private EventService eventService;
 
   /**
    * Add event endpoint
@@ -25,20 +25,19 @@ public class EventController {
   @PostMapping("/add")
   public ResponseEntity<ApiResponse<?>> addEvent(@RequestBody RegisterRequest request) {
     try {
-      Event event = userService.addEvent(request);
+      Event event = eventService.addEvent(request);
       //id, event_id, title, description, location, start_datetime, end_datetime, is_public, created_at, updated_at
 
       Map<String, Object> data = new HashMap<>();
-      data.put("id", user.getId());
       data.put("event_id", event.getEventId());
       data.put("title", event.getTitle());
       data.put("description", event.getDescription());
       data.put("location", event.getLocation());
-      data.put("start_datetime", event.getLocation());
-      data.put("end_datetime", event.getLocation());
-      data.put("is_public", event.getLocation());
-      data.put("created_at", event.getLocation());
-      data.put("updated_at", event.getLocation());
+      data.put("start_datetime", event.getStartDateTime());
+      data.put("end_datetime", event.getEndDateTime());
+      data.put("is_public", event.getIsPublic());
+      data.put("created_at", event.getCreated_at());
+      data.put("updated_at", event.getUpdatedAt());
 
       return ResponseEntity.status(HttpStatus.CREATED)
           .body(ApiResponse.success("Event added successfully", data, 201));

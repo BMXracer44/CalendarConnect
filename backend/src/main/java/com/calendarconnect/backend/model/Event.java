@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "events")
 public class Event {
 
-  @EventId
+  @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer event_id;
 
@@ -44,11 +44,10 @@ public class Event {
   public Event() {
   }
 
-  public Event(String id, String event_id, String title, String description,
+  public Event(String event_id, String title, String description,
       String location, LocalDate start_datetime, LocalDate end_datetime,
       boolean is_public) {
-    this.id = id;
-    this.event_id = event_id;
+    this.event_id = EventId;
     this.title = title;
     this.description = description;
     this.location = location;
@@ -94,7 +93,7 @@ public class Event {
     this.start_datetime = start_datetime;
   }
 
-  public String getStartDateTime() {
+  public LocalDate getStartDateTime() {
     return start_datetime;
   }
 
@@ -102,7 +101,11 @@ public class Event {
     this.end_datetime = end_datetime;
   }
 
-  public String getIsPublic() {
+  public LocalDate getEndDateTime() {
+    return end_datetime;
+  }
+
+  public boolean getIsPublic() {
     return is_public;
   }
 
