@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -17,28 +19,31 @@ const Login = () => {
       const response = await fetch("http://localhost:8080/api/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("token", data.token);
+        // 🔥 Store user globally using Context
+        login({
+          username: data.username,
+          token: data.token,
+        });
 
         setSuccess("Login successful!");
         setError("");
 
+        // small delay for UX
         setTimeout(() => {
-          navigate("/dashboard");
-        }, 1000);
-
+          navigate("/home");
+        }, 700);
       } else {
-        setError(data.message || "Invalid login");
+        setError(data.message || "Invalid username or password");
         setSuccess("");
       }
-
     } catch (err) {
       setError("Server not reachable");
       setSuccess("");
@@ -48,7 +53,6 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-card">
-
         <h2>Login</h2>
         <p>Welcome back</p>
 
@@ -78,7 +82,6 @@ const Login = () => {
         <div className="bottom-text">
           Don't have an account? <a href="/register">Sign up</a>
         </div>
-
       </div>
     </div>
   );
