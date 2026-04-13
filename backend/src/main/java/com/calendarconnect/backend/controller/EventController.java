@@ -20,7 +20,7 @@ public class EventController {
   private UserService userService;
 
   /**
-   * Register endpoint
+   * Add event endpoint
    */
   @PostMapping("/add")
   public ResponseEntity<ApiResponse<?>> addEvent(@RequestBody RegisterRequest request) {
@@ -49,7 +49,7 @@ public class EventController {
   }
 
   /**
-   * Login endpoint
+   * Delete event endpoint
    */
   @PostMapping("/delete") //Needs lots of work
   public ResponseEntity<ApiResponse<?>> deleteEvent(@RequestBody Map<String, String> request) {
