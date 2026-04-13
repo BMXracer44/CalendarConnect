@@ -1,9 +1,9 @@
 package com.calendarconnect.backend.controller;
 
-import com.calendarconnect.backend.dto.ApiResponse;
-import com.calendarconnect.backend.dto.RegisterRequest;
-import com.calendarconnect.backend.model.User;
-import com.calendarconnect.backend.service.UserService;
+import com.calendarconnect.backend.dto.EventResponse;
+import com.calendarconnect.backend.dto.EventRequest;
+import com.calendarconnect.backend.model.Event;
+import com.calendarconnect.backend.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class EventController {
    * Add event endpoint
    */
   @PostMapping("/add")
-  public ResponseEntity<ApiResponse<?>> addEvent(@RequestBody RegisterRequest request) {
+  public ResponseEntity<EventResponse<?>> addEvent(@RequestBody EventRequest request) {
     try {
       Event event = eventService.addEvent(request);
       //id, event_id, title, description, location, start_datetime, end_datetime, is_public, created_at, updated_at
@@ -49,7 +49,7 @@ public class EventController {
 
   /**
    * Delete event endpoint
-   */
+   *//*
   @PostMapping("/delete") //Needs lots of work
   public ResponseEntity<ApiResponse<?>> deleteEvent(@RequestBody Map<String, String> request) {
     try {
@@ -79,5 +79,5 @@ public class EventController {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
           .body(new ApiResponse<>(false, "Invalid username and/or password", null, 401));
     }
-  }
+  }*/
 }

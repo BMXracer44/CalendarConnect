@@ -3,7 +3,7 @@ package com.calendarconnect.backend.repository;
 import com.calendarconnect.backend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.calendarconnect.backend.model.Event
+import com.calendarconnect.backend.model.Event;
 
 import java.util.Optional;
 
