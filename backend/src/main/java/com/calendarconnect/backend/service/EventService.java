@@ -11,16 +11,19 @@ import java.util.Optional;
 @Service
 public class EventService {
 
-    @Autowired
-    private EventRepository eventRepository;
+    private final EventRepository eventRepository;
+    
+    public EventService(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }
 
     /**
      * Create Event
      */
     public Event createEvent(Event event) throws Exception {
 
-        if (event.getTitle() == null || event.getTitle().trim().isEmpty()) {
-            throw new Exception("Event title cannot be empty");
+        if (event.getTitle() == null || event.getTitle().isEmpty()) {
+            throw new IllegalArgumentException("Title is required");
         }
 
         if (event.getStartDate() == null) {
