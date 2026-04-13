@@ -2,6 +2,7 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import bootstrap5Plugin from '@fullcalendar/bootstrap5'
 
 function App() {
   const events = [
@@ -16,11 +17,12 @@ function App() {
   }
 
   return (
-    <div style={{ maxWidth: '100%', margin: '0', padding: '20px' }}>
+    // <div style={{ maxWidth: '100%', margin: '0', padding: '20px' }}>
+    <div style={{}}>
       <h1>My Calendar</h1>
 
       <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrap5Plugin]}
         initialView="dayGridMonth"
         headerToolbar={{
           left: 'prev, next today',
