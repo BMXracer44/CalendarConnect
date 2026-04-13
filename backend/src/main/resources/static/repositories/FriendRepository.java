@@ -5,6 +5,7 @@ import com.calendarconnect.backend.model.Friends;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
+@Repository
 public interface FriendRepository extends JpaRepository<Friend, Long> {
 
     // Find all friends for a user
