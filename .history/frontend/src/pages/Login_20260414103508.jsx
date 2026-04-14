@@ -38,7 +38,7 @@ const Login = () => {
 
         // small delay for UX
         setTimeout(() => {
-          navigate("/calendar");
+          navigate("/home");
         }, 700);
       } else {
         setError(data.message || "Invalid username or password");

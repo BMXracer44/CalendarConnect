@@ -1,0 +1,278 @@
+/* =========================
+   GLOBAL PAGE BACKGROUND
+========================= */
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  font-family: Arial, sans-serif;
+}
+
+/* =========================
+   AUTH CARD (LOGIN + REGISTER)
+========================= */
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background: #ffffff;
+  padding: 40px 35px;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Card animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   HEADINGS
+========================= */
+.login-card h2 {
+  font-size: 26px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.login-card p {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 18px;
+}
+
+/* =========================
+   INPUT FIELDS
+========================= */
+.login-card input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+/* Focus effect */
+.login-card input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 8px rgba(102, 126, 234, 0.35);
+}
+
+/* =========================
+   BUTTON
+========================= */
+.login-card button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 18px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Hover effect */
+.login-card button:hover {
+  background: #5a67d8;
+  transform: translateY(-2px);
+}
+
+/* =========================
+   ERROR & SUCCESS MESSAGES
+========================= */
+.error-text {
+  color: #e74c3c;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+.success-text {
+  color: #2ecc71;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+/* =========================
+   BOTTOM TEXT LINKS
+========================= */
+.bottom-text {
+  margin-top: 18px;
+  font-size: 13px;
+  color: #555;
+}
+
+.bottom-text a {
+  color: #667eea;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.bottom-text a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   REGISTER SPACING (optional)
+========================= */
+.register-extra-spacing input {
+  margin-top: 14px;
+}
+
+/* =========================
+   NAVBAR (CLEAN MODERN STYLE)
+========================= */
+
+.navbar {
+  width: 98%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 14px 28px;
+
+  /* matches login gradient theme subtly */
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* LEFT BRAND */
+.navbar-left {
+  font-size: 18px;
+  font-weight: 700;
+  color: #4f46e5; /* matches purple theme */
+  letter-spacing: 0.5px;
+}
+
+/* RIGHT SECTION */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* LINKS */
+.nav-link {
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: 0.2s ease;
+}
+
+.nav-link:hover {
+  background: rgba(102, 126, 234, 0.12);
+  color: #4f46e5;
+}
+
+/* USERNAME */
+.nav-user {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(102, 126, 234, 0.08);
+}
+
+/* LOGOUT BUTTON */
+.nav-button {
+  padding: 7px 12px;
+  border: none;
+  border-radius: 10px;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.nav-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(102, 126, 234, 0.35);
+}
+
+/* =========================
+   PAGE BACKGROUND
+========================= */
+
+.calendar-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  font-family: Arial, sans-serif;
+}
+
+/* OUTER WRAPPER (controls centering) */
+.calendar-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+
+/* =========================
+   CALENDAR PAGE BACKGROUND
+========================= */
+.calendar-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 30px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  font-family: Arial, sans-serif;
+}
+
+/* =========================
+   CALENDAR CARD (LIMIT WIDTH)
+========================= */
+.calendar-card {
+  width: 100%;
+  max-width: 1100px;   /* 👈 THIS STOPS FULL SCREEN STRETCH */
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* =========================
+   CALENDAR TITLE
+========================= */
+.calendar-card h1 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #333;
+}

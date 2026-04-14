@@ -18,7 +18,7 @@ const Profile = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Load user data
+  // Load user into form
   useEffect(() => {
     if (user) {
       setFormData({
@@ -92,14 +92,14 @@ const Profile = () => {
   };
 
   if (!user) {
-    return <p>Please log in to view profile.</p>;
+    return (
+      <div className="login-container">
+        <div className="login-card">
+          <p>Please log in to view your profile.</p>
+        </div>
+      </div>
+    );
   }
-
-  // ================= PROFILE IMAGE SOURCE =================
-  const profileImage =
-    formData.profile_picture
-      ? URL.createObjectURL(formData.profile_picture)
-      : user.profile_picture_url || user.profile_picture || null;
 
   return (
     <div className="login-container">
@@ -108,22 +108,20 @@ const Profile = () => {
         {/* ================= TOP: CURRENT INFO ================= */}
         <h2>Your Profile</h2>
 
-        {/* PROFILE PICTURE DISPLAY */}
-        {profileImage && (
-          <img
-            src={profileImage}
-            alt="Profile"
-            style={{
-              width: "110px",
-              height: "110px",
-              borderRadius: "50%",
-              objectFit: "cover",
-              marginBottom: "10px"
-            }}
-          />
-        )}
-
         <div className="profile-preview">
+          {formData.profile_picture && (
+            <img
+              src={URL.createObjectURL(formData.profile_picture)}
+              alt="Profile Preview"
+              style={{
+                width: "100px",
+                height: "100px",
+                borderRadius: "50%",
+                marginBottom: "10px"
+              }}
+            />
+          )}
+
           <p><strong>Username:</strong> {formData.username}</p>
           <p><strong>Email:</strong> {formData.email}</p>
           <p><strong>Name:</strong> {formData.first_name} {formData.last_name}</p>
@@ -134,7 +132,7 @@ const Profile = () => {
 
         <hr />
 
-        {/* ================= UPDATE FORM ================= */}
+        {/* ================= BOTTOM: UPDATE FORM ================= */}
         <h3>Update Information</h3>
 
         {error && <p className="error-text">{error}</p>}
@@ -145,6 +143,7 @@ const Profile = () => {
           <input
             type="text"
             name="username"
+            placeholder="Username"
             value={formData.username}
             onChange={handleChange}
           />
@@ -152,6 +151,7 @@ const Profile = () => {
           <input
             type="email"
             name="email"
+            placeholder="Email"
             value={formData.email}
             onChange={handleChange}
           />
@@ -159,6 +159,7 @@ const Profile = () => {
           <input
             type="text"
             name="first_name"
+            placeholder="First Name"
             value={formData.first_name}
             onChange={handleChange}
           />
@@ -166,6 +167,7 @@ const Profile = () => {
           <input
             type="text"
             name="last_name"
+            placeholder="Last Name"
             value={formData.last_name}
             onChange={handleChange}
           />
@@ -180,6 +182,7 @@ const Profile = () => {
           <input
             type="text"
             name="phone_number"
+            placeholder="Phone Number"
             value={formData.phone_number}
             onChange={handleChange}
           />
@@ -187,18 +190,19 @@ const Profile = () => {
           <input
             type="text"
             name="bio"
+            placeholder="Bio"
             value={formData.bio}
             onChange={handleChange}
           />
 
-          {/* FILE UPLOAD */}
+          {/* ================= FILE UPLOAD ================= */}
           <input
             type="file"
             accept="image/*"
             onChange={handleFileChange}
           />
 
-          {/* PREVIEW NEW IMAGE */}
+          {/* Preview uploaded image */}
           {formData.profile_picture && (
             <img
               src={URL.createObjectURL(formData.profile_picture)}

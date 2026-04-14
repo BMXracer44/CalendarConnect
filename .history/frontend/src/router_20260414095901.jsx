@@ -13,6 +13,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Login /> },
       { path: "register", element: <Register /> },
+      { path: "home", element: <Home /> },
       { path: "calendar", element: <Calendar /> },
       { path: "profile", element: <Profile /> }
     ]

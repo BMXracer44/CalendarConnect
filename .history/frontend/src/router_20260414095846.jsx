@@ -3,18 +3,17 @@ import App from "./App";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
-import Profile from "./pages/Profile";
 import Calendar from "./pages/Calendar";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <App />,   // 👈 use App here
     children: [
-      { index: true, element: <Login /> },
+      { index: true, element: <Login /> },   
       { path: "register", element: <Register /> },
-      { path: "calendar", element: <Calendar /> },
-      { path: "profile", element: <Profile /> }
+      { path: "home", element: <Home /> },
+      { path: "calendar", element: <Calendar />}
     ]
   }
-]);
+])

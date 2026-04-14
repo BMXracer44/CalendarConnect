@@ -11,7 +11,7 @@ body {
    NAVBAR (BIGGER + MORE MODERN)
 ========================= */
 .navbar {
-  width: 98%;
+  width: 100%;
   height: 80px; /* 🔥 BIGGER NAVBAR */
   display: flex;
   justify-content: space-between;
