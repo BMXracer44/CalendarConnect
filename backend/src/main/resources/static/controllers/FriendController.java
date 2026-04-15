@@ -1,10 +1,13 @@
-import java.util.List;
+package com.calendarconnect.backend.controller;
 
+import java.util.List;
+import com.calendarconnect.backend.model.FriendRequest;
+import com.calendarconnect.backend.dto.RegisterRequest;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/Friend")
-@CrossOrigin
+@RequestMapping("/FriendRequest")
+@CrossOrigin (origins = "https://localhost:3000")
 public class FriendController{
 
     @Autowired
@@ -12,14 +15,14 @@ public class FriendController{
 
     //add friend 
     @PostMapping ("/accept")
-     public String acceptFriend(@RequestBody Friend request){
+     public String acceptFriend(@RequestBody FriendRequest request){
         friendService.acceptFriend(request);
         return "This User is now your friend";
      }
 
      //reject friend
      @PostMapping ("/reject")
-     public String rejectFriend(@RequestBody Friend request){
+     public String rejectFriend(@RequestBody FriendRequest request){
         friendService.rejectFriend(request);
         return "You have rejected this User";
 
@@ -27,13 +30,13 @@ public class FriendController{
 
     //edit friend
      @PostMapping("/edit")
-    public String editFriend(@RequestBody Friend request){
+    public String editFriend(@RequestBody FriendRequest request){
         friendService.edit(request);
         return "Friend profile updated";
     }
     //delete friend 
     @PostMapping ("/delete")
-    public String deleteFriend(@RequestBody Friend request){
+    public String deleteFriend(@RequestBody FriendRequest request){
         friendService.deleteFriend(request);
          return "You have removed this Friend";
     }
