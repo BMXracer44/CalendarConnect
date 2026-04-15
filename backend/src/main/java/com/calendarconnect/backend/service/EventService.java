@@ -1,6 +1,7 @@
 package com.calendarconnect.backend.service;
 
 import com.calendarconnect.backend.dto.EventCreateRequest;
+import com.calendarconnect.backend.dto.EventUpdateRequest;
 import com.calendarconnect.backend.model.Event;
 import com.calendarconnect.backend.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,8 @@ public class EventService {
         newEvent.setTitle(request.getTitle());
         newEvent.setDescription(request.getDescription());
         newEvent.setLocation(request.getLocation());
-        newEvent.setStartDateTime(request.getStartDateTime());
-        newEvent.setEndDateTime(request.getEndDateTime());
+        newEvent.setStartDatetime(request.getStartDatetime());
+        newEvent.setEndDatetime(request.getEndDatetime());
         newEvent.setPublic(request.getIsPublic());
 
         //Vital security data frontend is not allowed to send

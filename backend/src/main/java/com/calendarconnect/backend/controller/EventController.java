@@ -1,6 +1,7 @@
 package com.calendarconnect.backend.controller;
 
 import com.calendarconnect.backend.dto.EventCreateRequest;
+import com.calendarconnect.backend.dto.EventResponse;
 import com.calendarconnect.backend.model.Event;
 import com.calendarconnect.backend.service.EventService;
 import jakarta.validation.Valid;
@@ -19,14 +20,16 @@ public class EventController {
   /**
    * Add event endpoint to create new event
    */
-  @PostMapping("/add")
-  public ResponseEntity<Event> createEvent(@Valid @RequestBody EventCreateRequest request) {
+  @PostMapping
+  public ResponseEntity<EventResponse> createEvent(@Valid @RequestBody EventCreateRequest request) {
     // TODO: Security implementation
     //When fully finished, we should extract ID from the user's JWT token
     //Hardcoded currently
     Integer currentUserId = 1;
 
     Event savedEvent = eventService.createEvent(request, currentUserId);
+
+    EventResponse responseBody = EventResponse.fromEntity(savedEvent);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
   }
