@@ -1,75 +1,69 @@
 package com.calendarconnect.backend.service;
 
+import com.calendarconnect.backend.dto.EventCreateRequest;
 import com.calendarconnect.backend.model.Event;
 import com.calendarconnect.backend.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
 public class EventService {
 
-    private final EventRepository eventRepository;
+    @Autowired 
+    private EventRepository eventRepository;
+
+    /**
+     * Create Event in database
+     */
+    public Event createEvent(EventCreateRequest request, Integer creatorId){
+        Event newEvent = new Event();
+
+        newEvent.setTitle(request.getTitle());
+        newEvent.setDescription(request.getDescription());
+        newEvent.setLocation(request.getLocation());
+        newEvent.setStartDateTime(request.getStartDateTime());
+        newEvent.setEndDateTime(request.getEndDateTime());
+        newEvent.setPublic(request.getIsPublic());
+
+        //Vital security data frontend is not allowed to send
+        newEvent.setCreatorId(creatorId);
+
+        //Save to database
+        return eventRepository.save(newEvent);
+    }
+
+    public Event updateEvent(Integer eventId, EventUpdateRequest request, Integer currentUserId) {
     
-    public EventService(EventRepository eventRepository) {
-        this.eventRepository = eventRepository;
-    }
+        // 1. Find the existing event in the database (or throw an error if it doesn't exist)
+        Event existingEvent = eventRepository.findById(eventId)
+            .orElseThrow(() -> new RuntimeException("Event not found"));
 
-    /**
-     * Create Event
-     */
-    public Event createEvent(Event event) throws Exception {
-
-        if (event.getTitle() == null || event.getTitle().isEmpty()) {
-            throw new IllegalArgumentException("Title is required");
+        // 2. Security Check: Ensure the person editing the event is actually the creator!
+        if (!existingEvent.getCreatorId().equals(currentUserId)) {
+            throw new RuntimeException("You do not have permission to edit this event");
         }
 
-        if (event.getStartDate() == null) {
-            throw new Exception("Start date is required");
+        // 3. Selectively update only the fields the user actually sent
+        if (request.getTitle() != null) {
+            existingEvent.setTitle(request.getTitle());
+        }
+        if (request.getDescription() != null) {
+            existingEvent.setDescription(request.getDescription());
+        }
+        if (request.getLocation() != null) {
+            existingEvent.setLocation(request.getLocation());
+        }
+        if (request.getStartDatetime() != null) {
+            existingEvent.setStartDatetime(request.getStartDatetime());
+        }
+        if (request.getEndDatetime() != null) {
+            existingEvent.setEndDatetime(request.getEndDatetime());
+        }
+        if (request.getIsPublic() != null) {
+            existingEvent.setPublic(request.getIsPublic());
         }
 
-        return eventRepository.save(event);
-    }
-
-    /**
-     * Get all events
-     */
-    public List<Event> getAllEvents() {
-        return eventRepository.findAll();
-    }
-
-    /**
-     * Get event by ID
-     */
-    public Event getEventById(Long id) throws Exception {
-        return eventRepository.findById(id)
-                .orElseThrow(() -> new Exception("Event not found"));
-    }
-
-    /**
-     * Update event
-     */
-    public Event updateEvent(Long id, Event updatedEvent) throws Exception {
-
-        Event event = getEventById(id);
-
-        event.setTitle(updatedEvent.getTitle());
-        event.setDescription(updatedEvent.getDescription());
-        event.setStartDate(updatedEvent.getStartDate());
-        event.setEndDate(updatedEvent.getEndDate());
-        event.setLocation(updatedEvent.getLocation());
-
-        return eventRepository.save(event);
-    }
-
-    /**
-     * Delete event
-     */
-    public void deleteEvent(Long id) throws Exception {
-
-        Event event = getEventById(id);
-        eventRepository.delete(event);
+        // 4. Save the updated entity back to the database
+        return eventRepository.save(existingEvent);
     }
 }

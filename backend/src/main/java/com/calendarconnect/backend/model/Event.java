@@ -3,7 +3,6 @@ package com.calendarconnect.backend.model;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,48 +11,50 @@ public class Event {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer event_id;
+  private Integer id;
+
+  @Column(name = "creator_id", nullable = false)
+  private Integer creatorId;
 
   @Column(nullable = false)
   private String title;
 
-  @Column(nullable = true)
+  @Column(columnDefinition = "TEXT")
   private String description;
 
-  @Column(nullable = true)
+  @Column(name = "LOCATION")
   private String location;
 
-  @Column(nullable = false)
-  private LocalDate start_datetime;
+  @Column(name = "start_datetime", nullable = false)
+  private LocalDateTime startDateTime;
 
-  @Column(nullable = false)
-  private LocalDate end_datetime;
+  @Column(name = "end_datetime", nullable = false)
+  private LocalDateTime endDateTime;
 
-  @Column(nullable = false)
-  private boolean is_public;
+  @Column(name = "is_public", nullable = false)
+  private boolean isPublic;
 
   @CreationTimestamp
-  @Column(nullable = false, updatable = false)
-  private LocalDateTime created_at;
+  @Column(name = "created_at", nullable = false, updatable = false)
+  private LocalDateTime createdAt;
 
   @UpdateTimestamp
-  @Column(nullable = false)
-  private LocalDateTime updated_at;
+  @Column(name = "updated_at", nullable = false)
+  private LocalDateTime updatedAt;
 
   // Constructors
   public Event() {
   }
 
-  public Event(String event_id, String title, String description,
-      String location, LocalDate start_datetime, LocalDate end_datetime,
-      boolean is_public) {
-    this.event_id = EventId;
+  public Event(Integer creatorId, String title, String description, String location, 
+                 LocalDateTime startDatetime, LocalDateTime endDatetime, boolean isPublic){
+    this.creatorId = creatorId;
     this.title = title;
     this.description = description;
     this.location = location;
-    this.start_datetime = start_datetime;
-    this.end_datetime = end_datetime;
-    this.is_public = is_public;
+    this.startDateTime = startDateTime;
+    this.endDateTime = endDateTime;
+    this.isPublic = isPublic;
   }
 
   // Getters and Setters
@@ -61,12 +62,16 @@ public class Event {
     return id;
   }
 
-  public String getEventId() {
-    return event_id;
+  public void setId(Integer id){
+    this.id = id;
   }
 
-  public void setEventId(String EventId) {
-    this.event_id = event_id;
+  public Integer getCreatorId(){
+    return creatorId;
+  }
+
+  public void setCreatorId(Integer creatorId){
+    this.creatorId = creatorId;
   }
 
   public String getTitle() {
@@ -89,11 +94,15 @@ public class Event {
     return location;
   }
 
+  public void setLocation(String location){
+    this.location = location;
+  }
+
   public void setStartDateTime(String start_datetime) {
     this.start_datetime = start_datetime;
   }
 
-  public LocalDate getStartDateTime() {
+  public LocalDateTime getStartDateTime() {
     return start_datetime;
   }
 
@@ -101,31 +110,31 @@ public class Event {
     this.end_datetime = end_datetime;
   }
 
-  public LocalDate getEndDateTime() {
+  public LocalDateTime getEndDateTime() {
     return end_datetime;
   }
 
-  public boolean getIsPublic() {
-    return is_public;
+  public boolean isPublic() {
+    return isPublic;
   }
 
-  public void setIsPublic(String is_public) {
-    this.is_public = is_public;
+  public void setPublic(String isPublic) {
+    this.isPublic = isPublic;
   }
 
-  public LocalDateTime getCreated_at() {
-    return created_at;
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
   }
 
-  public void setCreated_at(LocalDateTime created_at) {
-    this.created_at = created_at;
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
   }
 
-  public LocalDateTime getUpdated_at() {
-    return updated_at;
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
   }
 
-  public void setUpdated_at(LocalDateTime updated_at) {
-    this.updated_at = updated_at;
+  public void setUpdated_at(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
   }
 }

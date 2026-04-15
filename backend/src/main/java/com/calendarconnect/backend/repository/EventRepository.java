@@ -1,32 +1,21 @@
 package com.calendarconnect.backend.repository;
 
-import com.calendarconnect.backend.model.User;
+import com.calendarconnect.backend.model.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.calendarconnect.backend.model.Event;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.list;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Integer> {
 
-  /**
-   * Find an event by event_id
-   */
-  Optional<Event> findByEventId(String event_id);
+  List<Event> findByStartDatetime(LocalDateTime startDatetime);
 
-  /**
-   * Find an event by start_datetime
-   */
-  Optional<Event> findByStartDateTime(String start_datetime);
+  boolean existsByStartDatetime(LocalDateTime startDatetime);
 
-  /**
-   * Check if event_id exists
-   */
-  boolean existsByEventId(String event_id);
+  List<Event> findByCreatorId(Integer creatorId);
+    
 
-  /**
-   * Check if start_datetime exists
-   */
-  boolean existsByStartDateTime(String start_datetime);
+  List<Event> findByIsPublicTrue();
 }
