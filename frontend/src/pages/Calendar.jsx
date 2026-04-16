@@ -42,6 +42,11 @@ function App() {
     setShowModal(true)
   }
 
+  function handleAddEventClick() {
+    setSelectedDate(new Date().toISOString())
+    setShowModal(true)
+  }
+
   function handleChange(e) {
     setFormData({
       ...formData,
@@ -68,7 +73,6 @@ function App() {
 
     setCurrentEvents([...currentEvents, newEvent])
 
-    // reset
     setShowModal(false)
     setFormData({
       title: '',
@@ -82,14 +86,38 @@ function App() {
     <div>
       <h1>My Calendar</h1>
 
+      {/* ✅ ONLY FIX: move month title slightly up */}
+      <style>
+        {`
+          .fc .fc-toolbar-title {
+            position: relative;
+            top: -6px; /* tweak: -4px to -8px depending on taste */
+          }
+        `}
+      </style>
+
       <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrap5Plugin]}
+        plugins={[
+          dayGridPlugin,
+          timeGridPlugin,
+          interactionPlugin,
+          bootstrap5Plugin
+        ]}
         initialView="dayGridMonth"
+
+        customButtons={{
+          addEventButton: {
+            text: 'Add Event',
+            click: handleAddEventClick
+          }
+        }}
+
         headerToolbar={{
           left: 'prev next today',
-          center: 'title',
+          center: 'title addEventButton',
           right: 'dayGridMonth timeGridWeek timeGridDay'
         }}
+
         editable={true}
         selectable={true}
         events={currentEvents}
@@ -160,10 +188,7 @@ function App() {
             />
 
             <button onClick={handleSubmit}>Add Event</button>
-            <button
-              onClick={() => setShowModal(false)}
-              style={{ marginLeft: '10px' }}
-            >
+            <button onClick={() => setShowModal(false)} style={{ marginLeft: '10px' }}>
               Cancel
             </button>
           </div>
@@ -172,5 +197,5 @@ function App() {
     </div>
   )
 }
-// Testing change for gitdesktop 
+
 export default App
