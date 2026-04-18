@@ -1,13 +1,18 @@
 package com.calendarconnect.backend.controller;
 
 import java.util.List;
+import com.calendarconnect.backend.model.User;
+import com.calendarconnect.backend.service.FriendService;
+import com.calendarconnect.backend.dto.ApiResponse;
+import org.springframework.http.HttpStatus;
 import com.calendarconnect.backend.model.FriendRequest;
 import com.calendarconnect.backend.dto.RegisterRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/FriendRequest")
-@CrossOrigin (origins = "https://localhost:3000")
+@RequestMapping("/api")
+@CrossOrigin (origins = "http://localhost:3000")
 public class FriendController{
 
     @Autowired
@@ -15,35 +20,62 @@ public class FriendController{
 
     //add friend 
     @PostMapping ("/accept")
-     public String acceptFriend(@RequestBody FriendRequest request){
-        friendService.acceptFriend(request);
-        return "This User is now your friend";
-     }
+     public ResponseEntity<ApiResponse<?>> acceptFriend(@RequestBody FriendRequest request){
+      try{
+          friendService.acceptFriend(request);
+        return ResponseEntity.ok(ApiResponse.success("This User is now your friend", null, 200);
+
+      } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body(new ApiResponse<>(false, e.getMessage(), null, 400));
+      }
+     }//end accept
 
      //reject friend
      @PostMapping ("/reject")
-     public String rejectFriend(@RequestBody FriendRequest request){
-        friendService.rejectFriend(request);
-        return "You have rejected this User";
+     public ResponseEntity<ApiResponse<?>> rejectFriend(@RequestBody FriendRequest request){
 
+    try{         
+        friendService.rejectFriend(request);
+        return ResponseEntity.ok(ApiResponse.success("You have rejected this User");
+        
+    } catch (Exception e) {
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body(new ApiResponse<>(false, e.getMessage(), null, 400));
+      }
      }
 
     //edit friend
      @PostMapping("/edit")
-    public String editFriend(@RequestBody FriendRequest request){
+    public ResponseEntity<ApiResponse<?>> editFriend(@RequestBody FriendRequest request){
         friendService.edit(request);
-        return "Friend profile updated";
+        return ResponseEntity.ok(ApiResponse.success("Friend profile updated");
     }
     //delete friend 
     @PostMapping ("/delete")
-    public String deleteFriend(@RequestBody FriendRequest request){
+    public ResponseEntity<ApiResponse<?>> deleteFriend(@RequestBody FriendRequest request){
+
+    try{
         friendService.deleteFriend(request);
-         return "You have removed this Friend";
+        return ResponseEntity.ok(ApiResponse.success("You have removed this Friend", null, 200);
+       
+    }catch (Exception e) {
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body(new ApiResponse<>(false, e.getMessage(), null, 400));
+      }
     }
 
     //Get all Friends
     @GetMapping("/getAll")
-    public List<User> list(){
-        return friendService.getAllFriends();
+    public ResponseEntity<ApiResponse<?>> list(){
+        
+    try{
+        List<User> friends = friendService.getAllFriends();
+        return ResponseEntity.ok(ApiResponse.success("Friends List", friends, 200);
+        
+    }catch (Exception e) {
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body(new ApiResponse<>(false, e.getMessage(), null, 400));
+      }
     }
 }
