@@ -49,33 +49,66 @@ function App() {
     })
   }
 
-  function handleSubmit() {
-    if (!formData.title) return
+  async function handleSubmit() {
+    if (!formData.title) return;
 
-    const dateOnly = selectedDate.split('T')[0]
+    const dateOnly = selectedDate.split('T')[0];
 
-    const start = `${dateOnly}T${formData.startTime || '00:00'}`
-    const end = `${dateOnly}T${formData.endTime || '01:00'}`
+    const start = `${dateOnly}T${formData.startTime || '00:00'}`;
+    const end = `${dateOnly}T${formData.endTime || '01:00'}`;
 
-    const newEvent = {
+    const eventPayload = {
       title: formData.title,
-      start,
-      end,
-      extendedProps: {
-        description: formData.description
+      description: formData.description,
+      startDatetime: start, 
+      endDatetime: end,     
+      isPublic: false // Hardcoded for now since our backend @NotNull requires it!
+    };
+
+    try {
+      const response = await fetch('http://localhost:8080/api/events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(eventPayload),
+      });
+
+      //Catch our backend 409 Conflict error!
+      if (!response.ok) {
+        if (response.status === 409) {
+          alert("Whoops! This event overlaps with an existing event on your calendar.");
+          return; 
+        } else {
+          throw new Error("Something went wrong on the server.");
+        }
       }
+
+      const savedEvent = await response.json();
+
+      setCurrentEvents([...currentEvents, {
+        id: savedEvent.id, 
+        title: savedEvent.title,
+        start: savedEvent.startDatetime,
+        end: savedEvent.endDatetime,
+        extendedProps: {
+          description: savedEvent.description
+        }
+      }]);
+
+      setShowModal(false);
+      setFormData({
+        title: '',
+        description: '',
+        startTime: '',
+        endTime: ''
+      });
+
+    } catch (error) {
+      // This triggers if Spring Boot is turned off or the network drops
+      console.error("Network error:", error);
+      alert("Could not connect to the database. Is the backend running?");
     }
-
-    setCurrentEvents([...currentEvents, newEvent])
-
-    // reset
-    setShowModal(false)
-    setFormData({
-      title: '',
-      description: '',
-      startTime: '',
-      endTime: ''
-    })
   }
 
   return (
