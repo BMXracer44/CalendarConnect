@@ -7,6 +7,9 @@ import com.calendarconnect.backend.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 @Service
 public class EventService {
 
@@ -17,6 +20,19 @@ public class EventService {
      * Create Event in database
      */
     public Event createEvent(EventCreateRequest request, Integer creatorId){
+        boolean hasConflict = eventRepository.existsOverlappingEvent(
+                creatorId, 
+                request.getStartDatetime(), 
+                request.getEndDatetime()
+        );
+
+        if(hasConflict){
+            throw new ResponseStatusException(
+                HttpStatus.CONFLICT, 
+                "This event overlaps with an existing event on your calendar."
+            );
+        }
+        
         Event newEvent = new Event();
 
         newEvent.setTitle(request.getTitle());
@@ -26,7 +42,7 @@ public class EventService {
         newEvent.setEndDatetime(request.getEndDatetime());
         newEvent.setPublic(request.getIsPublic());
 
-        //Vital security data frontend is not allowed to send
+        //Security data frontend is not allowed to send
         newEvent.setCreatorId(creatorId);
 
         //Save to database
