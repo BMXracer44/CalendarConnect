@@ -5,7 +5,6 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Calendar from "./pages/Calendar";
-import Friends from "./pages/Friends";
 
 export const router = createBrowserRouter([
   {
@@ -16,7 +15,7 @@ export const router = createBrowserRouter([
       { path: "register", element: <Register /> },
       { path: "calendar", element: <Calendar /> },
       { path: "profile", element: <Profile /> },
-      { path: "friends", element: <Friends /> }
+      { path: "friend", element: <Friend /> }
     ]
   }
 ]);

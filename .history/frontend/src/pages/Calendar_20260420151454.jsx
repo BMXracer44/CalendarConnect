@@ -11,8 +11,6 @@ function Calendar() {
   const { user } = useContext(AuthContext);
 
   const [events, setEvents] = useState([]);
-
-  // POPUP STATE
   const [showModal, setShowModal] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -54,18 +52,7 @@ function Calendar() {
     if (user?.id) loadEvents();
   }, [user]);
 
-  // CLICK ON DAY (NO POPUP ANYMORE)
-  function handleDateClick(info) {
-    // Optional: still store selected date
-    setFormData(prev => ({
-      ...prev,
-      start_datetime: info.dateStr
-    }));
-
-    // ❌ removed: setShowModal(true);
-  }
-
-  // OPEN FROM BUTTON
+  // OPEN MODAL FROM BUTTON
   const openModal = () => {
     setFormData({
       title: "",
@@ -76,7 +63,16 @@ function Calendar() {
     setShowModal(true);
   };
 
-  // INPUT CHANGE
+  // OPEN MODAL FROM CALENDAR CLICK
+  function handleDateClick(info) {
+    setFormData(prev => ({
+      ...prev,
+      start_datetime: info.dateStr
+    }));
+    setShowModal(true);
+  }
+
+  // HANDLE INPUTS
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -120,33 +116,20 @@ function Calendar() {
   if (!user) return <p>Please log in</p>;
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="calendar-page">
 
-      {/* HEADER */}
-      <div style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: "15px"
-      }}>
-        <h1>My Calendar</h1>
+      {/* ================= HEADER ================= */}
+      <div className="calendar-header">
 
-        <button
-          onClick={openModal}
-          style={{
-            padding: "10px 15px",
-            background: "#4f46e5",
-            color: "white",
-            border: "none",
-            borderRadius: "8px",
-            cursor: "pointer"
-          }}
-        >
+        <h1 className="calendar-title">My Calendar</h1>
+
+        <button className="calendar-add-btn" onClick={openModal}>
           + Add Event
         </button>
+
       </div>
 
-      {/* CALENDAR */}
+      {/* ================= CALENDAR ================= */}
       <FullCalendar
         plugins={[
           dayGridPlugin,
@@ -166,7 +149,7 @@ function Calendar() {
         dateClick={handleDateClick}
       />
 
-      {/* POPUP */}
+      {/* ================= MODAL ================= */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-box">

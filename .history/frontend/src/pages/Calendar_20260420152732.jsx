@@ -54,18 +54,17 @@ function Calendar() {
     if (user?.id) loadEvents();
   }, [user]);
 
-  // CLICK ON DAY (NO POPUP ANYMORE)
+  // =========================
+  // DATE CLICK (NO POPUP NOW)
+  // =========================
   function handleDateClick(info) {
-    // Optional: still store selected date
     setFormData(prev => ({
       ...prev,
       start_datetime: info.dateStr
     }));
-
-    // ❌ removed: setShowModal(true);
   }
 
-  // OPEN FROM BUTTON
+  // OPEN FROM BUTTON ONLY
   const openModal = () => {
     setFormData({
       title: "",
@@ -122,7 +121,7 @@ function Calendar() {
   return (
     <div style={{ padding: "20px" }}>
 
-      {/* HEADER */}
+      {/* HEADER + BUTTON */}
       <div style={{
         display: "flex",
         justifyContent: "space-between",

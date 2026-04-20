@@ -54,15 +54,13 @@ function Calendar() {
     if (user?.id) loadEvents();
   }, [user]);
 
-  // CLICK ON DAY (NO POPUP ANYMORE)
+  // OPEN FROM CALENDAR CLICK
   function handleDateClick(info) {
-    // Optional: still store selected date
     setFormData(prev => ({
       ...prev,
       start_datetime: info.dateStr
     }));
-
-    // ❌ removed: setShowModal(true);
+    setShowModal(true);
   }
 
   // OPEN FROM BUTTON
@@ -122,7 +120,7 @@ function Calendar() {
   return (
     <div style={{ padding: "20px" }}>
 
-      {/* HEADER */}
+      {/* ================= HEADER + BUTTON ================= */}
       <div style={{
         display: "flex",
         justifyContent: "space-between",
@@ -146,7 +144,7 @@ function Calendar() {
         </button>
       </div>
 
-      {/* CALENDAR */}
+      {/* ================= CALENDAR ================= */}
       <FullCalendar
         plugins={[
           dayGridPlugin,
@@ -166,63 +164,58 @@ function Calendar() {
         dateClick={handleDateClick}
       />
 
-      {/* POPUP */}
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-box">
+      {/* ================= POPUP ================= */}
+{showModal && (
+  <div className="modal-overlay">
+    <div className="modal-box">
 
-            <h2>Add Event</h2>
+      <h2>Add Event</h2>
 
-            <form onSubmit={createEvent}>
+      <form onSubmit={createEvent}>
 
-              <input
-                name="title"
-                placeholder="Title"
-                value={formData.title}
-                onChange={handleChange}
-                required
-              />
+        <input
+          name="title"
+          placeholder="Title"
+          value={formData.title}
+          onChange={handleChange}
+          required
+        />
 
-              <input
-                name="description"
-                placeholder="Description"
-                value={formData.description}
-                onChange={handleChange}
-              />
+        <input
+          name="description"
+          placeholder="Description"
+          value={formData.description}
+          onChange={handleChange}
+        />
 
-              <input
-                type="datetime-local"
-                name="start_datetime"
-                value={formData.start_datetime}
-                onChange={handleChange}
-                required
-              />
+        <input
+          type="datetime-local"
+          name="start_datetime"
+          value={formData.start_datetime}
+          onChange={handleChange}
+          required
+        />
 
-              <input
-                type="datetime-local"
-                name="end_datetime"
-                value={formData.end_datetime}
-                onChange={handleChange}
-                required
-              />
+        <input
+          type="datetime-local"
+          name="end_datetime"
+          value={formData.end_datetime}
+          onChange={handleChange}
+          required
+        />
 
-              <button type="submit">Create</button>
+        <button type="submit">Create</button>
 
-              <button
-                type="button"
-                onClick={() => setShowModal(false)}
-              >
-                Cancel
-              </button>
+        <button
+          type="button"
+          onClick={() => setShowModal(false)}
+        >
+          Cancel
+        </button>
 
-            </form>
-
-          </div>
-        </div>
-      )}
+      </form>
 
     </div>
-  );
-}
-
+  </div>
+)}
 export default Calendar;

@@ -12,8 +12,9 @@ function Calendar() {
 
   const [events, setEvents] = useState([]);
 
-  // POPUP STATE
+  // ================= POPUP STATE =================
   const [showModal, setShowModal] = useState(false);
+  const [selectedDate, setSelectedDate] = useState("");
 
   const [formData, setFormData] = useState({
     title: "",
@@ -22,7 +23,7 @@ function Calendar() {
     end_datetime: ""
   });
 
-  // LOAD EVENTS
+  // ================= LOAD EVENTS =================
   const loadEvents = async () => {
     try {
       const res = await fetch(
@@ -36,14 +37,14 @@ function Calendar() {
 
       const data = await res.json();
 
-      setEvents(
-        data.map(e => ({
-          id: e.id,
-          title: e.title,
-          start: e.start_datetime,
-          end: e.end_datetime
-        }))
-      );
+      const formatted = data.map(e => ({
+        id: e.id,
+        title: e.title,
+        start: e.start_datetime,
+        end: e.end_datetime
+      }));
+
+      setEvents(formatted);
 
     } catch (err) {
       console.error(err);
@@ -54,29 +55,17 @@ function Calendar() {
     if (user?.id) loadEvents();
   }, [user]);
 
-  // CLICK ON DAY (NO POPUP ANYMORE)
+  // ================= CLICK DATE → OPEN MODAL =================
   function handleDateClick(info) {
-    // Optional: still store selected date
-    setFormData(prev => ({
-      ...prev,
-      start_datetime: info.dateStr
-    }));
-
-    // ❌ removed: setShowModal(true);
-  }
-
-  // OPEN FROM BUTTON
-  const openModal = () => {
+    setSelectedDate(info.dateStr);
     setFormData({
-      title: "",
-      description: "",
-      start_datetime: "",
-      end_datetime: ""
+      ...formData,
+      start_datetime: info.dateStr
     });
     setShowModal(true);
-  };
+  }
 
-  // INPUT CHANGE
+  // ================= FORM CHANGE =================
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -84,7 +73,7 @@ function Calendar() {
     });
   };
 
-  // CREATE EVENT
+  // ================= CREATE EVENT =================
   const createEvent = async (e) => {
     e.preventDefault();
 
@@ -109,7 +98,14 @@ function Calendar() {
 
       if (res.ok) {
         setShowModal(false);
-        loadEvents();
+        setFormData({
+          title: "",
+          description: "",
+          start_datetime: "",
+          end_datetime: ""
+        });
+
+        loadEvents(); // refresh calendar
       }
 
     } catch (err) {
@@ -121,32 +117,8 @@ function Calendar() {
 
   return (
     <div style={{ padding: "20px" }}>
+      <h1>My Calendar</h1>
 
-      {/* HEADER */}
-      <div style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: "15px"
-      }}>
-        <h1>My Calendar</h1>
-
-        <button
-          onClick={openModal}
-          style={{
-            padding: "10px 15px",
-            background: "#4f46e5",
-            color: "white",
-            border: "none",
-            borderRadius: "8px",
-            cursor: "pointer"
-          }}
-        >
-          + Add Event
-        </button>
-      </div>
-
-      {/* CALENDAR */}
       <FullCalendar
         plugins={[
           dayGridPlugin,
@@ -166,24 +138,27 @@ function Calendar() {
         dateClick={handleDateClick}
       />
 
-      {/* POPUP */}
+      {/* ================= POPUP MODAL ================= */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-box">
 
-            <h2>Add Event</h2>
+            <h2>Create Event</h2>
+            <p>Date: {selectedDate}</p>
 
             <form onSubmit={createEvent}>
 
               <input
+                type="text"
                 name="title"
-                placeholder="Title"
+                placeholder="Event Title"
                 value={formData.title}
                 onChange={handleChange}
                 required
               />
 
               <input
+                type="text"
                 name="description"
                 placeholder="Description"
                 value={formData.description}
@@ -206,8 +181,7 @@ function Calendar() {
                 required
               />
 
-              <button type="submit">Create</button>
-
+              <button type="submit">Create Event</button>
               <button
                 type="button"
                 onClick={() => setShowModal(false)}
@@ -220,7 +194,6 @@ function Calendar() {
           </div>
         </div>
       )}
-
     </div>
   );
 }

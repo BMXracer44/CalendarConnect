@@ -12,7 +12,7 @@ function Calendar() {
 
   const [events, setEvents] = useState([]);
 
-  // POPUP STATE
+  // MODAL STATE
   const [showModal, setShowModal] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -54,18 +54,7 @@ function Calendar() {
     if (user?.id) loadEvents();
   }, [user]);
 
-  // CLICK ON DAY (NO POPUP ANYMORE)
-  function handleDateClick(info) {
-    // Optional: still store selected date
-    setFormData(prev => ({
-      ...prev,
-      start_datetime: info.dateStr
-    }));
-
-    // ❌ removed: setShowModal(true);
-  }
-
-  // OPEN FROM BUTTON
+  // OPEN MODAL (BUTTON)
   const openModal = () => {
     setFormData({
       title: "",
@@ -76,12 +65,17 @@ function Calendar() {
     setShowModal(true);
   };
 
+  // CLOSE MODAL
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   // INPUT CHANGE
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
+    setFormData(prev => ({
+      ...prev,
       [e.target.name]: e.target.value
-    });
+    }));
   };
 
   // CREATE EVENT
@@ -126,7 +120,6 @@ function Calendar() {
       <div style={{
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "center",
         marginBottom: "15px"
       }}>
         <h1>My Calendar</h1>
@@ -134,7 +127,7 @@ function Calendar() {
         <button
           onClick={openModal}
           style={{
-            padding: "10px 15px",
+            padding: "10px 14px",
             background: "#4f46e5",
             color: "white",
             border: "none",
@@ -160,16 +153,29 @@ function Calendar() {
           center: 'title',
           right: 'dayGridMonth timeGridWeek timeGridDay'
         }}
-        editable={true}
-        selectable={true}
         events={events}
-        dateClick={handleDateClick}
       />
 
-      {/* POPUP */}
+      {/* ================= MODAL (FIXED) ================= */}
       {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-box">
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          background: "rgba(0,0,0,0.6)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 99999   // 🔥 IMPORTANT FIX
+        }}>
+          <div style={{
+            background: "white",
+            padding: "25px",
+            borderRadius: "12px",
+            width: "400px"
+          }}>
 
             <h2>Add Event</h2>
 
@@ -181,6 +187,7 @@ function Calendar() {
                 value={formData.title}
                 onChange={handleChange}
                 required
+                style={{ width: "100%", marginBottom: "10px" }}
               />
 
               <input
@@ -188,6 +195,7 @@ function Calendar() {
                 placeholder="Description"
                 value={formData.description}
                 onChange={handleChange}
+                style={{ width: "100%", marginBottom: "10px" }}
               />
 
               <input
@@ -196,6 +204,7 @@ function Calendar() {
                 value={formData.start_datetime}
                 onChange={handleChange}
                 required
+                style={{ width: "100%", marginBottom: "10px" }}
               />
 
               <input
@@ -204,13 +213,15 @@ function Calendar() {
                 value={formData.end_datetime}
                 onChange={handleChange}
                 required
+                style={{ width: "100%", marginBottom: "10px" }}
               />
 
               <button type="submit">Create</button>
 
               <button
                 type="button"
-                onClick={() => setShowModal(false)}
+                onClick={closeModal}
+                style={{ marginLeft: "10px" }}
               >
                 Cancel
               </button>

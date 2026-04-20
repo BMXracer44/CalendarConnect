@@ -366,10 +366,9 @@ body {
   margin-top: 10px;
 }
 /* =========================
-   EVENT POPUP (ADD EVENT MODAL)
+   EVENT MODAL (MATCHES YOUR THEME)
 ========================= */
 
-/* DARK BACKDROP */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -387,67 +386,83 @@ body {
   z-index: 9999;
 }
 
-/* POPUP CARD */
+/* MAIN CARD */
 .modal-box {
   width: 420px;
 
   background: #ffffff;
 
-  padding: 45px 40px;
+  padding: 35px 30px;
 
   border-radius: 18px;
 
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
 
-  text-align: center;
+  animation: fadeIn 0.25s ease-in-out;
 
-  animation: fadeIn 0.3s ease-in-out;
+  text-align: left;
 }
 
 /* TITLE */
 .modal-box h2 {
   font-size: 26px;
-  font-weight: 700;
-
+  margin-bottom: 10px;
   color: #333;
-
-  margin-bottom: 15px;
 }
 
 /* INPUTS */
-.modal-box input {
+.modal-box input,
+.modal-box textarea {
   width: 100%;
 
-  padding: 14px 16px;
-  margin-top: 14px;
+  padding: 12px 14px;
 
-  border: 1px solid #ddd;
+  margin-top: 12px;
+
   border-radius: 12px;
+  border: 1px solid #ddd;
 
   font-size: 14px;
 
   outline: none;
 
-  transition: 0.25s ease;
+  transition: 0.2s ease;
 }
 
-.modal-box input:focus {
+.modal-box textarea {
+  resize: none;
+  min-height: 80px;
+}
+
+.modal-box input:focus,
+.modal-box textarea:focus {
   border-color: #667eea;
-  box-shadow: 0 0 10px rgba(102, 126, 234, 0.35);
+  box-shadow: 0 0 10px rgba(102, 126, 234, 0.25);
 }
 
-/* BUTTONS (STACK CLEANLY) */
+/* CHECKBOX */
+.modal-box label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 12px;
+
+  font-size: 14px;
+  color: #444;
+}
+
+/* BUTTONS */
 .modal-box button {
-  width: 100%;
+  padding: 10px 14px;
 
-  padding: 12px;
+  margin-top: 18px;
+  margin-right: 10px;
 
-  margin-top: 14px;
-
+  border-radius: 10px;
   border: none;
-  border-radius: 12px;
 
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
 
   cursor: pointer;
@@ -455,7 +470,7 @@ body {
   transition: 0.2s ease;
 }
 
-/* CREATE BUTTON */
+/* PRIMARY BUTTON */
 .modal-box button[type="submit"] {
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
@@ -476,11 +491,11 @@ body {
   background: #d1d5db;
 }
 
-/* ANIMATION */
+/* ANIMATION (already used in login) */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(15px);
   }
   to {
     opacity: 1;

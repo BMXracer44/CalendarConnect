@@ -8,7 +8,7 @@ const Friends = () => {
   const [friends, setFriends] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // SEARCH PANEL TOGGLE
+  // MODAL STATE
   const [showSearch, setShowSearch] = useState(false);
 
   // SEARCH
@@ -89,15 +89,37 @@ const Friends = () => {
 
           <button
             className="open-search-btn"
-            onClick={() => setShowSearch(!showSearch)}
+            onClick={() => setShowSearch(true)}
           >
-            {showSearch ? "Hide Search" : "+ Find Friends"}
+            + Find Friends
           </button>
         </div>
 
-        {/* ================= SEARCH DROPDOWN ================= */}
-        {showSearch && (
-          <div className="search-dropdown">
+        {/* FRIENDS LIST */}
+        {loading && <p>Loading friends...</p>}
+
+        {!loading && friends.length === 0 && (
+          <p className="no-results">
+            You don’t have any friends yet.
+          </p>
+        )}
+
+        <div className="friends-results">
+          {friends.map((f) => (
+            <div key={f.id} className="friend-item">
+              <span>{f.username}</span>
+            </div>
+          ))}
+        </div>
+
+      </div>
+
+      {/* ================= MODAL ================= */}
+      {showSearch && (
+        <div className="modal-overlay">
+          <div className="modal">
+
+            <h2>Find Friends</h2>
 
             <div className="friends-search">
               <input
@@ -123,27 +145,17 @@ const Friends = () => {
               ))}
             </div>
 
+            <button
+              className="close-modal"
+              onClick={() => setShowSearch(false)}
+            >
+              Close
+            </button>
+
           </div>
-        )}
-
-        {/* ================= FRIENDS LIST ================= */}
-        {loading && <p>Loading friends...</p>}
-
-        {!loading && friends.length === 0 && (
-          <p className="no-results">
-            You don’t have any friends yet.
-          </p>
-        )}
-
-        <div className="friends-results">
-          {friends.map((f) => (
-            <div key={f.id} className="friend-item">
-              <span>{f.username}</span>
-            </div>
-          ))}
         </div>
+      )}
 
-      </div>
     </div>
   );
 };
