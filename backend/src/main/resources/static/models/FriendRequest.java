@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 @Table(name = "friendships")
   public class Friendship{
 
-@FriendshipId
+@Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
@@ -19,7 +19,7 @@ import jakarta.persistence.*;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Status status = status.pending;
+    private Status status = status.PENDING;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -30,18 +30,18 @@ import jakarta.persistence.*;
     private LocalDateTime updated_at;
     
     public enum Status{
-      pending;
-      accepted;
-      declined;
-      blocked;        }
-
+      PENDING;
+      ACCEPTED;
+      DECLINED;
+      BLOCKED;       
+    }
+    
    public friendship(){
    }
 
-   public friendship(int requester_id, int addressee_id) {
+   public friendship(Integer requester_id, Integer addressee_id) {
      this.requester_id = requester_id;
      this.addressee_id = addressee_id;
-
     }
     
     //Getters
@@ -55,14 +55,19 @@ import jakarta.persistence.*;
     public LocalDateTime getCreated_at() {
       return created_at;
     }
-  
+    public Status getStatus(){
+      return status;
+    }
        
     //Setters
-     public void setrequester_id(String requester_id){
+     public void setrequester_id(Integer requester_id){
      this.requester_id = requester_id;
      }
 
-     public void setaddressee_id(String addressee_id){
+     public void setaddressee_id(Integer addressee_id){
      this.addressee_id = addressee_id;
     }  
+     public Status setStatus(Status status){
+      return this.status= status;
+    }
   }
