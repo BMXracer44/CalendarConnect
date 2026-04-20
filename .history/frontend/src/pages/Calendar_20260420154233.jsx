@@ -54,17 +54,18 @@ function Calendar() {
     if (user?.id) loadEvents();
   }, [user]);
 
-  // =========================
-  // DATE CLICK (NO POPUP NOW)
-  // =========================
+  // CLICK ON DAY (NO POPUP ANYMORE)
   function handleDateClick(info) {
+    // Optional: still store selected date
     setFormData(prev => ({
       ...prev,
       start_datetime: info.dateStr
     }));
+
+    // ❌ removed: setShowModal(true);
   }
 
-  // OPEN FROM BUTTON ONLY
+  // OPEN FROM BUTTON
   const openModal = () => {
     setFormData({
       title: "",
@@ -84,52 +85,44 @@ function Calendar() {
   };
 
   // CREATE EVENT
-const createEvent = async (e) => {
-  e.preventDefault();
+  const createEvent = async (e) => {
+    e.preventDefault();
 
-  try {
-    const res = await fetch(
-      "http://localhost:8080/api/events/create",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`
-        },
-        body: JSON.stringify({
-          creator_id: user.id,
-          title: formData.title,
-          description: formData.description,
-          start_datetime: formData.start_datetime,
-          end_datetime: formData.end_datetime
-        })
+    try {
+      const res = await fetch(
+        "http://localhost:8080/api/events/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`
+          },
+          body: JSON.stringify({
+            creator_id: user.id,
+            title: formData.title,
+            description: formData.description,
+            start_datetime: formData.start_datetime,
+            end_datetime: formData.end_datetime
+          })
+        }
+      );
+
+      if (res.ok) {
+        setShowModal(false);
+        loadEvents();
       }
-    );
 
-    const data = await res.json();
-
-    console.log("CREATE EVENT RESPONSE:", data);
-
-    if (!res.ok) {
-      alert(data.message || "Failed to create event");
-      return;
+    } catch (err) {
+      console.error(err);
     }
-
-    setShowModal(false);
-    loadEvents();
-
-  } catch (err) {
-    console.error("CREATE EVENT ERROR:", err);
-    alert("Server error creating event");
-  }
-};
+  };
 
   if (!user) return <p>Please log in</p>;
 
   return (
     <div style={{ padding: "20px" }}>
 
-      {/* HEADER + BUTTON */}
+      {/* HEADER */}
       <div style={{
         display: "flex",
         justifyContent: "space-between",

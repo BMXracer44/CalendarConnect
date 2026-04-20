@@ -54,17 +54,7 @@ function Calendar() {
     if (user?.id) loadEvents();
   }, [user]);
 
-  // =========================
-  // DATE CLICK (NO POPUP NOW)
-  // =========================
-  function handleDateClick(info) {
-    setFormData(prev => ({
-      ...prev,
-      start_datetime: info.dateStr
-    }));
-  }
-
-  // OPEN FROM BUTTON ONLY
+  // OPEN MODAL FROM BUTTON
   const openModal = () => {
     setFormData({
       title: "",
@@ -75,6 +65,15 @@ function Calendar() {
     setShowModal(true);
   };
 
+  // CLICK DATE
+  function handleDateClick(info) {
+    setFormData(prev => ({
+      ...prev,
+      start_datetime: info.dateStr
+    }));
+    setShowModal(true);
+  }
+
   // INPUT CHANGE
   const handleChange = (e) => {
     setFormData({
@@ -84,71 +83,48 @@ function Calendar() {
   };
 
   // CREATE EVENT
-const createEvent = async (e) => {
-  e.preventDefault();
+  const createEvent = async (e) => {
+    e.preventDefault();
 
-  try {
-    const res = await fetch(
-      "http://localhost:8080/api/events/create",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`
-        },
-        body: JSON.stringify({
-          creator_id: user.id,
-          title: formData.title,
-          description: formData.description,
-          start_datetime: formData.start_datetime,
-          end_datetime: formData.end_datetime
-        })
+    try {
+      const res = await fetch(
+        "http://localhost:8080/api/events/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`
+          },
+          body: JSON.stringify({
+            creator_id: user.id,
+            title: formData.title,
+            description: formData.description,
+            start_datetime: formData.start_datetime,
+            end_datetime: formData.end_datetime
+          })
+        }
+      );
+
+      if (res.ok) {
+        setShowModal(false);
+        loadEvents();
       }
-    );
 
-    const data = await res.json();
-
-    console.log("CREATE EVENT RESPONSE:", data);
-
-    if (!res.ok) {
-      alert(data.message || "Failed to create event");
-      return;
+    } catch (err) {
+      console.error(err);
     }
-
-    setShowModal(false);
-    loadEvents();
-
-  } catch (err) {
-    console.error("CREATE EVENT ERROR:", err);
-    alert("Server error creating event");
-  }
-};
+  };
 
   if (!user) return <p>Please log in</p>;
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="calendar-page">
 
-      {/* HEADER + BUTTON */}
-      <div style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: "15px"
-      }}>
+      {/* HEADER */}
+      <div className="calendar-header">
         <h1>My Calendar</h1>
 
-        <button
-          onClick={openModal}
-          style={{
-            padding: "10px 15px",
-            background: "#4f46e5",
-            color: "white",
-            border: "none",
-            borderRadius: "8px",
-            cursor: "pointer"
-          }}
-        >
+        <button className="add-event-btn" onClick={openModal}>
           + Add Event
         </button>
       </div>
@@ -173,7 +149,7 @@ const createEvent = async (e) => {
         dateClick={handleDateClick}
       />
 
-      {/* POPUP */}
+      {/* MODAL */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-box">
