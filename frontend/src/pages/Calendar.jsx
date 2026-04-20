@@ -9,11 +9,15 @@ function App() {
     { title: 'Team Meeting', date: '2026-04-13' },
     { title: 'Project Demo', date: '2026-04-15' },
     { title: 'Study Session', date: '2026-04-18' },
-    { title: 'Craft Night', start: '2026-04-20T19:00:00', end: '2026-04-20T21:00:00' }
+    { title: 'Craft Night', start: '2026-04-20T19:00:00', end: '2026-04-20T21:00:00', location: 'UC Down Under' }
   ]
 
   function handleDateClick(info){
     info.view.calendar.changeView('timeGridDay', info.dateStr)
+  }
+
+  function handleEventClick(event){
+    
   }
 
   return (
@@ -33,6 +37,7 @@ function App() {
         selectable={true}
         events={events}
         dateClick={handleDateClick}
+        eventClick={handleEventClick}
       />
     </div>
   )
