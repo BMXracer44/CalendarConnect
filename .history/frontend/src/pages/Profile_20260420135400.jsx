@@ -166,7 +166,7 @@ const Profile = () => {
             onChange={handleChange}
           />
 
-          <input
+          <textarea
             name="bio"
             placeholder="Bio"
             value={formData.bio}

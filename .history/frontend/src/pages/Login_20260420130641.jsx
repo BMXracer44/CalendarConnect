@@ -26,17 +26,20 @@ const Login = () => {
 
       const data = await response.json();
 
-      console.log("LOGIN RESPONSE:", data); // 🔥 DEBUG
-
       if (response.ok) {
-        login(data); // ✅ FIXED (IMPORTANT)
+        // 🔥 Store user globally using Context
+        login({
+          username: data.username,
+          token: data.token,
+        });
 
         setSuccess("Login successful!");
         setError("");
 
+        // small delay for UX
         setTimeout(() => {
           navigate("/calendar");
-        }, 500);
+        }, 700);
       } else {
         setError(data.message || "Invalid username or password");
         setSuccess("");

@@ -7,37 +7,27 @@ const Profile = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    password: "",
-    confirmPassword: "",
     first_name: "",
     last_name: "",
     birthdate: "",
     phone_number: "",
     bio: "",
-    profile_picture_url: ""
+    profile_picture: null
   });
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Load current user into form
+  // 🔥 ONLY USE CONTEXT DATA (no backend profile call)
   useEffect(() => {
     if (user) {
       setFormData((prev) => ({
         ...prev,
-        username: user.username || "",
-        email: user.email || "",
-        first_name: user.first_name || "",
-        last_name: user.last_name || "",
-        birthdate: user.birthdate || "",
-        phone_number: user.phone_number || "",
-        bio: user.bio || "",
-        profile_picture_url: user.profile_picture_url || ""
+        username: user.username || ""
       }));
     }
   }, [user]);
 
-  // Handle input changes
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -45,38 +35,48 @@ const Profile = () => {
     });
   };
 
-  // Submit update
+  const handleFileChange = (e) => {
+    setFormData({
+      ...formData,
+      profile_picture: e.target.files[0]
+    });
+  };
+
   const handleUpdate = async (e) => {
     e.preventDefault();
 
-    setError("");
-    setSuccess("");
-
-    // basic password check
-    if (formData.password && formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
     try {
-      const res = await fetch(
-        `http://localhost:8080/api/user/update/${user.username}`,
+      const form = new FormData();
+
+      Object.keys(formData).forEach((key) => {
+        if (key !== "profile_picture") {
+          form.append(key, formData[key]);
+        }
+      });
+
+      if (formData.profile_picture) {
+        form.append("profile_picture", formData.profile_picture);
+      }
+
+      const response = await fetch(
+        `http://localhost:8080/api/user/update`,
         {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`
           },
-          body: JSON.stringify(formData)
+          body: form
         }
       );
 
-      const data = await res.json();
+      const data = await response.json();
 
-      if (res.ok) {
+      if (response.ok) {
         setSuccess("Profile updated successfully!");
+        setError("");
       } else {
         setError(data.message || "Update failed");
+        setSuccess("");
       }
     } catch (err) {
       setError("Server error");
@@ -91,63 +91,41 @@ const Profile = () => {
     <div className="login-container">
       <div className="login-card register-card">
 
-        <h2>Profile</h2>
+        <h2>Your Profile</h2>
 
-        {/* DISPLAY CURRENT USER */}
         <div className="profile-preview">
           <p><strong>Username:</strong> {user.username}</p>
-          <p><strong>Email:</strong> {user.email}</p>
         </div>
 
         <hr />
 
-        <h3>Update Profile</h3>
+        <h3>Update Information</h3>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        {success && <p style={{ color: "green" }}>{success}</p>}
+        {error && <p className="error-text">{error}</p>}
+        {success && <p className="success-text">{success}</p>}
 
-        <form onSubmit={handleUpdate}>
+        <form onSubmit={handleUpdate} className="register-form">
 
           <input
             name="username"
-            placeholder="Username"
             value={formData.username}
             onChange={handleChange}
           />
 
           <input
             name="email"
-            placeholder="Email"
             value={formData.email}
             onChange={handleChange}
           />
 
           <input
-            type="password"
-            name="password"
-            placeholder="New Password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-          />
-
-          <input
             name="first_name"
-            placeholder="First Name"
             value={formData.first_name}
             onChange={handleChange}
           />
 
           <input
             name="last_name"
-            placeholder="Last Name"
             value={formData.last_name}
             onChange={handleChange}
           />
@@ -161,27 +139,19 @@ const Profile = () => {
 
           <input
             name="phone_number"
-            placeholder="Phone Number"
             value={formData.phone_number}
             onChange={handleChange}
           />
 
           <input
             name="bio"
-            placeholder="Bio"
             value={formData.bio}
             onChange={handleChange}
           />
 
-          <input
-            name="profile_picture_url"
-            placeholder="Profile Picture URL"
-            value={formData.profile_picture_url}
-            onChange={handleChange}
-          />
+          <input type="file" onChange={handleFileChange} />
 
           <button type="submit">Update Profile</button>
-
         </form>
 
       </div>
