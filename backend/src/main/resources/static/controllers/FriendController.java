@@ -11,18 +11,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/friends")
 @CrossOrigin (origins = "http://localhost:3000")
 public class FriendController{
 
     @Autowired
     private FriendService friendService;
-
+    
     //add friend 
-    @PostMapping ("/accept")
-     public ResponseEntity<ApiResponse<?>> acceptFriend(@RequestBody FriendRequest request){
+    @PostMapping ("friends/{id}/accept")
+     public ResponseEntity<ApiResponse<?>> acceptFriend(@PathVariable Integer id){
       try{
-          friendService.acceptFriend(request);
+          friendService.acceptFriend(id);
         return ResponseEntity.ok(ApiResponse.success("This User is now your friend", null, 200);
 
       } catch (Exception e) {
@@ -32,11 +32,11 @@ public class FriendController{
      }//end accept
 
      //reject friend
-     @PostMapping ("/reject")
-     public ResponseEntity<ApiResponse<?>> rejectFriend(@RequestBody FriendRequest request){
+     @PostMapping ("friends/{id}/reject")
+     public ResponseEntity<ApiResponse<?>> rejectFriend(@PathVariable Integer id){
 
     try{         
-        friendService.rejectFriend(request);
+        friendService.rejectFriend(id);
         return ResponseEntity.ok(ApiResponse.success("You have rejected this User");
         
     } catch (Exception e) {
@@ -46,17 +46,17 @@ public class FriendController{
      }
 
     //edit friend
-     @PostMapping("/edit")
-    public ResponseEntity<ApiResponse<?>> editFriend(@RequestBody FriendRequest request){
-        friendService.edit(request);
+     @PutMapping("friends/{id}")
+    public ResponseEntity<ApiResponse<?>> editFriend(@PathVariable Integer id, @RequestBody FriendRequest request){
+        friendService.editFriend(id,request);
         return ResponseEntity.ok(ApiResponse.success("Friend profile updated");
     }
     //delete friend 
-    @PostMapping ("/delete")
-    public ResponseEntity<ApiResponse<?>> deleteFriend(@RequestBody FriendRequest request){
+    @DeleteMapping ("friends/{id}")
+    public ResponseEntity<ApiResponse<?>> delete(@PathVariable Integer id){
 
     try{
-        friendService.deleteFriend(request);
+        friendService.deleteFriend(id);
         return ResponseEntity.ok(ApiResponse.success("You have removed this Friend", null, 200);
        
     }catch (Exception e) {
@@ -66,11 +66,11 @@ public class FriendController{
     }
 
     //Get all Friends
-    @GetMapping("/getAll")
-    public ResponseEntity<ApiResponse<?>> list(){
+    @GetMapping("friends/{userId}")
+    public ResponseEntity<ApiResponse<?>> list(@PathVariable Integer userId){
         
     try{
-        List<User> friends = friendService.getAllFriends();
+        List<User> friends = friendService.getAllFriends(userId);
         return ResponseEntity.ok(ApiResponse.success("Friends List", friends, 200);
         
     }catch (Exception e) {
