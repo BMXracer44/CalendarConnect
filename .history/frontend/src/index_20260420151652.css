@@ -366,10 +366,10 @@ body {
   margin-top: 10px;
 }
 /* =========================
-   EVENT POPUP (ADD EVENT MODAL)
+   EVENT MODAL (MATCHES APP STYLE)
 ========================= */
 
-/* DARK BACKDROP */
+/* BACKDROP */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -377,8 +377,9 @@ body {
 
   width: 100%;
   height: 100%;
+  background: rgba(102, 126, 234, 0.25);
 
-  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
 
   display: flex;
   justify-content: center;
@@ -387,10 +388,9 @@ body {
   z-index: 9999;
 }
 
-/* POPUP CARD */
+/* POPUP CARD (MATCHES LOGIN CARD STYLE) */
 .modal-box {
   width: 420px;
-
   background: #ffffff;
 
   padding: 45px 40px;
@@ -408,13 +408,12 @@ body {
 .modal-box h2 {
   font-size: 26px;
   font-weight: 700;
-
   color: #333;
 
   margin-bottom: 15px;
 }
 
-/* INPUTS */
+/* INPUTS (MATCH LOGIN STYLE) */
 .modal-box input {
   width: 100%;
 
@@ -436,13 +435,13 @@ body {
   box-shadow: 0 0 10px rgba(102, 126, 234, 0.35);
 }
 
-/* BUTTONS (STACK CLEANLY) */
+/* BUTTONS */
 .modal-box button {
   width: 100%;
 
   padding: 12px;
 
-  margin-top: 14px;
+  margin-top: 16px;
 
   border: none;
   border-radius: 12px;
@@ -455,7 +454,7 @@ body {
   transition: 0.2s ease;
 }
 
-/* CREATE BUTTON */
+/* PRIMARY (CREATE) */
 .modal-box button[type="submit"] {
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
@@ -466,7 +465,7 @@ body {
   box-shadow: 0 8px 18px rgba(102, 126, 234, 0.35);
 }
 
-/* CANCEL BUTTON */
+/* SECONDARY (CANCEL) */
 .modal-box button[type="button"] {
   background: #e5e7eb;
   color: #333;
@@ -476,11 +475,11 @@ body {
   background: #d1d5db;
 }
 
-/* ANIMATION */
+/* FADE ANIMATION (already used in login) */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(15px);
   }
   to {
     opacity: 1;

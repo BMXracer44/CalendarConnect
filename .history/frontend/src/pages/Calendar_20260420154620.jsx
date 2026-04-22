@@ -12,153 +12,124 @@ function Calendar() {
 
   const [events, setEvents] = useState([]);
 
-  // MODAL STATE
+  // POPUP STATE
   const [showModal, setShowModal] = useState(false);
 
-  // ✅ MATCHES BACKEND DTO EXACTLY
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    location: "",
-    startDatetime: "",
-    endDatetime: "",
-    isPublic: true
+    start_datetime: "",
+    end_datetime: ""
   });
 
-  // =========================
   // LOAD EVENTS
-  // =========================
-const loadEvents = async () => {
-  try {
-
-    if (!user?.id) {
-      console.log("User not ready yet - skipping loadEvents");
-      return;
-    }
-
-    const res = await fetch(
-      `http://localhost:8080/api/events/user/${user.id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${user.token}`
+  const loadEvents = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:8080/api/events/user/${user.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
         }
-      }
-    );
+      );
 
-    if (!res.ok) {
-      const text = await res.text();
-      console.error("LOAD EVENTS ERROR:", text);
-      return;
+      const data = await res.json();
+
+      setEvents(
+        data.map(e => ({
+          id: e.id,
+          title: e.title,
+          start: e.start_datetime,
+          end: e.end_datetime
+        }))
+      );
+
+    } catch (err) {
+      console.error(err);
     }
+  };
 
-    const data = await res.json();
-
-    setEvents(
-      data.map(e => ({
-        id: e.id,
-        title: e.title,
-        start: e.startDatetime,
-        end: e.endDatetime
-      }))
-    );
-
-  } catch (err) {
-    console.error("LOAD EVENTS FAILED:", err);
-  }
-};
   useEffect(() => {
     if (user?.id) loadEvents();
   }, [user]);
 
   // =========================
-  // DATE CLICK
+  // DATE CLICK (NO POPUP NOW)
   // =========================
   function handleDateClick(info) {
     setFormData(prev => ({
       ...prev,
-      startDatetime: info.dateStr
+      start_datetime: info.dateStr
     }));
   }
 
-  // =========================
-  // OPEN MODAL
-  // =========================
+  // OPEN FROM BUTTON ONLY
   const openModal = () => {
     setFormData({
       title: "",
       description: "",
-      location: "",
-      startDatetime: "",
-      endDatetime: "",
-      isPublic: true
+      start_datetime: "",
+      end_datetime: ""
     });
     setShowModal(true);
   };
 
-  // =========================
   // INPUT CHANGE
-  // =========================
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value
+      [e.target.name]: e.target.value
     });
   };
 
-  // =========================
-  // CREATE EVENT (FIXED)
-  // =========================
-  const createEvent = async (e) => {
-    e.preventDefault();
+  // CREATE EVENT
+const createEvent = async (e) => {
+  e.preventDefault();
 
-  
-    try {
-      if (!user?.id) {
-        alert("User not loaded. Please log in again.");
-        return;
-      }
-
-     const res = await fetch(`http://localhost:8080/api/events?userId=${user.id}`, {
+  try {
+    const res = await fetch(
+      "http://localhost:8080/api/events/create",
+      {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`
         },
         body: JSON.stringify({
+          creator_id: user.id,
           title: formData.title,
           description: formData.description,
-          location: formData.location,
-          startDatetime: formData.startDatetime,
-          endDatetime: formData.endDatetime,
-          isPublic: true
+          start_datetime: formData.start_datetime,
+          end_datetime: formData.end_datetime
         })
-      });
-      const data = await res.json();
-
-      console.log("CREATE EVENT RESPONSE:", data);
-
-      if (!res.ok) {
-        alert(data.message || "Failed to create event");
-        return;
       }
+    );
 
-      setShowModal(false);
-      loadEvents();
+    const data = await res.json();
 
-    } catch (err) {
-      console.error("CREATE EVENT ERROR:", err);
-      alert("Server error creating event");
+    console.log("CREATE EVENT RESPONSE:", data);
+
+    if (!res.ok) {
+      alert(data.message || "Failed to create event");
+      return;
     }
-  };
+
+    setShowModal(false);
+    loadEvents();
+
+  } catch (err) {
+    console.error("CREATE EVENT ERROR:", err);
+    alert("Server error creating event");
+  }
+};
 
   if (!user) return <p>Please log in</p>;
 
   return (
     <div style={{ padding: "20px" }}>
 
-      {/* HEADER */}
+      {/* HEADER + BUTTON */}
       <div style={{
         display: "flex",
         justifyContent: "space-between",
@@ -202,7 +173,7 @@ const loadEvents = async () => {
         dateClick={handleDateClick}
       />
 
-      {/* MODAL */}
+      {/* POPUP */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-box">
@@ -227,37 +198,20 @@ const loadEvents = async () => {
               />
 
               <input
-                name="location"
-                placeholder="Location"
-                value={formData.location}
-                onChange={handleChange}
-              />
-
-              <input
                 type="datetime-local"
-                name="startDatetime"
-                value={formData.startDatetime}
+                name="start_datetime"
+                value={formData.start_datetime}
                 onChange={handleChange}
                 required
               />
 
               <input
                 type="datetime-local"
-                name="endDatetime"
-                value={formData.endDatetime}
+                name="end_datetime"
+                value={formData.end_datetime}
                 onChange={handleChange}
                 required
               />
-
-              <label>
-                Public Event:
-                <input
-                  type="checkbox"
-                  name="isPublic"
-                  checked={formData.isPublic}
-                  onChange={handleChange}
-                />
-              </label>
 
               <button type="submit">Create</button>
 

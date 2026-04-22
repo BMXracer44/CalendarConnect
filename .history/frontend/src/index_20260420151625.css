@@ -366,10 +366,9 @@ body {
   margin-top: 10px;
 }
 /* =========================
-   EVENT POPUP (ADD EVENT MODAL)
+   EVENT MODAL (MATCH APP STYLE)
 ========================= */
 
-/* DARK BACKDROP */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -387,9 +386,9 @@ body {
   z-index: 9999;
 }
 
-/* POPUP CARD */
+/* GLASS-LIKE CARD (MATCH LOGIN CARD STYLE) */
 .modal-box {
-  width: 420px;
+  width: 520px; /* matches login-card max width feel */
 
   background: #ffffff;
 
@@ -406,56 +405,61 @@ body {
 
 /* TITLE */
 .modal-box h2 {
-  font-size: 26px;
-  font-weight: 700;
-
+  font-size: 28px;
+  margin-bottom: 20px;
   color: #333;
-
-  margin-bottom: 15px;
 }
 
-/* INPUTS */
-.modal-box input {
+/* INPUTS (MATCH LOGIN INPUT STYLE) */
+.modal-box input,
+.modal-box textarea {
   width: 100%;
 
   padding: 14px 16px;
+
   margin-top: 14px;
 
   border: 1px solid #ddd;
   border-radius: 12px;
 
-  font-size: 14px;
+  font-size: 15px;
 
   outline: none;
 
-  transition: 0.25s ease;
+  transition: all 0.25s ease;
 }
 
-.modal-box input:focus {
+.modal-box textarea {
+  resize: none;
+  min-height: 90px;
+}
+
+.modal-box input:focus,
+.modal-box textarea:focus {
   border-color: #667eea;
   box-shadow: 0 0 10px rgba(102, 126, 234, 0.35);
 }
 
-/* BUTTONS (STACK CLEANLY) */
+/* BUTTONS (MATCH LOGIN BUTTON STYLE) */
 .modal-box button {
   width: 100%;
 
-  padding: 12px;
+  padding: 14px;
 
-  margin-top: 14px;
+  margin-top: 18px;
 
   border: none;
   border-radius: 12px;
 
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: bold;
 
   cursor: pointer;
 
-  transition: 0.2s ease;
+  transition: all 0.2s ease;
 }
 
-/* CREATE BUTTON */
+/* PRIMARY BUTTON (CREATE) */
 .modal-box button[type="submit"] {
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
@@ -466,21 +470,22 @@ body {
   box-shadow: 0 8px 18px rgba(102, 126, 234, 0.35);
 }
 
-/* CANCEL BUTTON */
+/* SECONDARY BUTTON (CANCEL) */
 .modal-box button[type="button"] {
   background: #e5e7eb;
   color: #333;
+  margin-top: 10px;
 }
 
 .modal-box button[type="button"]:hover {
   background: #d1d5db;
 }
 
-/* ANIMATION */
+/* ANIMATION (MATCH LOGIN) */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(15px);
   }
   to {
     opacity: 1;
