@@ -7,7 +7,6 @@ import com.calendarconnect.backend.repository.EventRepository;
 import com.calendarconnect.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 public class EventService {
@@ -15,15 +14,8 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
 
-    public List<Event> getEventsByUser(Integer userId) {
-    return eventRepository.findByCreatorId(userId);
-}
-
-
     @Autowired
     private UserRepository userRepository;
-    
-
 
     public Event createEvent(EventCreateRequest request, Integer userId) {
 
@@ -40,8 +32,9 @@ public class EventService {
         event.setLocation(request.getLocation());
         event.setStartDatetime(request.getStartDatetime());
         event.setEndDatetime(request.getEndDatetime());
-        event.setPublic(request.getIsPublic());
-        event.setCreatorId(userId);
+        event.setIsPublic(request.getIsPublic());
+        event.setUser(user);
+
         return eventRepository.save(event);
     }
 }

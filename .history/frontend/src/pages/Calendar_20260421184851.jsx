@@ -30,12 +30,6 @@ function Calendar() {
   // =========================
 const loadEvents = async () => {
   try {
-
-    if (!user?.id) {
-      console.log("User not ready yet - skipping loadEvents");
-      return;
-    }
-
     const res = await fetch(
       `http://localhost:8080/api/events/user/${user.id}`,
       {
@@ -44,12 +38,6 @@ const loadEvents = async () => {
         }
       }
     );
-
-    if (!res.ok) {
-      const text = await res.text();
-      console.error("LOAD EVENTS ERROR:", text);
-      return;
-    }
 
     const data = await res.json();
 
@@ -63,7 +51,7 @@ const loadEvents = async () => {
     );
 
   } catch (err) {
-    console.error("LOAD EVENTS FAILED:", err);
+    console.error(err);
   }
 };
   useEffect(() => {

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-
 @RestController
 @RequestMapping("/api/events")
 public class EventController {
@@ -20,9 +19,6 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-    // =========================
-    // CREATE EVENT
-    // =========================
     @PostMapping
     public ResponseEntity<?> createEvent(
             @Valid @RequestBody EventCreateRequest request,
@@ -37,13 +33,5 @@ public class EventController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("error", e.getMessage()));
         }
-    }
-
-    // =========================
-    // GET USER EVENTS (MISSING BEFORE)
-    // =========================
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getUserEvents(@PathVariable Integer userId) {
-        return ResponseEntity.ok(eventService.getEventsByUser(userId));
     }
 }

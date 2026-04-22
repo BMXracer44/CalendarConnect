@@ -5,32 +5,19 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(() => {
-    const token = localStorage.getItem("token");
-    const username = localStorage.getItem("username");
-
-    return token && username
-      ? { username, token }
-      : null;
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
   });
 
-  // ✅ FIXED LOGIN FUNCTION
   const login = (response) => {
-    const userData = response.data; // 🔥 IMPORTANT FIX
+    const userData = response.data;
 
-    localStorage.setItem("token", userData.token);
-    localStorage.setItem("username", userData.username);
-
-    setUser({
-      id: userData.id,
-      username: userData.username,
-      email: userData.email,
-      token: userData.token
-    });
+    localStorage.setItem("user", JSON.stringify(userData));
+    setUser(userData);
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
+    localStorage.removeItem("user");
     setUser(null);
   };
 

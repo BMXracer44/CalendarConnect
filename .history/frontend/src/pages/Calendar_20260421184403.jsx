@@ -28,11 +28,10 @@ function Calendar() {
   // =========================
   // LOAD EVENTS
   // =========================
-const loadEvents = async () => {
+ const loadEvents = async () => {
   try {
-
     if (!user?.id) {
-      console.log("User not ready yet - skipping loadEvents");
+      console.error("User not loaded yet");
       return;
     }
 
@@ -44,12 +43,6 @@ const loadEvents = async () => {
         }
       }
     );
-
-    if (!res.ok) {
-      const text = await res.text();
-      console.error("LOAD EVENTS ERROR:", text);
-      return;
-    }
 
     const data = await res.json();
 
@@ -63,9 +56,26 @@ const loadEvents = async () => {
     );
 
   } catch (err) {
-    console.error("LOAD EVENTS FAILED:", err);
+    console.error(err);
   }
 };
+
+      const data = await res.json();
+
+      setEvents(
+        data.map(e => ({
+          id: e.id,
+          title: e.title,
+          start: e.startDatetime,
+          end: e.endDatetime
+        }))
+      );
+
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     if (user?.id) loadEvents();
   }, [user]);
@@ -113,14 +123,8 @@ const loadEvents = async () => {
   const createEvent = async (e) => {
     e.preventDefault();
 
-  
     try {
-      if (!user?.id) {
-        alert("User not loaded. Please log in again.");
-        return;
-      }
-
-     const res = await fetch(`http://localhost:8080/api/events?userId=${user.id}`, {
+      const res = await fetch("http://localhost:8080/api/events?userId=" + user.id, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
