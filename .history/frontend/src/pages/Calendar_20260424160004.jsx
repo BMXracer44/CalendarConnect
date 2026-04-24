@@ -43,7 +43,7 @@ function Calendar() {
 
       setEvents(
         data.map((e) => ({
-          id: String(e.id), // ✅ FIX: force string ID (FullCalendar safe)
+          id: e.id,
           title: e.isPublic ? e.title : `🔒 ${e.title}`,
           start: e.startDatetime,
           end: e.endDatetime,
@@ -58,7 +58,7 @@ function Calendar() {
         }))
       );
     } catch (err) {
-      console.error("Load events error:", err);
+      console.error(err);
     }
   };
 
@@ -73,7 +73,7 @@ function Calendar() {
     const e = info.event;
 
     setSelectedEvent({
-      id: e.id, // already string
+      id: e.id,
       title: e.title.replace("🔒 ", ""),
       description: e.extendedProps.description || "",
       location: e.extendedProps.location || "",
@@ -88,17 +88,10 @@ function Calendar() {
   };
 
   // =========================
-  // UPDATE EVENT (FIXED + SAFE)
+  // UPDATE EVENT (FIXED SAVE)
   // =========================
   const updateEvent = async (e) => {
     e.preventDefault();
-
-    // ❗ Prevent invalid request
-    if (!selectedEvent?.id) {
-      console.error("Missing event ID");
-      alert("Cannot update: missing event ID");
-      return;
-    }
 
     const payload = {
       title: selectedEvent.title,
@@ -110,33 +103,29 @@ function Calendar() {
     };
 
     try {
-      const url = `http://localhost:8080/api/events/${selectedEvent.id}`;
-
-      const res = await fetch(url, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`
-        },
-        body: JSON.stringify(payload)
-      });
+      const res = await fetch(
+        `http://localhost:8080/api/events/${selectedEvent.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`
+          },
+          body: JSON.stringify(payload)
+        }
+      );
 
       if (!res.ok) {
         const errorText = await res.text();
-        console.error("Update failed:", res.status, errorText);
-
-        if (res.status === 404) {
-          alert("Event not found (404). It may have been deleted.");
-        } else {
-          alert("Update failed. Check backend logs.");
-        }
+        console.error("Update failed:", errorText);
+        alert("Update failed. Check backend logs.");
         return;
       }
 
       setIsEditing(false);
       setShowViewModal(false);
 
-      await loadEvents();
+      await loadEvents(); // refresh calendar
 
     } catch (err) {
       console.error("Update error:", err);
@@ -169,6 +158,7 @@ function Calendar() {
 
             <h2>{isEditing ? "Edit Event" : "Event Details"}</h2>
 
+            {/* ================= VIEW ================= */}
             {!isEditing ? (
               <>
                 <p><b>Title:</b> {selectedEvent.title}</p>
@@ -178,34 +168,52 @@ function Calendar() {
                 <p><b>End:</b> {selectedEvent.endDatetime}</p>
                 <p><b>Type:</b> {selectedEvent.isPublic ? "Public" : "Private"}</p>
 
-                <div
-                  onClick={() => setIsEditing(true)}
-                  style={{ cursor: "pointer", fontSize: "22px", marginTop: "10px" }}
-                >
-                  ✏️
+                {/* EDIT ICON ONLY */}
+                <div className="event-actions">
+                  <div
+                    onClick={() => setIsEditing(true)}
+                    title="Edit Event"
+                    style={{
+                      cursor: "pointer",
+                      fontSize: "22px",
+                      marginTop: "10px"
+                    }}
+                  >
+                    ✏️
+                  </div>
                 </div>
               </>
             ) : (
+              /* ================= EDIT ================= */
               <form onSubmit={updateEvent}>
 
                 <input
                   value={selectedEvent.title}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, title: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      title: e.target.value
+                    })
                   }
                 />
 
                 <input
                   value={selectedEvent.description}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, description: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      description: e.target.value
+                    })
                   }
                 />
 
                 <input
                   value={selectedEvent.location}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, location: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      location: e.target.value
+                    })
                   }
                 />
 
@@ -213,7 +221,10 @@ function Calendar() {
                   type="datetime-local"
                   value={selectedEvent.startDatetime}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, startDatetime: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      startDatetime: e.target.value
+                    })
                   }
                 />
 
@@ -221,7 +232,10 @@ function Calendar() {
                   type="datetime-local"
                   value={selectedEvent.endDatetime}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, endDatetime: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      endDatetime: e.target.value
+                    })
                   }
                 />
 
