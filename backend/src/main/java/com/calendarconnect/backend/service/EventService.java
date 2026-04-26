@@ -18,10 +18,22 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
 
-    // =========================
-    // CREATE EVENT
-    // =========================
     public Event createEvent(EventCreateRequest request, Integer userId) {
+
+        // 1. Check for time conflicts BEFORE doing anything else
+        boolean hasConflict = eventRepository.existsOverlappingEvent(
+                userId, 
+                request.getStartDatetime(), 
+                request.getEndDatetime()
+        );
+
+        if (hasConflict) {
+            // This immediately stops the method and sends a 409 Conflict error to React
+            throw new ResponseStatusException(
+                HttpStatus.CONFLICT, 
+                "This event overlaps with an existing event on your calendar."
+            );
+        }
 
         Event event = new Event();
         event.setTitle(request.getTitle());
@@ -35,11 +47,6 @@ public class EventService {
         return eventRepository.save(event);
     }
 
-        //Security data frontend is not allowed to send
-        newEvent.setCreatorId(creatorId);
-    // =========================
-    // GET EVENTS BY USER
-    // =========================
     public List<EventResponse> getEventsByUser(Integer userId) {
 
         return eventRepository.findByCreatorId(userId)
@@ -48,9 +55,6 @@ public class EventService {
                 .toList();
     }
 
-    // =========================
-    // UPDATE EVENT (THIS FIXES YOUR 404)
-    // =========================
     public Event updateEvent(Integer id, EventUpdateRequest request) {
 
         Event event = eventRepository.findById(id)
@@ -83,9 +87,6 @@ public class EventService {
         return eventRepository.save(event);
     }
 
-    // =========================
-    // DELETE EVENT
-    // =========================
     public void deleteEvent(Integer id) {
 
         if (!eventRepository.existsById(id)) {
