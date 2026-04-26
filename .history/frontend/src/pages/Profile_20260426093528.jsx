@@ -207,8 +207,7 @@ const Profile = () => {
             />
 
             <input
-              type="file"
-              name="profile_picture"
+              name="profile_picture_url"
               value={formData.profile_picture_url}
               onChange={handleChange}
               placeholder="Profile Picture URL"
