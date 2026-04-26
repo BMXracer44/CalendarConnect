@@ -2,6 +2,7 @@ package com.calendarconnect.backend.service;
 
 import com.calendarconnect.backend.dto.EventCreateRequest;
 import com.calendarconnect.backend.dto.EventUpdateRequest;
+import com.calendarconnect.backend.dto.EventResponse;
 import com.calendarconnect.backend.model.Event;
 import com.calendarconnect.backend.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,78 +10,88 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+import java.util.List;
 
 @Service
 public class EventService {
 
-    @Autowired 
+    @Autowired
     private EventRepository eventRepository;
 
-    /**
-     * Create Event in database
-     */
-    public Event createEvent(EventCreateRequest request, Integer creatorId){
-        boolean hasConflict = eventRepository.existsOverlappingEvent(
-                creatorId, 
-                request.getStartDatetime(), 
-                request.getEndDatetime()
-        );
+    // =========================
+    // CREATE EVENT
+    // =========================
+    public Event createEvent(EventCreateRequest request, Integer userId) {
 
-        if(hasConflict){
-            throw new ResponseStatusException(
-                HttpStatus.CONFLICT, 
-                "This event overlaps with an existing event on your calendar."
-            );
-        }
-        
-        Event newEvent = new Event();
+        Event event = new Event();
+        event.setTitle(request.getTitle());
+        event.setDescription(request.getDescription());
+        event.setLocation(request.getLocation());
+        event.setStartDatetime(request.getStartDatetime());
+        event.setEndDatetime(request.getEndDatetime());
+        event.setPublic(request.getIsPublic());
+        event.setCreatorId(userId);
 
-        newEvent.setTitle(request.getTitle());
-        newEvent.setDescription(request.getDescription());
-        newEvent.setLocation(request.getLocation());
-        newEvent.setStartDatetime(request.getStartDatetime());
-        newEvent.setEndDatetime(request.getEndDatetime());
-        newEvent.setPublic(request.getIsPublic());
+        return eventRepository.save(event);
+    }
 
         //Security data frontend is not allowed to send
         newEvent.setCreatorId(creatorId);
+    // =========================
+    // GET EVENTS BY USER
+    // =========================
+    public List<EventResponse> getEventsByUser(Integer userId) {
 
-        //Save to database
-        return eventRepository.save(newEvent);
+        return eventRepository.findByCreatorId(userId)
+                .stream()
+                .map(EventResponse::fromEntity)
+                .toList();
     }
 
-    public Event updateEvent(Integer eventId, EventUpdateRequest request, Integer currentUserId) {
-    
-        // 1. Find the existing event in the database (or throw an error if it doesn't exist)
-        Event existingEvent = eventRepository.findById(eventId)
-            .orElseThrow(() -> new RuntimeException("Event not found"));
+    // =========================
+    // UPDATE EVENT (THIS FIXES YOUR 404)
+    // =========================
+    public Event updateEvent(Integer id, EventUpdateRequest request) {
 
-        // 2. Security Check: Ensure the person editing the event is actually the creator!
-        if (!existingEvent.getCreatorId().equals(currentUserId)) {
-            throw new RuntimeException("You do not have permission to edit this event");
-        }
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Event not found with id " + id));
 
-        // 3. Selectively update only the fields the user actually sent
         if (request.getTitle() != null) {
-            existingEvent.setTitle(request.getTitle());
-        }
-        if (request.getDescription() != null) {
-            existingEvent.setDescription(request.getDescription());
-        }
-        if (request.getLocation() != null) {
-            existingEvent.setLocation(request.getLocation());
-        }
-        if (request.getStartDatetime() != null) {
-            existingEvent.setStartDatetime(request.getStartDatetime());
-        }
-        if (request.getEndDatetime() != null) {
-            existingEvent.setEndDatetime(request.getEndDatetime());
-        }
-        if (request.getIsPublic() != null) {
-            existingEvent.setPublic(request.getIsPublic());
+            event.setTitle(request.getTitle());
         }
 
-        // 4. Save the updated entity back to the database
-        return eventRepository.save(existingEvent);
+        if (request.getDescription() != null) {
+            event.setDescription(request.getDescription());
+        }
+
+        if (request.getLocation() != null) {
+            event.setLocation(request.getLocation());
+        }
+
+        if (request.getStartDatetime() != null) {
+            event.setStartDatetime(request.getStartDatetime());
+        }
+
+        if (request.getEndDatetime() != null) {
+            event.setEndDatetime(request.getEndDatetime());
+        }
+
+        if (request.getIsPublic() != null) {
+            event.setPublic(request.getIsPublic());
+        }
+
+        return eventRepository.save(event);
+    }
+
+    // =========================
+    // DELETE EVENT
+    // =========================
+    public void deleteEvent(Integer id) {
+
+        if (!eventRepository.existsById(id)) {
+            throw new RuntimeException("Event not found with id " + id);
+        }
+
+        eventRepository.deleteById(id);
     }
 }

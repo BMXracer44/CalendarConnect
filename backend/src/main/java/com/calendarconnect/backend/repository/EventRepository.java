@@ -18,7 +18,6 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
   boolean existsByStartDatetime(LocalDateTime startDatetime);
 
   List<Event> findByCreatorId(Integer creatorId);
-    
 
   List<Event> findByIsPublicTrue();
 
