@@ -11,17 +11,19 @@ function Calendar() {
   const { user } = useContext(AuthContext);
 
   const [events, setEvents] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
-  // =========================
-  // FORMAT DATETIME FOR SPRING
-  // =========================
-  const formatDateTime = (value) => {
-    if (!value) return null;
-    return value.length === 16 ? value + ":00" : value;
-  };
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    location: "",
+    startDatetime: "",
+    endDatetime: "",
+    isPublic: true
+  });
 
   // =========================
   // LOAD EVENTS
@@ -43,22 +45,20 @@ function Calendar() {
 
       setEvents(
         data.map((e) => ({
-          id: String(e.id), // ✅ FIX: force string ID (FullCalendar safe)
+          id: e.id,
           title: e.isPublic ? e.title : `🔒 ${e.title}`,
           start: e.startDatetime,
           end: e.endDatetime,
           color: e.isPublic ? "#4f46e5" : "#6b7280",
 
-          extendedProps: {
-            description: e.description,
-            location: e.location,
-            isPublic: e.isPublic,
-            userId: e.userId
-          }
+          description: e.description,
+          location: e.location,
+          isPublic: e.isPublic,
+          userId: e.userId
         }))
       );
     } catch (err) {
-      console.error("Load events error:", err);
+      console.error(err);
     }
   };
 
@@ -67,18 +67,18 @@ function Calendar() {
   }, [user]);
 
   // =========================
-  // EVENT CLICK
+  // CLICK EVENT
   // =========================
   const handleEventClick = (info) => {
     const e = info.event;
 
     setSelectedEvent({
-      id: e.id, // already string
+      id: e.id,
       title: e.title.replace("🔒 ", ""),
-      description: e.extendedProps.description || "",
-      location: e.extendedProps.location || "",
-      startDatetime: e.startStr?.slice(0, 16),
-      endDatetime: e.endStr?.slice(0, 16),
+      startDatetime: e.startStr,
+      endDatetime: e.endStr,
+      description: e.extendedProps.description,
+      location: e.extendedProps.location,
       isPublic: e.extendedProps.isPublic,
       userId: e.extendedProps.userId
     });
@@ -88,59 +88,44 @@ function Calendar() {
   };
 
   // =========================
-  // UPDATE EVENT (FIXED + SAFE)
+  // DELETE EVENT
+  // =========================
+  const deleteEvent = async () => {
+    await fetch(
+      `http://localhost:8080/api/events/${selectedEvent.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      }
+    );
+
+    setShowViewModal(false);
+    loadEvents();
+  };
+
+  // =========================
+  // UPDATE EVENT
   // =========================
   const updateEvent = async (e) => {
     e.preventDefault();
 
-    // ❗ Prevent invalid request
-    if (!selectedEvent?.id) {
-      console.error("Missing event ID");
-      alert("Cannot update: missing event ID");
-      return;
-    }
-
-    const payload = {
-      title: selectedEvent.title,
-      description: selectedEvent.description,
-      location: selectedEvent.location,
-      startDatetime: formatDateTime(selectedEvent.startDatetime),
-      endDatetime: formatDateTime(selectedEvent.endDatetime),
-      isPublic: selectedEvent.isPublic
-    };
-
-    try {
-      const url = `http://localhost:8080/api/events/${selectedEvent.id}`;
-
-      const res = await fetch(url, {
+    await fetch(
+      `http://localhost:8080/api/events/${selectedEvent.id}`,
+      {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`
         },
-        body: JSON.stringify(payload)
-      });
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        console.error("Update failed:", res.status, errorText);
-
-        if (res.status === 404) {
-          alert("Event not found (404). It may have been deleted.");
-        } else {
-          alert("Update failed. Check backend logs.");
-        }
-        return;
+        body: JSON.stringify(selectedEvent)
       }
+    );
 
-      setIsEditing(false);
-      setShowViewModal(false);
-
-      await loadEvents();
-
-    } catch (err) {
-      console.error("Update error:", err);
-    }
+    setIsEditing(false);
+    setShowViewModal(false);
+    loadEvents();
   };
 
   if (!user) return <p>Please log in</p>;
@@ -161,14 +146,16 @@ function Calendar() {
       />
 
       {/* =========================
-          MODAL
+          VIEW / EDIT MODAL
       ========================= */}
       {showViewModal && selectedEvent && (
         <div className="modal-overlay">
+
           <div className="modal-box">
 
             <h2>{isEditing ? "Edit Event" : "Event Details"}</h2>
 
+            {/* ================= VIEW ================= */}
             {!isEditing ? (
               <>
                 <p><b>Title:</b> {selectedEvent.title}</p>
@@ -178,34 +165,60 @@ function Calendar() {
                 <p><b>End:</b> {selectedEvent.endDatetime}</p>
                 <p><b>Type:</b> {selectedEvent.isPublic ? "Public" : "Private"}</p>
 
-                <div
-                  onClick={() => setIsEditing(true)}
-                  style={{ cursor: "pointer", fontSize: "22px", marginTop: "10px" }}
-                >
-                  ✏️
-                </div>
+                {/* ICON ACTIONS */}
+                {selectedEvent.userId === user.id && (
+                  <div className="event-actions">
+
+                    <div
+                      className="event-icon edit"
+                      onClick={() => setIsEditing(true)}
+                      title="Edit Event"
+                    >
+                      ✏️
+                    </div>
+
+                    <div
+                      className="event-icon delete"
+                      onClick={deleteEvent}
+                      title="Delete Event"
+                    >
+                      🗑️
+                    </div>
+
+                  </div>
+                )}
               </>
             ) : (
+              /* ================= EDIT ================= */
               <form onSubmit={updateEvent}>
 
                 <input
                   value={selectedEvent.title}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, title: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      title: e.target.value
+                    })
                   }
                 />
 
                 <input
                   value={selectedEvent.description}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, description: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      description: e.target.value
+                    })
                   }
                 />
 
                 <input
                   value={selectedEvent.location}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, location: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      location: e.target.value
+                    })
                   }
                 />
 
@@ -213,7 +226,10 @@ function Calendar() {
                   type="datetime-local"
                   value={selectedEvent.startDatetime}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, startDatetime: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      startDatetime: e.target.value
+                    })
                   }
                 />
 
@@ -221,7 +237,10 @@ function Calendar() {
                   type="datetime-local"
                   value={selectedEvent.endDatetime}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, endDatetime: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      endDatetime: e.target.value
+                    })
                   }
                 />
 
@@ -239,7 +258,7 @@ function Calendar() {
                   />
                 </label>
 
-                <button type="submit">Save Changes</button>
+                <button type="submit">Save</button>
               </form>
             )}
 

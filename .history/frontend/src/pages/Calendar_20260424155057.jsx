@@ -16,14 +16,6 @@ function Calendar() {
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   // =========================
-  // FORMAT DATETIME FOR SPRING
-  // =========================
-  const formatDateTime = (value) => {
-    if (!value) return null;
-    return value.length === 16 ? value + ":00" : value;
-  };
-
-  // =========================
   // LOAD EVENTS
   // =========================
   const loadEvents = async () => {
@@ -43,12 +35,13 @@ function Calendar() {
 
       setEvents(
         data.map((e) => ({
-          id: String(e.id), // ✅ FIX: force string ID (FullCalendar safe)
+          id: e.id,
           title: e.isPublic ? e.title : `🔒 ${e.title}`,
           start: e.startDatetime,
           end: e.endDatetime,
           color: e.isPublic ? "#4f46e5" : "#6b7280",
 
+          // IMPORTANT: FullCalendar requires extendedProps for custom data
           extendedProps: {
             description: e.description,
             location: e.location,
@@ -58,7 +51,7 @@ function Calendar() {
         }))
       );
     } catch (err) {
-      console.error("Load events error:", err);
+      console.error(err);
     }
   };
 
@@ -73,7 +66,7 @@ function Calendar() {
     const e = info.event;
 
     setSelectedEvent({
-      id: e.id, // already string
+      id: e.id,
       title: e.title.replace("🔒 ", ""),
       description: e.extendedProps.description || "",
       location: e.extendedProps.location || "",
@@ -88,59 +81,35 @@ function Calendar() {
   };
 
   // =========================
-  // UPDATE EVENT (FIXED + SAFE)
+  // UPDATE EVENT (BACKEND = update)
   // =========================
   const updateEvent = async (e) => {
     e.preventDefault();
-
-    // ❗ Prevent invalid request
-    if (!selectedEvent?.id) {
-      console.error("Missing event ID");
-      alert("Cannot update: missing event ID");
-      return;
-    }
 
     const payload = {
       title: selectedEvent.title,
       description: selectedEvent.description,
       location: selectedEvent.location,
-      startDatetime: formatDateTime(selectedEvent.startDatetime),
-      endDatetime: formatDateTime(selectedEvent.endDatetime),
+      startDatetime: selectedEvent.startDatetime,
+      endDatetime: selectedEvent.endDatetime,
       isPublic: selectedEvent.isPublic
     };
 
-    try {
-      const url = `http://localhost:8080/api/events/${selectedEvent.id}`;
-
-      const res = await fetch(url, {
+    await fetch(
+      `http://localhost:8080/api/events/${selectedEvent.id}`,
+      {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`
         },
         body: JSON.stringify(payload)
-      });
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        console.error("Update failed:", res.status, errorText);
-
-        if (res.status === 404) {
-          alert("Event not found (404). It may have been deleted.");
-        } else {
-          alert("Update failed. Check backend logs.");
-        }
-        return;
       }
+    );
 
-      setIsEditing(false);
-      setShowViewModal(false);
-
-      await loadEvents();
-
-    } catch (err) {
-      console.error("Update error:", err);
-    }
+    setIsEditing(false);
+    setShowViewModal(false);
+    loadEvents();
   };
 
   if (!user) return <p>Please log in</p>;
@@ -161,7 +130,7 @@ function Calendar() {
       />
 
       {/* =========================
-          MODAL
+          VIEW / EDIT MODAL
       ========================= */}
       {showViewModal && selectedEvent && (
         <div className="modal-overlay">
@@ -169,6 +138,7 @@ function Calendar() {
 
             <h2>{isEditing ? "Edit Event" : "Event Details"}</h2>
 
+            {/* ================= VIEW MODE ================= */}
             {!isEditing ? (
               <>
                 <p><b>Title:</b> {selectedEvent.title}</p>
@@ -178,34 +148,49 @@ function Calendar() {
                 <p><b>End:</b> {selectedEvent.endDatetime}</p>
                 <p><b>Type:</b> {selectedEvent.isPublic ? "Public" : "Private"}</p>
 
-                <div
-                  onClick={() => setIsEditing(true)}
-                  style={{ cursor: "pointer", fontSize: "22px", marginTop: "10px" }}
-                >
-                  ✏️
+                {/* EDIT BUTTON (always visible now) */}
+                <div className="event-actions">
+                  <div
+                    className="event-icon edit"
+                    onClick={() => setIsEditing(true)}
+                    title="Edit Event"
+                    style={{ cursor: "pointer", fontSize: "20px", marginTop: "10px" }}
+                  >
+                    ✏️ Edit
+                  </div>
                 </div>
               </>
             ) : (
+              /* ================= EDIT MODE ================= */
               <form onSubmit={updateEvent}>
 
                 <input
                   value={selectedEvent.title}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, title: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      title: e.target.value
+                    })
                   }
                 />
 
                 <input
                   value={selectedEvent.description}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, description: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      description: e.target.value
+                    })
                   }
                 />
 
                 <input
                   value={selectedEvent.location}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, location: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      location: e.target.value
+                    })
                   }
                 />
 
@@ -213,7 +198,10 @@ function Calendar() {
                   type="datetime-local"
                   value={selectedEvent.startDatetime}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, startDatetime: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      startDatetime: e.target.value
+                    })
                   }
                 />
 
@@ -221,7 +209,10 @@ function Calendar() {
                   type="datetime-local"
                   value={selectedEvent.endDatetime}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, endDatetime: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      endDatetime: e.target.value
+                    })
                   }
                 />
 

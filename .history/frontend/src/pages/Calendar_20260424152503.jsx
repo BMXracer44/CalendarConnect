@@ -11,17 +11,8 @@ function Calendar() {
   const { user } = useContext(AuthContext);
 
   const [events, setEvents] = useState([]);
-  const [showViewModal, setShowViewModal] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-
-  // =========================
-  // FORMAT DATETIME FOR SPRING
-  // =========================
-  const formatDateTime = (value) => {
-    if (!value) return null;
-    return value.length === 16 ? value + ":00" : value;
-  };
+  const [isEditing, setIsEditing] = useState(false);
 
   // =========================
   // LOAD EVENTS
@@ -39,26 +30,26 @@ function Calendar() {
         }
       );
 
+      if (!res.ok) return;
+
       const data = await res.json();
 
       setEvents(
         data.map((e) => ({
-          id: String(e.id), // ✅ FIX: force string ID (FullCalendar safe)
+          id: e.id,
           title: e.isPublic ? e.title : `🔒 ${e.title}`,
           start: e.startDatetime,
           end: e.endDatetime,
           color: e.isPublic ? "#4f46e5" : "#6b7280",
 
-          extendedProps: {
-            description: e.description,
-            location: e.location,
-            isPublic: e.isPublic,
-            userId: e.userId
-          }
+          description: e.description,
+          location: e.location,
+          isPublic: e.isPublic,
+          userId: e.userId
         }))
       );
     } catch (err) {
-      console.error("Load events error:", err);
+      console.error(err);
     }
   };
 
@@ -73,73 +64,62 @@ function Calendar() {
     const e = info.event;
 
     setSelectedEvent({
-      id: e.id, // already string
+      id: e.id,
       title: e.title.replace("🔒 ", ""),
-      description: e.extendedProps.description || "",
-      location: e.extendedProps.location || "",
-      startDatetime: e.startStr?.slice(0, 16),
-      endDatetime: e.endStr?.slice(0, 16),
+      startDatetime: e.startStr,
+      endDatetime: e.endStr,
+      description: e.extendedProps.description,
+      location: e.extendedProps.location,
       isPublic: e.extendedProps.isPublic,
       userId: e.extendedProps.userId
     });
 
     setIsEditing(false);
-    setShowViewModal(true);
   };
 
   // =========================
-  // UPDATE EVENT (FIXED + SAFE)
+  // DELETE
+  // =========================
+  const deleteEvent = async () => {
+    if (!window.confirm("Delete event?")) return;
+
+    const res = await fetch(
+      `http://localhost:8080/api/events/${selectedEvent.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      }
+    );
+
+    if (res.ok) {
+      setSelectedEvent(null);
+      loadEvents();
+    }
+  };
+
+  // =========================
+  // UPDATE
   // =========================
   const updateEvent = async (e) => {
     e.preventDefault();
 
-    // ❗ Prevent invalid request
-    if (!selectedEvent?.id) {
-      console.error("Missing event ID");
-      alert("Cannot update: missing event ID");
-      return;
-    }
-
-    const payload = {
-      title: selectedEvent.title,
-      description: selectedEvent.description,
-      location: selectedEvent.location,
-      startDatetime: formatDateTime(selectedEvent.startDatetime),
-      endDatetime: formatDateTime(selectedEvent.endDatetime),
-      isPublic: selectedEvent.isPublic
-    };
-
-    try {
-      const url = `http://localhost:8080/api/events/${selectedEvent.id}`;
-
-      const res = await fetch(url, {
+    const res = await fetch(
+      `http://localhost:8080/api/events/${selectedEvent.id}`,
+      {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`
         },
-        body: JSON.stringify(payload)
-      });
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        console.error("Update failed:", res.status, errorText);
-
-        if (res.status === 404) {
-          alert("Event not found (404). It may have been deleted.");
-        } else {
-          alert("Update failed. Check backend logs.");
-        }
-        return;
+        body: JSON.stringify(selectedEvent)
       }
+    );
 
+    if (res.ok) {
       setIsEditing(false);
-      setShowViewModal(false);
-
-      await loadEvents();
-
-    } catch (err) {
-      console.error("Update error:", err);
+      loadEvents();
     }
   };
 
@@ -148,6 +128,9 @@ function Calendar() {
   return (
     <div style={{ padding: "20px" }}>
 
+      {/* =========================
+          CALENDAR
+      ========================= */}
       <FullCalendar
         plugins={[
           dayGridPlugin,
@@ -161,51 +144,84 @@ function Calendar() {
       />
 
       {/* =========================
-          MODAL
+          INLINE EVENT CARD
       ========================= */}
-      {showViewModal && selectedEvent && (
-        <div className="modal-overlay">
-          <div className="modal-box">
-
-            <h2>{isEditing ? "Edit Event" : "Event Details"}</h2>
-
+      <div
+        style={{
+          marginTop: "20px",
+          padding: "15px",
+          border: "1px solid #ddd",
+          borderRadius: "10px",
+          minHeight: "150px"
+        }}
+      >
+        {!selectedEvent ? (
+          <p>Select an event to view details</p>
+        ) : (
+          <>
+            {/* VIEW MODE */}
             {!isEditing ? (
               <>
-                <p><b>Title:</b> {selectedEvent.title}</p>
+                <h2>{selectedEvent.title}</h2>
+
                 <p><b>Description:</b> {selectedEvent.description}</p>
                 <p><b>Location:</b> {selectedEvent.location}</p>
                 <p><b>Start:</b> {selectedEvent.startDatetime}</p>
                 <p><b>End:</b> {selectedEvent.endDatetime}</p>
-                <p><b>Type:</b> {selectedEvent.isPublic ? "Public" : "Private"}</p>
+                <p>
+                  <b>Type:</b>{" "}
+                  {selectedEvent.isPublic ? "Public" : "Private"}
+                </p>
 
-                <div
-                  onClick={() => setIsEditing(true)}
-                  style={{ cursor: "pointer", fontSize: "22px", marginTop: "10px" }}
-                >
-                  ✏️
-                </div>
+                {/* OWNER ACTIONS */}
+                {selectedEvent.userId === user.id && (
+                  <>
+                    <button onClick={() => setIsEditing(true)}>
+                      Edit
+                    </button>
+
+                    <button onClick={deleteEvent}>
+                      Delete
+                    </button>
+                  </>
+                )}
+
+                <button onClick={() => setSelectedEvent(null)}>
+                  Clear
+                </button>
               </>
             ) : (
+              /* EDIT MODE */
               <form onSubmit={updateEvent}>
+                <h3>Edit Event</h3>
 
                 <input
                   value={selectedEvent.title}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, title: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      title: e.target.value
+                    })
                   }
                 />
 
                 <input
                   value={selectedEvent.description}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, description: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      description: e.target.value
+                    })
                   }
                 />
 
                 <input
                   value={selectedEvent.location}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, location: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      location: e.target.value
+                    })
                   }
                 />
 
@@ -213,7 +229,10 @@ function Calendar() {
                   type="datetime-local"
                   value={selectedEvent.startDatetime}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, startDatetime: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      startDatetime: e.target.value
+                    })
                   }
                 />
 
@@ -221,7 +240,10 @@ function Calendar() {
                   type="datetime-local"
                   value={selectedEvent.endDatetime}
                   onChange={(e) =>
-                    setSelectedEvent({ ...selectedEvent, endDatetime: e.target.value })
+                    setSelectedEvent({
+                      ...selectedEvent,
+                      endDatetime: e.target.value
+                    })
                   }
                 />
 
@@ -239,18 +261,18 @@ function Calendar() {
                   />
                 </label>
 
-                <button type="submit">Save Changes</button>
+                <button type="submit">Save</button>
+                <button
+                  type="button"
+                  onClick={() => setIsEditing(false)}
+                >
+                  Cancel
+                </button>
               </form>
             )}
-
-            <button onClick={() => setShowViewModal(false)}>
-              Close
-            </button>
-
-          </div>
-        </div>
-      )}
-
+          </>
+        )}
+      </div>
     </div>
   );
 }
