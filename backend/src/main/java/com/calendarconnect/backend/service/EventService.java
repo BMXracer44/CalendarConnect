@@ -8,6 +8,8 @@ import com.calendarconnect.backend.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Service
@@ -33,6 +35,8 @@ public class EventService {
         return eventRepository.save(event);
     }
 
+        //Security data frontend is not allowed to send
+        newEvent.setCreatorId(creatorId);
     // =========================
     // GET EVENTS BY USER
     // =========================
