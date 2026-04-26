@@ -5,7 +5,7 @@ import com.calendarconnect.backend.model.User;
 import com.calendarconnect.backend.service.FriendService;
 import com.calendarconnect.backend.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
-import com.calendarconnect.backend.model.FriendRequest;
+import com.calendarconnect.backend.model.Friendship;
 import com.calendarconnect.backend.dto.RegisterRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class FriendController{
      public ResponseEntity<ApiResponse<?>> acceptFriend(@PathVariable Integer id){
       try{
           friendService.acceptFriend(id);
-        return ResponseEntity.ok(ApiResponse.success("This User is now your friend", null, 200);
+        return ResponseEntity.ok(ApiResponse.success("This User is now your friend", null, 200));
 
       } catch (Exception e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -37,7 +37,7 @@ public class FriendController{
 
     try{         
         friendService.rejectFriend(id);
-        return ResponseEntity.ok(ApiResponse.success("You have rejected this User");
+        return ResponseEntity.ok(ApiResponse.success("You have rejected this User"));
         
     } catch (Exception e) {
           return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -47,9 +47,9 @@ public class FriendController{
 
     //edit friend
      @PutMapping("friends/{id}")
-    public ResponseEntity<ApiResponse<?>> editFriend(@PathVariable Integer id, @RequestBody FriendRequest request){
+    public ResponseEntity<ApiResponse<?>> editFriend(@PathVariable Integer id, @RequestBody Friendships request){
         friendService.editFriend(id,request);
-        return ResponseEntity.ok(ApiResponse.success("Friend profile updated");
+        return ResponseEntity.ok(ApiResponse.success("Friend profile updated"));
     }
     //delete friend 
     @DeleteMapping ("friends/{id}")
@@ -57,7 +57,7 @@ public class FriendController{
 
     try{
         friendService.deleteFriend(id);
-        return ResponseEntity.ok(ApiResponse.success("You have removed this Friend", null, 200);
+        return ResponseEntity.ok(ApiResponse.success("You have removed this Friend", null, 200));
        
     }catch (Exception e) {
           return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -71,7 +71,7 @@ public class FriendController{
         
     try{
         List<User> friends = friendService.getAllFriends(userId);
-        return ResponseEntity.ok(ApiResponse.success("Friends List", friends, 200);
+        return ResponseEntity.ok(ApiResponse.success("Friends List", friends, 200));
         
     }catch (Exception e) {
           return ResponseEntity.status(HttpStatus.BAD_REQUEST)
