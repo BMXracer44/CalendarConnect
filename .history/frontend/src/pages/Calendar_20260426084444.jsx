@@ -167,7 +167,7 @@ function Calendar() {
       {/* HEADER */}
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <h1>My Calendar</h1>
-        <button className="addevent" onClick={() => setShowModal(true)}>Add Event</button>
+        <button className="addevent"onClick={() => setShowModal(true)}>+ Add Event</button>
       </div>
 
       {/* CALENDAR */}
