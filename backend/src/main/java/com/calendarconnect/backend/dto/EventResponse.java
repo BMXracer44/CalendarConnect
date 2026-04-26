@@ -3,89 +3,66 @@ package com.calendarconnect.backend.dto;
 import com.calendarconnect.backend.model.Event;
 import java.time.LocalDateTime;
 
-/**
- * This class packages the event data to send back to the React frontend.
- */
 public class EventResponse {
 
-    private Integer id;
-    private Integer creatorId;
-    
-    // In the future, when UserService is set up, add a field here 
-    // like 'private String creatorName;' so React doesn't have to look it up
-    
+    private Long id;
     private String title;
     private String description;
     private String location;
     private LocalDateTime startDatetime;
     private LocalDateTime endDatetime;
-    private boolean isPublic;
-    private LocalDateTime createdAt;
+    private Boolean isPublic;
+    private Long userId;
 
-    // --- Constructors ---
+    public EventResponse() {}
 
-    public EventResponse() {
-    }
-
-    public EventResponse(Integer id, Integer creatorId, String title, String description, 
-                         String location, LocalDateTime startDatetime, LocalDateTime endDatetime, 
-                         boolean isPublic, LocalDateTime createdAt) {
+    public EventResponse(Long id, String title, String description,
+                         String location, LocalDateTime startDatetime,
+                         LocalDateTime endDatetime, Boolean isPublic,
+                         Long userId) {
         this.id = id;
-        this.creatorId = creatorId;
         this.title = title;
         this.description = description;
         this.location = location;
         this.startDatetime = startDatetime;
         this.endDatetime = endDatetime;
         this.isPublic = isPublic;
-        this.createdAt = createdAt;
+        this.userId = userId;
     }
 
-    // --- Helper Method ---
-    
-    /**
-     * This takes a raw database Event and converts it into this safe EventResponse.
-     */
+    // =========================
+    // FIXED MAPPING METHOD
+    // =========================
     public static EventResponse fromEntity(Event event) {
         return new EventResponse(
             event.getId(),
-            event.getCreatorId(),
             event.getTitle(),
             event.getDescription(),
             event.getLocation(),
             event.getStartDatetime(),
             event.getEndDatetime(),
-            event.isPublic(),
-            event.getCreatedAt()
+            event.getIsPublic(),
+            event.getCreatorId()   // ✅ FIXED HERE
         );
     }
 
-    // --- Getters and Setters ---
-    
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
-
-    public Integer getCreatorId() { return creatorId; }
-    public void setCreatorId(Integer creatorId) { this.creatorId = creatorId; }
-
+    // getters
+    public Long getId() { return id; }
     public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-
     public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-
     public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
-
     public LocalDateTime getStartDatetime() { return startDatetime; }
-    public void setStartDatetime(LocalDateTime startDatetime) { this.startDatetime = startDatetime; }
-
     public LocalDateTime getEndDatetime() { return endDatetime; }
+    public Boolean getIsPublic() { return isPublic; }
+    public Long getUserId() { return userId; }
+
+    // setters
+    public void setId(Long id) { this.id = id; }
+    public void setTitle(String title) { this.title = title; }
+    public void setDescription(String description) { this.description = description; }
+    public void setLocation(String location) { this.location = location; }
+    public void setStartDatetime(LocalDateTime startDatetime) { this.startDatetime = startDatetime; }
     public void setEndDatetime(LocalDateTime endDatetime) { this.endDatetime = endDatetime; }
-
-    public boolean isPublic() { return isPublic; }
-    public void setPublic(boolean isPublic) { this.isPublic = isPublic; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public void setIsPublic(Boolean isPublic) { this.isPublic = isPublic; }
+    public void setUserId(Long userId) { this.userId = userId; }
 }

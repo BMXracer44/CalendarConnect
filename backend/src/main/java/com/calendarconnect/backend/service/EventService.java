@@ -19,7 +19,7 @@ public class EventService {
     // =========================
     // CREATE EVENT
     // =========================
-    public Event createEvent(EventCreateRequest request, Integer userId) {
+    public Event createEvent(EventCreateRequest request, Long userId) {
 
         Event event = new Event();
         event.setTitle(request.getTitle());
@@ -27,7 +27,10 @@ public class EventService {
         event.setLocation(request.getLocation());
         event.setStartDatetime(request.getStartDatetime());
         event.setEndDatetime(request.getEndDatetime());
-        event.setPublic(request.getIsPublic());
+
+        // ✅ FIXED (correct naming)
+        event.setIsPublic(request.getIsPublic());
+
         event.setCreatorId(userId);
 
         return eventRepository.save(event);
@@ -36,7 +39,7 @@ public class EventService {
     // =========================
     // GET EVENTS BY USER
     // =========================
-    public List<EventResponse> getEventsByUser(Integer userId) {
+    public List<EventResponse> getEventsByUser(Long userId) {
 
         return eventRepository.findByCreatorId(userId)
                 .stream()
@@ -45,9 +48,9 @@ public class EventService {
     }
 
     // =========================
-    // UPDATE EVENT (THIS FIXES YOUR 404)
+    // UPDATE EVENT
     // =========================
-    public Event updateEvent(Integer id, EventUpdateRequest request) {
+    public Event updateEvent(Long id, EventUpdateRequest request) {
 
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Event not found with id " + id));
@@ -73,7 +76,7 @@ public class EventService {
         }
 
         if (request.getIsPublic() != null) {
-            event.setPublic(request.getIsPublic());
+            event.setIsPublic(request.getIsPublic());
         }
 
         return eventRepository.save(event);
@@ -82,7 +85,7 @@ public class EventService {
     // =========================
     // DELETE EVENT
     // =========================
-    public void deleteEvent(Integer id) {
+    public void deleteEvent(Long id) {
 
         if (!eventRepository.existsById(id)) {
             throw new RuntimeException("Event not found with id " + id);

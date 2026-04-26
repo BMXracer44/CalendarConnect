@@ -27,10 +27,11 @@ public class EventController {
     @PostMapping
     public ResponseEntity<?> createEvent(
             @Valid @RequestBody EventCreateRequest request,
-            @RequestParam Integer userId
+            @RequestParam Long userId   // FIXED
     ) {
         try {
             Event saved = eventService.createEvent(request, userId);
+
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(EventResponse.fromEntity(saved));
 
@@ -44,10 +45,11 @@ public class EventController {
     // GET USER EVENTS
     // =========================
     @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getUserEvents(@PathVariable Integer userId) {
+    public ResponseEntity<?> getUserEvents(@PathVariable Long userId) { // FIXED
         try {
             List<EventResponse> events = eventService.getEventsByUser(userId);
             return ResponseEntity.ok(events);
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("error", e.getMessage()));
@@ -55,11 +57,11 @@ public class EventController {
     }
 
     // =========================
-    // UPDATE EVENT (FIX FOR YOUR 404)
+    // UPDATE EVENT
     // =========================
     @PutMapping("/{id}")
     public ResponseEntity<?> updateEvent(
-            @PathVariable Integer id,
+            @PathVariable Long id,   // FIXED
             @RequestBody EventUpdateRequest request
     ) {
         try {
@@ -80,12 +82,13 @@ public class EventController {
     }
 
     // =========================
-    // DELETE EVENT (OPTIONAL BUT USEFUL)
+    // DELETE EVENT
     // =========================
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteEvent(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteEvent(@PathVariable Long id) { // FIXED
         try {
             eventService.deleteEvent(id);
+
             return ResponseEntity.ok(Map.of("message", "Event deleted successfully"));
 
         } catch (RuntimeException e) {

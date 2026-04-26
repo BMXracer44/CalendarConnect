@@ -8,13 +8,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface EventRepository extends JpaRepository<Event, Integer> {
+public interface EventRepository extends JpaRepository<Event, Long> {
 
-  List<Event> findByStartDatetime(LocalDateTime startDatetime);
+    List<Event> findByStartDatetime(LocalDateTime startDatetime);
 
-  boolean existsByStartDatetime(LocalDateTime startDatetime);
+    boolean existsByStartDatetime(LocalDateTime startDatetime);
 
-  List<Event> findByCreatorId(Integer creatorId);
+    List<Event> findByCreatorId(Long creatorId);
 
-  List<Event> findByIsPublicTrue();
+    List<Event> findByIsPublicTrue();
 }

@@ -3,6 +3,7 @@ package com.calendarconnect.backend.model;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,10 +12,17 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id; 
+    private Long id;
 
+    // ✅ FIX: use Long everywhere
     @Column(name = "creator_id", nullable = false)
-    private Integer creatorId; 
+    private Long creatorId;
+
+    // (OPTIONAL BUT RECOMMENDED)
+    // If you have User entity, this is better than creatorId
+    // @ManyToOne
+    // @JoinColumn(name = "creator_id")
+    // private User user;
 
     @Column(nullable = false)
     private String title;
@@ -22,7 +30,7 @@ public class Event {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "LOCATION") 
+    @Column(name = "location")
     private String location;
 
     @Column(name = "start_datetime", nullable = false)
@@ -31,8 +39,9 @@ public class Event {
     @Column(name = "end_datetime", nullable = false)
     private LocalDateTime endDatetime;
 
+    // ✔ KEEP BOOLEAN BUT STANDARDIZE GETTERS
     @Column(name = "is_public", nullable = false)
-    private boolean isPublic;
+    private Boolean isPublic;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -42,97 +51,89 @@ public class Event {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public Event(){
+    public Event() {}
+
+    // ================= GETTERS / SETTERS =================
+
+    public Long getId() {
+        return id;
     }
 
-    public Event(Integer creatorId, String title, String description, String location, 
-                 LocalDateTime startDatetime, LocalDateTime endDatetime, boolean isPublic) {
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
         this.creatorId = creatorId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
         this.location = location;
+    }
+
+    public LocalDateTime getStartDatetime() {
+        return startDatetime;
+    }
+
+    public void setStartDatetime(LocalDateTime startDatetime) {
         this.startDatetime = startDatetime;
+    }
+
+    public LocalDateTime getEndDatetime() {
+        return endDatetime;
+    }
+
+    public void setEndDatetime(LocalDateTime endDatetime) {
         this.endDatetime = endDatetime;
+    }
+
+    // ✅ FIXED BOOLEAN ACCESSORS (IMPORTANT FOR DTO MAPPING)
+
+    public Boolean getIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(Boolean isPublic) {
         this.isPublic = isPublic;
     }
 
-    public Integer getId(){ 
-      return id; 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setId(Integer id){ 
-      this.id = id; 
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Integer getCreatorId(){ 
-      return creatorId; 
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setCreatorId(Integer creatorId){ 
-      this.creatorId = creatorId; 
-    }
-    
-    public String getTitle(){ 
-      return title; 
-    }
-    
-    public void setTitle(String title){ 
-      this.title = title; 
-    }
-    
-    public String getDescription(){ 
-      return description; 
-    }
-    
-    public void setDescription(String description){ 
-      this.description = description; 
-    }
-    
-    public String getLocation(){ 
-      return location; 
-    }
-    
-    public void setLocation(String location){ 
-      this.location = location; 
-    }
-    
-    public LocalDateTime getStartDatetime(){ 
-      return startDatetime; 
-    }
-    
-    public void setStartDatetime(LocalDateTime startDatetime){ 
-      this.startDatetime = startDatetime; 
-    }
-    
-    public LocalDateTime getEndDatetime(){ 
-      return endDatetime; 
-    }
-    
-    public void setEndDatetime(LocalDateTime endDatetime){ 
-      this.endDatetime = endDatetime; 
-    }
-    
-    public boolean isPublic(){ 
-      return isPublic; 
-    }
-    
-    public void setPublic(boolean isPublic){ 
-      this.isPublic = isPublic; 
-    }
-    
-    public LocalDateTime getCreatedAt(){ 
-      return createdAt; 
-    }
-    
-    public void setCreatedAt(LocalDateTime createdAt){
-      this.createdAt = createdAt; 
-    }
-    
-    public LocalDateTime getUpdatedAt(){ 
-      return updatedAt; 
-    }
-    
-    public void setUpdatedAt(LocalDateTime updatedAt){ 
-      this.updatedAt = updatedAt; 
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

@@ -17,6 +17,7 @@ function Calendar() {
 
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+  // EDIT STATE
   const [editTitle, setEditTitle] = useState("");
   const [editDescription, setEditDescription] = useState("");
   const [editLocation, setEditLocation] = useState("");
@@ -70,30 +71,13 @@ function Calendar() {
   const createEvent = async (e) => {
     e.preventDefault();
 
-    const res = await fetch(
-      `http://localhost:8080/api/events?userId=${user.id}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`
-        },
-        body: JSON.stringify(formData)
-      }
-    );
-
-    if (!res.ok) {
-      console.error("Failed to create event");
-      return;
-    }
-
-    setFormData({
-      title: "",
-      description: "",
-      location: "",
-      startDatetime: "",
-      endDatetime: "",
-      isPublic: true
+    await fetch(`http://localhost:8080/api/events?userId=${user.id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`
+      },
+      body: JSON.stringify(formData)
     });
 
     setShowModal(false);
@@ -178,83 +162,30 @@ function Calendar() {
         eventClick={handleEventClick}
       />
 
-      {/* ================= ADD EVENT MODAL ================= */}
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-box">
-
-            <h2>Create Event</h2>
-
-            <form onSubmit={createEvent}>
-              <input
-                placeholder="Title"
-                value={formData.title}
-                onChange={(e) =>
-                  setFormData({ ...formData, title: e.target.value })
-                }
-              />
-
-              <input
-                placeholder="Description"
-                value={formData.description}
-                onChange={(e) =>
-                  setFormData({ ...formData, description: e.target.value })
-                }
-              />
-
-              <input
-                placeholder="Location"
-                value={formData.location}
-                onChange={(e) =>
-                  setFormData({ ...formData, location: e.target.value })
-                }
-              />
-
-              <input
-                type="datetime-local"
-                value={formData.startDatetime}
-                onChange={(e) =>
-                  setFormData({ ...formData, startDatetime: e.target.value })
-                }
-              />
-
-              <input
-                type="datetime-local"
-                value={formData.endDatetime}
-                onChange={(e) =>
-                  setFormData({ ...formData, endDatetime: e.target.value })
-                }
-              />
-
-              <button type="submit">Create</button>
-              <button type="button" onClick={() => setShowModal(false)}>
-                Cancel
-              </button>
-            </form>
-
-          </div>
-        </div>
-      )}
-
       {/* ================= VIEW / EDIT MODAL ================= */}
       {showViewModal && selectedEvent && (
         <div className="modal-overlay">
           <div className="modal-box">
 
+            {/* HEADER */}
             <div className="modal-header">
               <h2>{isEditing ? "Edit Event" : "Event Details"}</h2>
 
               <div className="modal-actions">
 
-                <span
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setIsEditing(true)}
-                >
-                  ✏️
-                </span>
+                {/* EDIT ICON */}
+                {String(selectedEvent?.userId) === String(user?.id) && !isEditing && (
+                  <span
+                    style={{ cursor: "pointer", fontSize: "22px", marginRight: "10px" }}
+                    onClick={() => setIsEditing(true)}
+                  >
+                    ✏️
+                  </span>
+                )}
 
+                {/* CLOSE ICON */}
                 <span
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer", fontSize: "22px" }}
                   onClick={closeModal}
                 >
                   ✖️
@@ -263,6 +194,7 @@ function Calendar() {
               </div>
             </div>
 
+            {/* VIEW MODE */}
             {!isEditing ? (
               <>
                 <p><b>{selectedEvent.title}</b></p>
@@ -272,6 +204,7 @@ function Calendar() {
                 <p>{selectedEvent.endDatetime}</p>
               </>
             ) : (
+              /* EDIT MODE */
               <form onSubmit={updateEvent}>
                 <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
                 <input value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
