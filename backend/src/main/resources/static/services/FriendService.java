@@ -1,14 +1,15 @@
 package com.calendarconnect.backend.service;
-
 import com.calendarconnect.backend.dto.RegisterRequest;
 import com.calendarconnect.backend.model.FriendRequest;
 import com.calendarconnect.backend.repository.FriendRepository;
 import com.calendarconnect.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class FriendService {
 
   @Autowired
@@ -33,14 +34,14 @@ public class FriendService {
     //update friend list for both users
     User requester = userRepository.findById(friendship.getRequester_id());
     User addressee = userRepository.findById(friendship.getAddressee_id());
-    //add each other as friends
     
+    //add each other as friends
     requester.getFriends().add(addressee);
     addressee.getFriends().add(requester);
     
-    //save updated users
-    userRepository.save(requester);
-    userRepository.save(addressee);
+    //save updated users, transaction will ensure atomicity
+    //userRepository.save(requester);
+    //userRepository.save(addressee);
     
   }
 
@@ -67,14 +68,21 @@ public class FriendService {
     //check if friendship exists
     if (!friendship.existsById(friendshipId)) {
       throw new Exception("Friend does not exist");
-    }
-    //update friend status to deleted
-    friendship.setStatus(Friendship.Status.DELETED);
-    friendRepository.delete(friendship);
+    } 
 
     //remove each other from friend lists
-    userRepository.delete(friendship.getRequester_id());
-    userRepository.delete(friendship.getAddressee_id());
+     User requester = userRepository.findById(friendship.getRequester_id())
+     .orElseThrow(() -> new Exception("Requester not found"));
+
+    User addressee = userRepository.findById(friendship.getAddressee_id())
+    .orElseThrow(() -> new Exception("Addressee not found"));
+    
+    requster.getFriends().remove(addressee);
+    addressee.getFriends().remove(requester);
+
+     //update friend status to deleted
+    friendship.setStatus(Friendship.Status.DELETED);
+    friendRepository.delete(friendship);
   }
 
   //edit friend details
@@ -85,15 +93,15 @@ public class FriendService {
       throw new Exception("Friend not found");
     }
     //update friend details
-    //not sure what details can be edited, assuming username for now
     User friend = userRepository.findById(friendship.getAddressee_id());
-    friend.setUsername(newUsername);
+    friend.setNickname(newUsername);
     userRepository.save(friend);
   }
 
    /**
    * Get all friends for a user
    */
+  @Transactional(readOnly = true)
     public List<Friend> getAllFriends(Integer userId) throws Exception {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new Exception("User not found"));
