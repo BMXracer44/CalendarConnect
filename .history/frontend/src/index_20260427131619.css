@@ -1,0 +1,564 @@
+/* =========================
+   GLOBAL
+========================= */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6fb;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+.navbar {
+  width: 98%;
+  height: 80px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 40px;
+
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-left {
+  font-size: 22px;
+  font-weight: 800;
+  color: #4f46e5;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.nav-link {
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: #555;
+  padding: 10px 12px;
+  border-radius: 10px;
+  transition: 0.2s ease;
+}
+
+.nav-link:hover {
+  background: rgba(102, 126, 234, 0.12);
+  color: #4f46e5;
+}
+
+.nav-user {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(102, 126, 234, 0.08);
+}
+
+.nav-button {
+  padding: 10px 16px;
+
+  border-radius: 10px;
+  border: none;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.nav-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(102, 126, 234, 0.35);
+}
+
+/* =========================
+   LOGIN / REGISTER / PROFILE BACKGROUND
+========================= */
+.login-container {
+  min-height: calc(100vh - 80px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 40px 20px;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+/* =========================
+   LOGIN CARD
+========================= */
+.login-card {
+  width: 100%;
+  max-width: 520px;
+
+  background: #ffffff;
+
+  padding: 50px 45px;
+
+  border-radius: 18px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+
+  text-align: center;
+
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.login-card h2 {
+  font-size: 30px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.login-card p {
+  font-size: 15px;
+  color: #777;
+}
+
+.login-card input {
+  width: 100%;
+
+  padding: 14px 16px;
+  margin-top: 14px;
+
+  border: 1px solid #ddd;
+  border-radius: 12px;
+
+  font-size: 15px;
+
+  outline: none;
+  transition: 0.25s ease;
+}
+
+.login-card input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 10px rgba(102, 126, 234, 0.35);
+}
+
+.login-card button {
+  width: 100%;
+
+  padding: 14px;
+
+  margin-top: 22px;
+
+  background: #667eea;
+  color: white;
+
+  border: none;
+  border-radius: 12px;
+
+  font-size: 16px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.login-card button:hover {
+  background: #5a67d8;
+  transform: translateY(-2px);
+}
+
+/* =========================
+   PROFILE LAYOUT (LEFT / RIGHT)
+========================= */
+.profile-container {
+  min-height: calc(100vh - 80px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 40px 20px;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.profile-card {
+  width: 100%;
+  max-width: 900px;
+
+  background: white;
+
+  padding: 40px;
+
+  border-radius: 18px;
+
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+
+  display: flex;
+  gap: 30px;
+}
+
+.profile-left {
+  flex: 1;
+
+  background: #f4f6fb;
+
+  padding: 25px;
+
+  border-radius: 14px;
+}
+
+.profile-right {
+  flex: 2;
+}
+
+.profile-right input {
+  width: 100%;
+
+  padding: 14px 16px;
+  margin-top: 12px;
+
+  border: 1px solid #ddd;
+  border-radius: 12px;
+
+  font-size: 14px;
+
+  outline: none;
+}
+
+.profile-right input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 10px rgba(102, 126, 234, 0.35);
+}
+
+.profile-right button {
+  width: 100%;
+
+  padding: 14px;
+
+  margin-top: 20px;
+
+  background: #667eea;
+  color: white;
+
+  border: none;
+  border-radius: 12px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+.profile-right button:hover {
+  transform: translateY(-2px);
+}
+
+/* =========================
+   FRIENDS PAGE
+========================= */
+.friends-container {
+  min-height: calc(100vh - 80px);
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 40px 20px;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.friends-card {
+  width: 100%;
+  max-width: 600px;
+
+  background: white;
+
+  padding: 40px;
+
+  border-radius: 18px;
+
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+
+/* =========================
+   CALENDAR PAGE
+========================= */
+.calendar-page {
+  min-height: calc(100vh - 80px);
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 40px 20px;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+/* =========================
+   MODAL
+========================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0,0,0,0.55);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+}
+
+.modal-box {
+  width: 420px;
+
+  background: white;
+
+  padding: 45px 40px;
+
+  border-radius: 18px;
+
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+
+/* =========================
+   ADD EVENT BUTTON
+========================= */
+.addevent {
+  padding: 12px 18px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.addevent:hover {
+  transform: translateY(-2px);
+}
+
+/* =========================
+   ANIMATION
+========================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* =========================
+   MODAL HEADER (TITLE + ICONS)
+========================= */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #333;
+}
+
+/* ACTION ICONS (edit + close) */
+.modal-actions {
+  display: flex;
+  gap: 14px;
+}
+
+.modal-actions span {
+  font-size: 18px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  transition: 0.2s ease;
+}
+
+.modal-actions span:hover {
+  background: rgba(102, 126, 234, 0.15);
+  color: #4f46e5;
+}
+
+/* =========================
+   FORM INPUTS (CREATE + EDIT)
+========================= */
+.modal-box input {
+  width: 100%;
+
+  padding: 13px 15px;
+  margin-top: 12px;
+
+  border: 1px solid #ddd;
+  border-radius: 12px;
+
+  font-size: 14px;
+
+  outline: none;
+  transition: 0.25s ease;
+}
+
+.modal-box input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 10px rgba(102, 126, 234, 0.35);
+}
+
+/* =========================
+   TEXTAREA (if you upgrade later)
+========================= */
+.modal-box textarea {
+  width: 100%;
+
+  padding: 13px 15px;
+  margin-top: 12px;
+
+  border: 1px solid #ddd;
+  border-radius: 12px;
+
+  font-size: 14px;
+
+  resize: none;
+  outline: none;
+}
+
+/* =========================
+   BUTTONS (CREATE / SAVE / CANCEL)
+========================= */
+.modal-box button {
+  width: 100%;
+
+  padding: 13px;
+  margin-top: 18px;
+
+  border-radius: 12px;
+  border: none;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+/* PRIMARY BUTTON */
+.modal-box button[type="submit"] {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+
+.modal-box button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.35);
+}
+
+/* CANCEL BUTTON */
+.modal-box button[type="button"] {
+  background: #f1f3f8;
+  color: #444;
+}
+
+.modal-box button[type="button"]:hover {
+  background: #e5e7eb;
+}
+
+/* =========================
+   EVENT DETAILS DISPLAY
+========================= */
+.modal-box p {
+  margin: 10px 0;
+  font-size: 14px;
+  color: #444;
+}
+
+.modal-box p b {
+  font-size: 16px;
+  color: #222;
+}
+
+/* =========================
+   MODAL IMPROVEMENTS
+========================= */
+.modal-box {
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-overlay {
+  backdrop-filter: blur(6px);
+}
+/* =========================
+   FIND FRIENDS BUTTON
+========================= */
+.open-search-btn {
+  padding: 12px 18px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+
+  box-shadow: 0 8px 18px rgba(102, 126, 234, 0.25);
+}
+
+.open-search-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(102, 126, 234, 0.35);
+}
+
+.open-search-btn:active {
+  transform: translateY(0px);
+  box-shadow: 0 6px 14px rgba(102, 126, 234, 0.25);
+}
+.friends-search input {
+  width: 100%;
+
+  padding: 16px 18px;
+
+  border: 1px solid #ddd;
+  border-radius: 12px;
+
+  font-size: 16px;
+
+  outline: none;
+
+  transition: 0.25s ease;
+}
+
+.friends-search input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 10px rgba(102, 126, 234, 0.35);
+}

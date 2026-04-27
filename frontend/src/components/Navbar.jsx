@@ -25,7 +25,22 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <span className="nav-user">{user.username}</span>
+            {/* USER PROFILE */}
+            <Link to="/profile" className="nav-user">
+              {user.username}
+            </Link>
+
+            {/* CALENDAR */}
+            <Link to="/calendar" className="nav-link">
+              Calendar
+            </Link>
+
+            {/* ⭐ FRIENDS PAGE ADDED HERE */}
+            <Link to="/friends" className="nav-link">
+              Friends
+            </Link>
+
+            {/* LOGOUT */}
             <button className="nav-button" onClick={handleLogout}>
               Logout
             </button>
