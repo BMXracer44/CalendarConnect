@@ -14,7 +14,7 @@ public class User implements event.java{
 	String passwordHash;
 	String firstN;
 	String lastN;
-	string birthdate
+	String birthdate;
 	String phoneNum;
 	String bio;
 	String url;
