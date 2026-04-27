@@ -19,4 +19,7 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
     // Optional: find by friend relationship
     Optional<Friend> findByFriend(User friend);
+    
+    //Find by Id
+    Optional<Friend> findById(Integer id);
 }
