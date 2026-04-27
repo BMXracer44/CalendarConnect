@@ -61,7 +61,7 @@ public class EventController {
     // =========================
     @PutMapping("/{id}")
     public ResponseEntity<?> updateEvent(
-            @PathVariable Long id,   // FIXED
+            @PathVariable Long id,  
             @RequestBody EventUpdateRequest request
     ) {
         try {
@@ -70,6 +70,14 @@ public class EventController {
             return ResponseEntity.ok(EventResponse.fromEntity(updated));
 
         } catch (RuntimeException e) {
+            // Catch conflict issue
+            if(e.getMessage().contains("overlaps")){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of(
+                        "error", "The event time overlaps with another event!",
+                        "status", 400
+                    ));
+            }
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Map.of(
                             "error", e.getMessage(),

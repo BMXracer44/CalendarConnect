@@ -69,6 +69,18 @@ public class EventService {
 
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Event not found with id " + id));
+        
+        //Adding event conflict logic to update
+        if(request.getStartDatetime() != null && request.getEndDatetime() != null){
+            boolean isConflict = eventRepository.existsOverlappingEvent(
+                event.getCreatorId(),
+                request.getStartDatetime(),
+                request.getEndDatetime()
+            );
+            if(isConflict){
+                throw new RuntimeException("Event time overlaps with another event!");
+            }
+        }
 
         if (request.getTitle() != null) {
             event.setTitle(request.getTitle());
