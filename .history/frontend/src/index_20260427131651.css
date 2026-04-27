@@ -544,7 +544,7 @@ body {
   box-shadow: 0 6px 14px rgba(102, 126, 234, 0.25);
 }
 .friends-search input {
-  width: 94%;
+  width: 100%;
 
   padding: 16px 18px;
 

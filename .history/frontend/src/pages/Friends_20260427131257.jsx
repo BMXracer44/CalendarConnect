@@ -139,7 +139,7 @@ const Friends = () => {
             className="open-search-btn"
             onClick={() => setShowSearch(!showSearch)}
           >
-            {showSearch ? "Hide Search" : "Find Friends"}
+            {showSearch ? "Hide Search" : "+ Find Friends"}
           </button>
         </div>
 

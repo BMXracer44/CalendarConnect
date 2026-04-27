@@ -544,7 +544,7 @@ body {
   box-shadow: 0 6px 14px rgba(102, 126, 234, 0.25);
 }
 .friends-search input {
-  width: 94%;
+  width: 100%;
 
   padding: 16px 18px;
 
@@ -561,34 +561,4 @@ body {
 .friends-search input:focus {
   border-color: #667eea;
   box-shadow: 0 0 10px rgba(102, 126, 234, 0.35);
-}
-.friends-search button {
-  margin-top: 12px;
-  width: 100%;
-
-  padding: 13px;
-
-  border: none;
-  border-radius: 12px;
-
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-
-  font-size: 14px;
-  font-weight: 700;
-
-  cursor: pointer;
-
-  transition: 0.2s ease;
-
-  box-shadow: 0 8px 18px rgba(102, 126, 234, 0.25);
-}
-
-.friends-search button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(102, 126, 234, 0.35);
-}
-
-.friends-search button:active {
-  transform: translateY(0px);
 }
