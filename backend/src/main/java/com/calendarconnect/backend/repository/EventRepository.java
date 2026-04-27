@@ -23,10 +23,12 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     // Checks if a specific user has overlapping events
     @Query("SELECT CASE WHEN COUNT(e) > 0 THEN true ELSE false END FROM Event e " +
            "WHERE e.creatorId = :creatorId " +
+           "AND e.id <> :eventId " +
            "AND e.startDatetime < :newEndTime " +
            "AND e.endDatetime > :newStartTime")
     boolean existsOverlappingEvent(
             @Param("creatorId") Long creatorId,
+            @Param("eventId") Long eventId, 
             @Param("newStartTime") LocalDateTime newStartTime,
             @Param("newEndTime") LocalDateTime newEndTime
     );

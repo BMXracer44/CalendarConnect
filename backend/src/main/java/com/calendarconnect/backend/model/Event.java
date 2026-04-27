@@ -14,15 +14,9 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // ✅ FIX: use Long everywhere
+    //FIX: use Long everywhere
     @Column(name = "creator_id", nullable = false)
     private Long creatorId;
-
-    // (OPTIONAL BUT RECOMMENDED)
-    // If you have User entity, this is better than creatorId
-    // @ManyToOne
-    // @JoinColumn(name = "creator_id")
-    // private User user;
 
     @Column(nullable = false)
     private String title;

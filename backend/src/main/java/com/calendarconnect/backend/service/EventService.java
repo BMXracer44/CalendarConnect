@@ -24,9 +24,20 @@ public class EventService {
     // =========================
     public Event createEvent(EventCreateRequest request, Long userId) {
 
+        Event event = new Event();
+        event.setTitle(request.getTitle());
+        event.setDescription(request.getDescription());
+        event.setLocation(request.getLocation());
+        event.setStartDatetime(request.getStartDatetime());
+        event.setEndDatetime(request.getEndDatetime());
+        event.setIsPublic(request.getIsPublic());
+
+        event.setCreatorId(userId);
+        
         // 1. Check overlapping events
         boolean hasConflict = eventRepository.existsOverlappingEvent(
                 userId,
+                event.getId(),
                 request.getStartDatetime(),
                 request.getEndDatetime()
         );
@@ -37,17 +48,6 @@ public class EventService {
                     "This event overlaps with an existing event on your calendar."
             );
         }
-
-        Event event = new Event();
-        event.setTitle(request.getTitle());
-        event.setDescription(request.getDescription());
-        event.setLocation(request.getLocation());
-        event.setStartDatetime(request.getStartDatetime());
-        event.setEndDatetime(request.getEndDatetime());
-        event.setIsPublic(request.getIsPublic());
-
-        event.setCreatorId(userId);
-
         return eventRepository.save(event);
     }
 
@@ -74,6 +74,7 @@ public class EventService {
         if(request.getStartDatetime() != null && request.getEndDatetime() != null){
             boolean isConflict = eventRepository.existsOverlappingEvent(
                 event.getCreatorId(),
+                event.getId(),
                 request.getStartDatetime(),
                 request.getEndDatetime()
             );
