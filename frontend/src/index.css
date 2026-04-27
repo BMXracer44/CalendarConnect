@@ -1,6 +1,10 @@
 /* =========================
    GLOBAL PAGE BACKGROUND
 ========================= */
+.container{
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  font-family: Arial, sans-serif;
+}
 .login-container {
   min-height: 100vh;
   display: flex;
@@ -9,6 +13,16 @@
   padding: 20px;
   background: linear-gradient(135deg, #667eea, #764ba2);
   font-family: Arial, sans-serif;
+}
+
+.calendar-container{
+  width: 75%;
+  margin: 20px auto;
+  padding: 20px;
+  background: white;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
 }
 
 /* =========================
@@ -50,6 +64,10 @@
   font-size: 14px;
   color: #777;
   margin-bottom: 18px;
+}
+
+.page-title{
+  text-align: center;
 }
 
 /* =========================
@@ -94,6 +112,10 @@
   background: #5a67d8;
   transform: translateY(-2px);
 }
+.calendar-buttons{
+  width: 5%;
+  height: 5%;
+}
 
 /* =========================
    ERROR & SUCCESS MESSAGES
@@ -134,4 +156,29 @@
 ========================= */
 .register-extra-spacing input {
   margin-top: 14px;
+}
+
+/* =========================
+   POPUP
+========================= */
+.popup-overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 1000;
+}
+.popup-box{
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
 }
