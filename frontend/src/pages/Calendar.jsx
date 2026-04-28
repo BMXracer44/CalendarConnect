@@ -27,7 +27,7 @@ function App() {
       enabled: true
     }
   ])
-
+  // Friend requests - not working yet
   const friendRequests = ['Chris', 'Morgan']
 
 
@@ -41,7 +41,7 @@ function App() {
       end: '2026-04-20T21:00:00'
     },
 
-    // Friend events
+    // Friend events - Manually added
     {
       title: "Alex's Birthday",
       date: '2026-04-10',
@@ -114,7 +114,7 @@ function App() {
         </div>
       </div>
 
-      {/* Friend Bar*/}
+      {/* Friend Sidebar*/}
       <div
         style={{
           width: '200px',
@@ -158,7 +158,7 @@ function App() {
             }}
           >
             <span>{friend.name}</span>
-
+            {/* Toggle Switch */}
             <Switch
               checked={friend.enabled}
               onChange={() => toggleFriend(friend.id)}
