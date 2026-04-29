@@ -1,0 +1,546 @@
+/* =========================
+   GLOBAL
+========================= */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6fb;
+}
+
+/* =========================
+   NAVBAR (BIGGER + MORE MODERN)
+========================= */
+.navbar {
+  width: 98%;
+  height: 80px; /* 🔥 BIGGER NAVBAR */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 40px;
+
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* BRAND */
+.navbar-left {
+  font-size: 22px; /* 🔥 bigger brand */
+  font-weight: 800;
+  color: #4f46e5;
+  letter-spacing: 0.5px;
+}
+
+/* RIGHT SIDE */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+/* LINKS */
+.nav-link {
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: #555;
+  padding: 10px 12px;
+  border-radius: 10px;
+  transition: 0.2s ease;
+}
+
+.nav-link:hover {
+  background: rgba(102, 126, 234, 0.12);
+  color: #4f46e5;
+}
+
+/* USER */
+.nav-user {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(102, 126, 234, 0.08);
+}
+
+/* BUTTON */
+.nav-button {
+  padding: 10px 16px; /* 🔥 bigger button */
+  border-radius: 10px;
+  border: none;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.nav-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(102, 126, 234, 0.35);
+}
+
+/* =========================
+   LOGIN PAGE (BIGGER + BETTER BALANCE)
+========================= */
+.login-container {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 40px 20px;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+/* LOGIN CARD (🔥 BIGGER FORM) */
+.login-card {
+  width: 100%;
+  max-width: 520px; /* 🔥 WAS 400px → MUCH BIGGER */
+  background: #ffffff;
+
+  padding: 50px 45px; /* 🔥 more breathing room */
+
+  border-radius: 18px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+
+  text-align: center;
+
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* HEADINGS */
+.login-card h2 {
+  font-size: 30px; /* 🔥 bigger title */
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.login-card p {
+  font-size: 15px;
+  color: #777;
+  margin-bottom: 22px;
+}
+
+/* INPUTS (BIGGER + CLEANER) */
+.login-card input {
+  width: 100%;
+  padding: 14px 16px; /* 🔥 bigger inputs */
+  margin-top: 14px;
+
+  border: 1px solid #ddd;
+  border-radius: 12px;
+
+  font-size: 15px;
+
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.login-card input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 10px rgba(102, 126, 234, 0.35);
+}
+
+/* BUTTON (BIGGER + STRONGER) */
+.login-card button {
+  width: 100%;
+  padding: 14px; /* 🔥 bigger button */
+
+  margin-top: 22px;
+
+  background: #667eea;
+  color: white;
+
+  border: none;
+  border-radius: 12px;
+
+  font-size: 16px;
+  font-weight: bold;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.login-card button:hover {
+  background: #5a67d8;
+  transform: translateY(-2px);
+}
+
+/* =========================
+   TEXT
+========================= */
+.bottom-text {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* =========================
+   CALENDAR PAGE
+========================= */
+.calendar-page {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 40px 20px;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+/* =========================
+   FRIENDS PAGE
+========================= */
+
+.friends-container {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 40px 20px;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+/* MAIN CARD */
+.friends-card {
+  width: 100%;
+  max-width: 600px;
+
+  background: #fff;
+  padding: 40px;
+
+  border-radius: 18px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* TITLE */
+.friends-card h2 {
+  font-size: 26px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* SEARCH BAR */
+.friends-search {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.friends-search input {
+  flex: 1;
+
+  padding: 12px 14px;
+
+  border-radius: 12px;
+  border: 1px solid #ddd;
+
+  font-size: 14px;
+
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.friends-search input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 10px rgba(102, 126, 234, 0.25);
+}
+
+.friends-search button {
+  padding: 12px 16px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #667eea;
+  color: white;
+
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.friends-search button:hover {
+  background: #5a67d8;
+  transform: translateY(-2px);
+}
+
+/* RESULTS */
+.friends-results {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* USER ROW */
+.friend-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 12px 14px;
+
+  border-radius: 12px;
+
+  background: #f4f6fb;
+
+  transition: 0.2s ease;
+}
+
+.friend-item:hover {
+  transform: translateY(-2px);
+  background: #eef1ff;
+}
+
+/* ADD BUTTON */
+.friend-item button {
+  padding: 8px 12px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.friend-item button:hover {
+  transform: scale(1.05);
+}
+
+/* FADE ANIMATION (reuse from login) */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* message when no results */
+.no-results {
+  font-size: 14px;
+  color: #888;
+  text-align: center;
+  margin-top: 10px;
+}
+/* =========================
+   EVENT POPUP (ADD EVENT MODAL)
+========================= */
+
+/* DARK BACKDROP */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.55);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+}
+
+/* POPUP CARD */
+.modal-box {
+  width: 420px;
+
+  background: #ffffff;
+
+  padding: 45px 40px;
+
+  border-radius: 18px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+
+  text-align: center;
+
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* TITLE */
+.modal-box h2 {
+  font-size: 26px;
+  font-weight: 700;
+
+  color: #333;
+
+  margin-bottom: 15px;
+}
+
+/* INPUTS */
+.modal-box input {
+  width: 100%;
+
+  padding: 14px 16px;
+  margin-top: 14px;
+
+  border: 1px solid #ddd;
+  border-radius: 12px;
+
+  font-size: 14px;
+
+  outline: none;
+
+  transition: 0.25s ease;
+}
+
+.modal-box input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 10px rgba(102, 126, 234, 0.35);
+}
+
+/* BUTTONS (STACK CLEANLY) */
+.modal-box button {
+  width: 100%;
+
+  padding: 12px;
+
+  margin-top: 14px;
+
+  border: none;
+  border-radius: 12px;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+/* CREATE BUTTON */
+.modal-box button[type="submit"] {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+
+.modal-box button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(102, 126, 234, 0.35);
+}
+
+/* CANCEL BUTTON */
+.modal-box button[type="button"] {
+  background: #e5e7eb;
+  color: #333;
+}
+
+.modal-box button[type="button"]:hover {
+  background: #d1d5db;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* =========================
+   EVENT ICON ACTIONS
+========================= */
+
+.event-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+/* ICON BUTTON BASE */
+.event-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #fff;
+  border: 1px solid #e5e7eb;
+
+  cursor: pointer;
+
+  font-size: 18px;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+  transition: 0.2s ease;
+}
+
+/* HOVER */
+.event-icon:hover {
+  transform: translateY(-2px);
+  background: #f4f6fb;
+}
+
+/* EDIT ICON */
+.event-icon.edit:hover {
+  background: #e0e7ff;
+  border-color: #4f46e5;
+}
+
+/* DELETE ICON */
+.event-icon.delete:hover {
+  background: #fee2e2;
+  border-color: #ef4444;
+}
+
+/* MODAL FIX (ENSURE VISIBILITY) */
+.modal-box {
+  position: relative;
+  z-index: 10000;
+}

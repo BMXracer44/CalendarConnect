@@ -1,0 +1,35 @@
+package com.calendarconnect.backend.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.calendarconnect.backend.dto.UserSearchResponse;
+import com.calendarconnect.backend.model.User;
+import com.calendarconnect.backend.service.UserService;
+
+@RestController
+@RequestMapping("/api/user")
+@CrossOrigin(origins = "http://localhost:3000")
+public class UserController {
+
+  @Autowired
+  private UserService userService;
+
+  // SEARCH USERS
+  @GetMapping("/search")
+  public List<UserSearchResponse> searchUsers(
+      @RequestParam String query,
+      @RequestParam int currentUserId
+  ) {
+    return userService.searchUsers(query, currentUserId);
+  }
+
+  // ✅ THIS IS THE MISSING PIECE (FIXES YOUR ERROR)
+  @GetMapping("/{username}")
+  public User getUserByUsername(@PathVariable String username) throws Exception {
+    return userService.findByUsername(username);
+  }
+}
+}

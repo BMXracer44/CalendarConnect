@@ -23,7 +23,7 @@ CREATE TABLE user_privacy_settings(
   user_id INT PRIMARY KEY,
   allow_friend_suggestions BOOLEAN DEFAULT FALSE,
   allow_location_tracking BOOLEAN DEFAULT FALSE,
-  allow_third_party_data BOOLEAN DEFAULT FALSE FOREIGN KEY(user_id) REFERENCES users(id)
+  allow_third_party_data BOOLEAN DEFAULT FALSE, FOREIGN KEY(user_id) REFERENCES users(id)
 ON DELETE CASCADE
 );
 -- Friendships Table 
@@ -31,16 +31,17 @@ CREATE TABLE friendships(
   id INT AUTO_INCREMENT PRIMARY KEY,
   requester_id INT NOT NULL,
   addressee_id INT NOT NULL,
-  status ENUM('pending',
-  'accepted',
-  'declined',
-  'blocked') DEFAULT 'pending',
+  status ENUM('pending','accepted','declined','blocked') DEFAULT 'pending',
+  
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY(requester_id) REFERENCES users(id)
-ON DELETE CASCADE, FOREIGN KEY(addressee_id) REFERENCES users(id)
-ON DELETE CASCADE, UNIQUE KEY unique_friendship(requester_id,
-  addressee_id)-- Prevents duplicate records 
-
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  
+  FOREIGN KEY(requester_id) REFERENCES users(id)ON DELETE CASCADE,
+  FOREIGN KEY(addressee_id) REFERENCES users(id) ON DELETE CASCADE, 
+  
+  UNIQUE KEY unique_friendship(requester_id,addressee_id)-- Prevents duplicate records 
+  CONSTRAINT no_self_friend CHECK (requester_id <> addressee_id), --prevents self friending 
+  CONSTRAINT check_order CHECK (requester_id < addressee_id) -- prevents reciprocal duplicates 
 );
 -- Events Table 
 CREATE TABLE events(
@@ -59,16 +60,13 @@ ON UPDATE CURRENT_TIMESTAMP,
 ON DELETE CASCADE
 );
 -- Event Members 
-CREATE TABLE event_attendees(
+CREATE TABLE event_attendees (
   event_id INT NOT NULL,
   user_id INT NOT NULL,
-  status ENUM(
-    'invited',
-    'going',
-    'declined'
-  ) DEFAULT 'invited'PRIMARY KEY(event_id,
-  user_id),
-  FOREIGN KEY(event_id) REFERENCES events(id)
-ON DELETE CASCADE, FOREIGN KEY(user_id) REFERENCES users(id)
-ON DELETE CASCADE
+  status ENUM('invited', 'going', 'declined') DEFAULT 'invited',
+  PRIMARY KEY (event_id, user_id),
+  FOREIGN KEY (event_id) REFERENCES events(id)
+    ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE CASCADE
 );
