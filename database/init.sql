@@ -31,16 +31,17 @@ CREATE TABLE friendships(
   id INT AUTO_INCREMENT PRIMARY KEY,
   requester_id INT NOT NULL,
   addressee_id INT NOT NULL,
-  status ENUM('pending',
-  'accepted',
-  'declined',
-  'blocked') DEFAULT 'pending',
+  status ENUM('pending','accepted','declined','blocked') DEFAULT 'pending',
+  
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY(requester_id) REFERENCES users(id)
-ON DELETE CASCADE, FOREIGN KEY(addressee_id) REFERENCES users(id)
-ON DELETE CASCADE, UNIQUE KEY unique_friendship(requester_id,
-  addressee_id)-- Prevents duplicate records 
-
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  
+  FOREIGN KEY(requester_id) REFERENCES users(id)ON DELETE CASCADE,
+  FOREIGN KEY(addressee_id) REFERENCES users(id) ON DELETE CASCADE, 
+  UNIQUE KEY unique_friendship(requester_id,addressee_id)-- Prevents duplicate records 
+  
+  CONSTRAINT no_self_friend CHECK (requester_id <> addressee_id),
+  CONSTRAINT check_order CHECK (requester_id < addressee_id)
 );
 -- Events Table 
 CREATE TABLE events(
