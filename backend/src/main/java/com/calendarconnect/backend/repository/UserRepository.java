@@ -28,4 +28,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
    * Check if email exists
    */
   boolean existsByEmail(String email);
+
+  /**
+   * Searches user based on name and username and returns all valid results 
+   */
+  @Query("SELECT u FROM User u WHERE " +
+       "LOWER(u.username) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+       "LOWER(u.first_name) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+       "LOWER(u.last_name) LIKE LOWER(CONCAT('%', :query, '%'))")
+  List<User> searchUsers(@Param("query") String query);
 }
