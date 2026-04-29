@@ -4,12 +4,12 @@ import com.calendarconnect.backend.model.User;
 
 public class UserSearchResponse {
 
-  private Integer id;
-  private String username;
-  private String firstName;
-  private String lastName;
-  private String profilePictureUrl;
-  private String friendshipStatus;
+  private final Integer id;
+  private final String username;
+  private final String firstName;
+  private final String lastName;
+  private final String profilePictureUrl;
+  private final String friendshipStatus;
 
   public UserSearchResponse(User user, String friendshipStatus) {
     this.id = user.getId();
