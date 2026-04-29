@@ -23,7 +23,10 @@ public class UserController {
      * Searches users using sql query
      */
     @GetMapping("/search")
-    public List<User> searchUsers(@RequestParam String query) {
-        return userService.searchUsers(query);
+    public List<UserSearchResponse> searchUsers(@RequestParam String query) {
+    return userService.searchUsers(query)
+        .stream()
+        .map(UserSearchResponse::new)
+        .toList();
     }
 }
