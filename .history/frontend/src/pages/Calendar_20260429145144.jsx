@@ -34,7 +34,7 @@ function Calendar() {
     isPublic: true
   });
 
-  // ================= AM/PM FORMAT HELPER (ADDED ONLY) =================
+  // ================= FORMAT DATE (AM/PM FIX) =================
   const formatDateTime = (dateString) => {
     if (!dateString) return "";
 
@@ -232,64 +232,6 @@ function Calendar() {
         eventClick={handleEventClick}
       />
 
-      {/* ================= ADD EVENT MODAL ================= */}
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-box">
-
-            <h2>Create Event</h2>
-
-            <form onSubmit={createEvent}>
-              <input
-                placeholder="Title"
-                value={formData.title}
-                onChange={(e) =>
-                  setFormData({ ...formData, title: e.target.value })
-                }
-              />
-
-              <input
-                placeholder="Description"
-                value={formData.description}
-                onChange={(e) =>
-                  setFormData({ ...formData, description: e.target.value })
-                }
-              />
-
-              <input
-                placeholder="Location"
-                value={formData.location}
-                onChange={(e) =>
-                  setFormData({ ...formData, location: e.target.value })
-                }
-              />
-
-              <input
-                type="datetime-local"
-                value={formData.startDatetime}
-                onChange={(e) =>
-                  setFormData({ ...formData, startDatetime: e.target.value })
-                }
-              />
-
-              <input
-                type="datetime-local"
-                value={formData.endDatetime}
-                onChange={(e) =>
-                  setFormData({ ...formData, endDatetime: e.target.value })
-                }
-              />
-
-              <button type="submit">Create</button>
-              <button type="button" onClick={() => setShowModal(false)}>
-                Cancel
-              </button>
-            </form>
-
-          </div>
-        </div>
-      )}
-
       {/* ================= VIEW / EDIT MODAL ================= */}
       {showViewModal && selectedEvent && (
         <div className="modal-overlay">
@@ -310,7 +252,7 @@ function Calendar() {
                 <p>{selectedEvent.description}</p>
                 <p>{selectedEvent.location}</p>
 
-                {/* ================= AM/PM FIX ONLY HERE ================= */}
+                {/* ✅ AM/PM FIX HERE */}
                 <p>
                   <b>Start:</b> {formatDateTime(selectedEvent.startDatetime)}
                 </p>

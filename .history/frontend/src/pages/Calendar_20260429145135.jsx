@@ -34,7 +34,7 @@ function Calendar() {
     isPublic: true
   });
 
-  // ================= AM/PM FORMAT HELPER (ADDED ONLY) =================
+  // ================= FORMAT (AM/PM FIX) =================
   const formatDateTime = (dateString) => {
     if (!dateString) return "";
 
@@ -82,11 +82,24 @@ function Calendar() {
     if (user?.id) loadEvents();
   }, [user]);
 
-  // ================= CREATE EVENT =================
+  // ================= CREATE EVENT (FIXED) =================
   const createEvent = async (e) => {
     e.preventDefault();
 
+    setErrorMessage("");
+
     try {
+      const payload = {
+        title: formData.title,
+        description: formData.description,
+        location: formData.location,
+        startDatetime: formData.startDatetime,
+        endDatetime: formData.endDatetime,
+        isPublic: formData.isPublic
+      };
+
+      console.log("CREATE EVENT PAYLOAD:", payload);
+
       const res = await fetch(
         `http://localhost:8080/api/events?userId=${user.id}`,
         {
@@ -95,18 +108,18 @@ function Calendar() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`
           },
-          body: JSON.stringify(formData)
+          body: JSON.stringify(payload)
         }
       );
 
       if (!res.ok) {
-        const errorData = await res.json();
-        setErrorMessage(errorData.message || "Event conflict detected");
+        const errText = await res.text();
+        console.error("CREATE ERROR:", errText);
+        setErrorMessage("Failed to create event");
         return;
       }
 
-      setErrorMessage("");
-
+      // RESET FORM
       setFormData({
         title: "",
         description: "",
@@ -118,8 +131,10 @@ function Calendar() {
 
       setShowModal(false);
       loadEvents();
+
     } catch (err) {
-      setErrorMessage("Server error. Please try again.");
+      console.error(err);
+      setErrorMessage("Server error");
     }
   };
 
@@ -176,17 +191,16 @@ function Calendar() {
       );
 
       if (!res.ok) {
-        const errorData = await res.json();
-        setErrorMessage(errorData.message || "Update conflict detected");
+        setErrorMessage("Update failed");
         return;
       }
 
-      setErrorMessage("");
       setIsEditing(false);
       setShowViewModal(false);
       loadEvents();
+
     } catch (err) {
-      setErrorMessage("Server error. Please try again.");
+      setErrorMessage("Server error");
     }
   };
 
@@ -201,7 +215,7 @@ function Calendar() {
   return (
     <div style={{ padding: "20px" }}>
 
-      {/* ERROR POPUP */}
+      {/* ERROR */}
       {errorMessage && (
         <div className="error-popup">
           <div className="error-box">
@@ -214,7 +228,7 @@ function Calendar() {
       {/* HEADER */}
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <h1>My Calendar</h1>
-        <button className="addevent" onClick={() => setShowModal(true)}>
+        <button onClick={() => setShowModal(true)}>
           Add Event
         </button>
       </div>
@@ -237,9 +251,10 @@ function Calendar() {
         <div className="modal-overlay">
           <div className="modal-box">
 
-            <h2>Create Event</h2>
+            <h2>Add Event</h2>
 
             <form onSubmit={createEvent}>
+
               <input
                 placeholder="Title"
                 value={formData.title}
@@ -284,25 +299,19 @@ function Calendar() {
               <button type="button" onClick={() => setShowModal(false)}>
                 Cancel
               </button>
+
             </form>
 
           </div>
         </div>
       )}
 
-      {/* ================= VIEW / EDIT MODAL ================= */}
+      {/* ================= VIEW EVENT ================= */}
       {showViewModal && selectedEvent && (
         <div className="modal-overlay">
           <div className="modal-box">
 
-            <div className="modal-header">
-              <h2>{isEditing ? "Edit Event" : "Event Details"}</h2>
-
-              <div className="modal-actions">
-                <span onClick={() => setIsEditing(true)} style={{ cursor: "pointer" }}>✏️</span>
-                <span onClick={closeModal} style={{ cursor: "pointer" }}>✖️</span>
-              </div>
-            </div>
+            <h2>Event Details</h2>
 
             {!isEditing ? (
               <>
@@ -310,7 +319,6 @@ function Calendar() {
                 <p>{selectedEvent.description}</p>
                 <p>{selectedEvent.location}</p>
 
-                {/* ================= AM/PM FIX ONLY HERE ================= */}
                 <p>
                   <b>Start:</b> {formatDateTime(selectedEvent.startDatetime)}
                 </p>
@@ -321,24 +329,17 @@ function Calendar() {
               </>
             ) : (
               <form onSubmit={updateEvent}>
+
                 <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
                 <input value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
                 <input value={editLocation} onChange={(e) => setEditLocation(e.target.value)} />
 
-                <input
-                  type="datetime-local"
-                  value={editStartDatetime}
-                  onChange={(e) => setEditStartDatetime(e.target.value)}
-                />
-
-                <input
-                  type="datetime-local"
-                  value={editEndDatetime}
-                  onChange={(e) => setEditEndDatetime(e.target.value)}
-                />
+                <input type="datetime-local" value={editStartDatetime} onChange={(e) => setEditStartDatetime(e.target.value)} />
+                <input type="datetime-local" value={editEndDatetime} onChange={(e) => setEditEndDatetime(e.target.value)} />
 
                 <button type="submit">Save</button>
                 <button type="button" onClick={() => setIsEditing(false)}>Cancel</button>
+
               </form>
             )}
 

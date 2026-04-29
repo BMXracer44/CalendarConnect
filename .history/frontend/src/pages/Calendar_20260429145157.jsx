@@ -34,20 +34,6 @@ function Calendar() {
     isPublic: true
   });
 
-  // ================= AM/PM FORMAT HELPER (ADDED ONLY) =================
-  const formatDateTime = (dateString) => {
-    if (!dateString) return "";
-
-    return new Date(dateString).toLocaleString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true
-    });
-  };
-
   // ================= LOAD EVENTS =================
   const loadEvents = async () => {
     if (!user?.id) return;
@@ -221,12 +207,7 @@ function Calendar() {
 
       {/* CALENDAR */}
       <FullCalendar
-        plugins={[
-          dayGridPlugin,
-          timeGridPlugin,
-          interactionPlugin,
-          bootstrap5Plugin
-        ]}
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrap5Plugin]}
         initialView="dayGridMonth"
         events={events}
         eventClick={handleEventClick}
@@ -309,15 +290,8 @@ function Calendar() {
                 <p><b>{selectedEvent.title}</b></p>
                 <p>{selectedEvent.description}</p>
                 <p>{selectedEvent.location}</p>
-
-                {/* ================= AM/PM FIX ONLY HERE ================= */}
-                <p>
-                  <b>Start:</b> {formatDateTime(selectedEvent.startDatetime)}
-                </p>
-
-                <p>
-                  <b>End:</b> {formatDateTime(selectedEvent.endDatetime)}
-                </p>
+                <p>{selectedEvent.startDatetime}</p>
+                <p>{selectedEvent.endDatetime}</p>
               </>
             ) : (
               <form onSubmit={updateEvent}>
@@ -325,17 +299,8 @@ function Calendar() {
                 <input value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
                 <input value={editLocation} onChange={(e) => setEditLocation(e.target.value)} />
 
-                <input
-                  type="datetime-local"
-                  value={editStartDatetime}
-                  onChange={(e) => setEditStartDatetime(e.target.value)}
-                />
-
-                <input
-                  type="datetime-local"
-                  value={editEndDatetime}
-                  onChange={(e) => setEditEndDatetime(e.target.value)}
-                />
+                <input type="datetime-local" value={editStartDatetime} onChange={(e) => setEditStartDatetime(e.target.value)} />
+                <input type="datetime-local" value={editEndDatetime} onChange={(e) => setEditEndDatetime(e.target.value)} />
 
                 <button type="submit">Save</button>
                 <button type="button" onClick={() => setIsEditing(false)}>Cancel</button>
