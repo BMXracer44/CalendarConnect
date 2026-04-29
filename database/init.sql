@@ -23,7 +23,7 @@ CREATE TABLE user_privacy_settings(
   user_id INT PRIMARY KEY,
   allow_friend_suggestions BOOLEAN DEFAULT FALSE,
   allow_location_tracking BOOLEAN DEFAULT FALSE,
-  allow_third_party_data BOOLEAN DEFAULT FALSE FOREIGN KEY(user_id) REFERENCES users(id)
+  allow_third_party_data BOOLEAN DEFAULT FALSE, FOREIGN KEY(user_id) REFERENCES users(id)
 ON DELETE CASCADE
 );
 -- Friendships Table 
@@ -59,16 +59,13 @@ ON UPDATE CURRENT_TIMESTAMP,
 ON DELETE CASCADE
 );
 -- Event Members 
-CREATE TABLE event_attendees(
+CREATE TABLE event_attendees (
   event_id INT NOT NULL,
   user_id INT NOT NULL,
-  status ENUM(
-    'invited',
-    'going',
-    'declined'
-  ) DEFAULT 'invited'PRIMARY KEY(event_id,
-  user_id),
-  FOREIGN KEY(event_id) REFERENCES events(id)
-ON DELETE CASCADE, FOREIGN KEY(user_id) REFERENCES users(id)
-ON DELETE CASCADE
+  status ENUM('invited', 'going', 'declined') DEFAULT 'invited',
+  PRIMARY KEY (event_id, user_id),
+  FOREIGN KEY (event_id) REFERENCES events(id)
+    ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE CASCADE
 );
