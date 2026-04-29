@@ -13,9 +13,17 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // ✅ GET USER BY USERNAME (THIS FIXES YOUR REACT ISSUE)
+    // GET USER BY USERNAME (THIS FIXES THE REACT ISSUE)
     @GetMapping("/{username}")
     public User getUser(@PathVariable String username) throws Exception {
         return userService.findByUsername(username);
+    }
+
+    /**
+     * Searches users using sql query
+     */
+    @GetMapping("/search")
+    public List<User> searchUsers(@RequestParam String query) {
+        return userService.searchUsers(query);
     }
 }

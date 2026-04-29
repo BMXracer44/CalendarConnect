@@ -75,6 +75,13 @@ public class UserService {
   }
 
   /**
+   * Searches users using sql query
+   */
+  public List<User> searchUsers(String query) {
+    return userRepository.searchUsers(query);
+  }
+
+  /**
    * Verify password
    */
   public boolean verifyPassword(String rawPassword, String encodedPassword) {
