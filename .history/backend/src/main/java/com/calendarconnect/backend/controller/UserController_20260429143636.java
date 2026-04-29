@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import com.calendarconnect.backend.dto.UserSearchResponse;
 import com.calendarconnect.backend.model.User;
 import com.calendarconnect.backend.service.UserService;
-import com.calendarconnect.backend.repository.UserRepository;
 
 @RestController
 @RequestMapping("/api/user")
@@ -18,10 +17,7 @@ public class UserController {
   @Autowired
   private UserService userService;
 
-  @Autowired
-  private UserRepository userRepository;
-
-  // ================= SEARCH USERS =================
+  // SEARCH USERS
   @GetMapping("/search")
   public List<UserSearchResponse> searchUsers(
       @RequestParam String query,
@@ -30,22 +26,19 @@ public class UserController {
     return userService.searchUsers(query, currentUserId);
   }
 
-  // ================= GET USER PROFILE =================
+  // ✅ THIS IS THE MISSING PIECE (FIXES YOUR ERROR)
   @GetMapping("/{username}")
   public User getUserByUsername(@PathVariable String username) throws Exception {
     return userService.findByUsername(username);
   }
-
-  // ================= UPDATE USER PROFILE (FIXED) =================
   @PutMapping("/update/{username}")
-  public User updateUser(
-      @PathVariable String username,
-      @RequestBody User updatedUser
-  ) throws Exception {
+public User updateUser(
+    @PathVariable String username,
+    @RequestBody User updatedUser
+) throws Exception {
 
     User existingUser = userService.findByUsername(username);
 
-    // Only update fields safely
     existingUser.setEmail(updatedUser.getEmail());
     existingUser.setFirst_name(updatedUser.getFirst_name());
     existingUser.setLast_name(updatedUser.getLast_name());
@@ -55,5 +48,5 @@ public class UserController {
     existingUser.setProfile_picture_url(updatedUser.getProfile_picture_url());
 
     return userRepository.save(existingUser);
-  }
+}
 }

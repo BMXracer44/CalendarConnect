@@ -33,26 +33,20 @@ const Profile = () => {
           }
         );
 
-        if (!res.ok) {
-          console.error("Profile fetch failed:", res.status);
-          return;
-        }
+        if (!res.ok) return;
 
         const data = await res.json();
-
-        console.log("PROFILE DATA:", data);
 
         setFormData({
           username: data.username || "",
           email: data.email || "",
-          firstName: data.first_name || data.firstName || "",
-          lastName: data.last_name || data.lastName || "",
+          firstName: data.firstName || "",
+          lastName: data.lastName || "",
           birthdate: data.birthdate || "",
-          phoneNumber: data.phone_number || data.phoneNumber || "",
+          phoneNumber: data.phoneNumber || "",
           bio: data.bio || "",
-          profilePictureUrl: data.profile_picture_url || data.profilePictureUrl || ""
+          profilePictureUrl: data.profilePictureUrl || ""
         });
-
       } catch (err) {
         console.error("Error loading profile:", err);
       }
@@ -76,10 +70,10 @@ const Profile = () => {
 
     const imageUrl = URL.createObjectURL(file);
 
-    setFormData((prev) => ({
-      ...prev,
+    setFormData({
+      ...formData,
       profilePictureUrl: imageUrl
-    }));
+    });
   };
 
   // ================= UPDATE PROFILE =================
@@ -98,16 +92,7 @@ const Profile = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`
           },
-          body: JSON.stringify({
-            username: formData.username,
-            email: formData.email,
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-            birthdate: formData.birthdate,
-            phone_number: formData.phoneNumber,
-            bio: formData.bio,
-            profile_picture_url: formData.profilePictureUrl
-          })
+          body: JSON.stringify(formData)
         }
       );
 
@@ -118,7 +103,6 @@ const Profile = () => {
       } else {
         setError(data.message || "Update failed");
       }
-
     } catch (err) {
       setError("Server error");
     }
@@ -163,24 +147,28 @@ const Profile = () => {
               name="username"
               value={formData.username}
               onChange={handleChange}
+              placeholder="Username"
             />
 
             <input
               name="email"
               value={formData.email}
               onChange={handleChange}
+              placeholder="Email"
             />
 
             <input
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
+              placeholder="First Name"
             />
 
             <input
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
+              placeholder="Last Name"
             />
 
             <input
@@ -194,12 +182,14 @@ const Profile = () => {
               name="phoneNumber"
               value={formData.phoneNumber}
               onChange={handleChange}
+              placeholder="Phone Number"
             />
 
             <input
               name="bio"
               value={formData.bio}
               onChange={handleChange}
+              placeholder="Bio"
             />
 
             <input

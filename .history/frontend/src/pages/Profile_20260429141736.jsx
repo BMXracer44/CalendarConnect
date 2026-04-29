@@ -7,12 +7,12 @@ const Profile = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
     birthdate: "",
-    phoneNumber: "",
+    phone_number: "",
     bio: "",
-    profilePictureUrl: ""
+    profile_picture_url: ""
   });
 
   const [error, setError] = useState("");
@@ -33,28 +33,22 @@ const Profile = () => {
           }
         );
 
-        if (!res.ok) {
-          console.error("Profile fetch failed:", res.status);
-          return;
-        }
+        if (!res.ok) return;
 
         const data = await res.json();
-
-        console.log("PROFILE DATA:", data);
 
         setFormData({
           username: data.username || "",
           email: data.email || "",
-          firstName: data.first_name || data.firstName || "",
-          lastName: data.last_name || data.lastName || "",
+          first_name: data.first_name || "",
+          last_name: data.last_name || "",
           birthdate: data.birthdate || "",
-          phoneNumber: data.phone_number || data.phoneNumber || "",
+          phone_number: data.phone_number || "",
           bio: data.bio || "",
-          profilePictureUrl: data.profile_picture_url || data.profilePictureUrl || ""
+          profile_picture_url: data.profile_picture_url || ""
         });
-
       } catch (err) {
-        console.error("Error loading profile:", err);
+        console.error(err);
       }
     };
 
@@ -63,26 +57,24 @@ const Profile = () => {
 
   // ================= HANDLE INPUT =================
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ================= HANDLE IMAGE =================
+  // ================= HANDLE FILE =================
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
+    // simple preview (you can later upload to backend instead)
     const imageUrl = URL.createObjectURL(file);
 
-    setFormData((prev) => ({
-      ...prev,
-      profilePictureUrl: imageUrl
-    }));
+    setFormData({
+      ...formData,
+      profile_picture_url: imageUrl
+    });
   };
 
-  // ================= UPDATE PROFILE =================
+  // ================= UPDATE =================
   const handleUpdate = async (e) => {
     e.preventDefault();
 
@@ -98,16 +90,7 @@ const Profile = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`
           },
-          body: JSON.stringify({
-            username: formData.username,
-            email: formData.email,
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-            birthdate: formData.birthdate,
-            phone_number: formData.phoneNumber,
-            bio: formData.bio,
-            profile_picture_url: formData.profilePictureUrl
-          })
+          body: JSON.stringify(formData)
         }
       );
 
@@ -118,7 +101,6 @@ const Profile = () => {
       } else {
         setError(data.message || "Update failed");
       }
-
     } catch (err) {
       setError("Server error");
     }
@@ -130,27 +112,27 @@ const Profile = () => {
     <div className="profile-container">
       <div className="profile-card">
 
-        {/* ================= LEFT SIDE ================= */}
+        {/* ================= LEFT SIDE (DISPLAY ONLY) ================= */}
         <div className="profile-left">
           <h2>{formData.username}</h2>
 
-          {formData.profilePictureUrl && (
+          {formData.profile_picture_url && (
             <img
-              src={formData.profilePictureUrl}
+              src={formData.profile_picture_url}
               alt="Profile"
               style={{ width: "120px", borderRadius: "50%" }}
             />
           )}
 
           <p><strong>Email:</strong> {formData.email}</p>
-          <p><strong>First Name:</strong> {formData.firstName}</p>
-          <p><strong>Last Name:</strong> {formData.lastName}</p>
+          <p><strong>First Name:</strong> {formData.first_name}</p>
+          <p><strong>Last Name:</strong> {formData.last_name}</p>
           <p><strong>Birthdate:</strong> {formData.birthdate}</p>
-          <p><strong>Phone:</strong> {formData.phoneNumber}</p>
+          <p><strong>Phone:</strong> {formData.phone_number}</p>
           <p><strong>Bio:</strong> {formData.bio}</p>
         </div>
 
-        {/* ================= RIGHT SIDE ================= */}
+        {/* ================= RIGHT SIDE (FORM) ================= */}
         <div className="profile-right">
           <h3>Update Profile</h3>
 
@@ -163,24 +145,28 @@ const Profile = () => {
               name="username"
               value={formData.username}
               onChange={handleChange}
+              placeholder="Username"
             />
 
             <input
               name="email"
               value={formData.email}
               onChange={handleChange}
+              placeholder="Email"
             />
 
             <input
-              name="firstName"
-              value={formData.firstName}
+              name="first_name"
+              value={formData.first_name}
               onChange={handleChange}
+              placeholder="First Name"
             />
 
             <input
-              name="lastName"
-              value={formData.lastName}
+              name="last_name"
+              value={formData.last_name}
               onChange={handleChange}
+              placeholder="Last Name"
             />
 
             <input
@@ -191,17 +177,20 @@ const Profile = () => {
             />
 
             <input
-              name="phoneNumber"
-              value={formData.phoneNumber}
+              name="phone_number"
+              value={formData.phone_number}
               onChange={handleChange}
+              placeholder="Phone Number"
             />
 
-            <input
+            <textarea
               name="bio"
               value={formData.bio}
               onChange={handleChange}
+              placeholder="Bio"
             />
 
+            {/* FIXED FILE INPUT */}
             <input
               type="file"
               accept="image/*"

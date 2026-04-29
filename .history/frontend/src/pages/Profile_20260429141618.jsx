@@ -7,12 +7,15 @@ const Profile = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    firstName: "",
-    lastName: "",
+    password: "",
+    confirmPassword: "",
+    first_name: "",
+    last_name: "",
     birthdate: "",
-    phoneNumber: "",
+    phone_number: "",
     bio: "",
-    profilePictureUrl: ""
+    profile_picture_url: "",
+    profile_picture_file: null
   });
 
   const [error, setError] = useState("");
@@ -33,26 +36,23 @@ const Profile = () => {
           }
         );
 
-        if (!res.ok) {
-          console.error("Profile fetch failed:", res.status);
-          return;
-        }
+        if (!res.ok) return;
 
         const data = await res.json();
-
-        console.log("PROFILE DATA:", data);
 
         setFormData({
           username: data.username || "",
           email: data.email || "",
-          firstName: data.first_name || data.firstName || "",
-          lastName: data.last_name || data.lastName || "",
+          first_name: data.first_name || "",
+          last_name: data.last_name || "",
           birthdate: data.birthdate || "",
-          phoneNumber: data.phone_number || data.phoneNumber || "",
+          phone_number: data.phone_number || "",
           bio: data.bio || "",
-          profilePictureUrl: data.profile_picture_url || data.profilePictureUrl || ""
+          profile_picture_url: data.profile_picture_url || "",
+          password: "",
+          confirmPassword: "",
+          profile_picture_file: null
         });
-
       } catch (err) {
         console.error("Error loading profile:", err);
       }
@@ -69,45 +69,48 @@ const Profile = () => {
     });
   };
 
-  // ================= HANDLE IMAGE =================
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const imageUrl = URL.createObjectURL(file);
-
-    setFormData((prev) => ({
-      ...prev,
-      profilePictureUrl: imageUrl
-    }));
-  };
-
-  // ================= UPDATE PROFILE =================
+  // ================= HANDLE UPDATE =================
   const handleUpdate = async (e) => {
     e.preventDefault();
 
     setError("");
     setSuccess("");
 
+    if (
+      formData.password &&
+      formData.password !== formData.confirmPassword
+    ) {
+      setError("Passwords do not match");
+      return;
+    }
+
     try {
+      const formDataToSend = new FormData();
+
+      formDataToSend.append("username", formData.username);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("first_name", formData.first_name);
+      formDataToSend.append("last_name", formData.last_name);
+      formDataToSend.append("birthdate", formData.birthdate);
+      formDataToSend.append("phone_number", formData.phone_number);
+      formDataToSend.append("bio", formData.bio);
+      formDataToSend.append("password", formData.password);
+
+      if (formData.profile_picture_file) {
+        formDataToSend.append(
+          "file",
+          formData.profile_picture_file
+        );
+      }
+
       const res = await fetch(
         `http://localhost:8080/api/user/update/${user.username}`,
         {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`
           },
-          body: JSON.stringify({
-            username: formData.username,
-            email: formData.email,
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-            birthdate: formData.birthdate,
-            phone_number: formData.phoneNumber,
-            bio: formData.bio,
-            profile_picture_url: formData.profilePictureUrl
-          })
+          body: formDataToSend
         }
       );
 
@@ -118,13 +121,14 @@ const Profile = () => {
       } else {
         setError(data.message || "Update failed");
       }
-
     } catch (err) {
       setError("Server error");
     }
   };
 
-  if (!user) return <p>Please log in to view profile.</p>;
+  if (!user) {
+    return <p>Please log in to view profile.</p>;
+  }
 
   return (
     <div className="profile-container">
@@ -132,26 +136,30 @@ const Profile = () => {
 
         {/* ================= LEFT SIDE ================= */}
         <div className="profile-left">
+
+          <div className="profile-image">
+            <img
+              src={
+                formData.profile_picture_url ||
+                "https://via.placeholder.com/150"
+              }
+              alt="Profile"
+            />
+          </div>
+
           <h2>{formData.username}</h2>
 
-          {formData.profilePictureUrl && (
-            <img
-              src={formData.profilePictureUrl}
-              alt="Profile"
-              style={{ width: "120px", borderRadius: "50%" }}
-            />
-          )}
-
           <p><strong>Email:</strong> {formData.email}</p>
-          <p><strong>First Name:</strong> {formData.firstName}</p>
-          <p><strong>Last Name:</strong> {formData.lastName}</p>
+          <p><strong>First Name:</strong> {formData.first_name}</p>
+          <p><strong>Last Name:</strong> {formData.last_name}</p>
           <p><strong>Birthdate:</strong> {formData.birthdate}</p>
-          <p><strong>Phone:</strong> {formData.phoneNumber}</p>
+          <p><strong>Phone:</strong> {formData.phone_number}</p>
           <p><strong>Bio:</strong> {formData.bio}</p>
         </div>
 
         {/* ================= RIGHT SIDE ================= */}
         <div className="profile-right">
+
           <h3>Update Profile</h3>
 
           {error && <p style={{ color: "red" }}>{error}</p>}
@@ -163,24 +171,44 @@ const Profile = () => {
               name="username"
               value={formData.username}
               onChange={handleChange}
+              placeholder="Username"
             />
 
             <input
               name="email"
               value={formData.email}
               onChange={handleChange}
+              placeholder="Email"
             />
 
             <input
-              name="firstName"
-              value={formData.firstName}
+              type="password"
+              name="password"
+              value={formData.password}
               onChange={handleChange}
+              placeholder="New Password"
             />
 
             <input
-              name="lastName"
-              value={formData.lastName}
+              type="password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
               onChange={handleChange}
+              placeholder="Confirm Password"
+            />
+
+            <input
+              name="first_name"
+              value={formData.first_name}
+              onChange={handleChange}
+              placeholder="First Name"
+            />
+
+            <input
+              name="last_name"
+              value={formData.last_name}
+              onChange={handleChange}
+              placeholder="Last Name"
             />
 
             <input
@@ -191,28 +219,34 @@ const Profile = () => {
             />
 
             <input
-              name="phoneNumber"
-              value={formData.phoneNumber}
+              name="phone_number"
+              value={formData.phone_number}
               onChange={handleChange}
+              placeholder="Phone Number"
             />
 
             <input
               name="bio"
               value={formData.bio}
               onChange={handleChange}
+              placeholder="Bio"
             />
 
+            {/* FILE UPLOAD FIXED */}
             <input
               type="file"
-              accept="image/*"
-              onChange={handleFileChange}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  profile_picture_file: e.target.files[0]
+                })
+              }
             />
 
             <button type="submit">Update Profile</button>
-
           </form>
-        </div>
 
+        </div>
       </div>
     </div>
   );
