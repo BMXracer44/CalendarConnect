@@ -1,13 +1,20 @@
 package com.calendarconnect.backend.service;
 
-import com.calendarconnect.backend.dto.RegisterRequest;
-import com.calendarconnect.backend.model.User;
-import com.calendarconnect.backend.repository.UserRepository;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+
+import com.calendarconnect.backend.dto.RegisterRequest;
+import com.calendarconnect.backend.dto.UserSearchResponse;
+import com.calendarconnect.backend.model.Friendship;
+import com.calendarconnect.backend.model.User;
+import com.calendarconnect.backend.repository.FriendshipRepository;
+import com.calendarconnect.backend.repository.UserRepository;
 
 @Service
 public class UserService {
@@ -15,11 +22,11 @@ public class UserService {
   @Autowired
   private UserRepository userRepository;
 
+  @Autowired
+  private FriendshipRepository friendshipRepository;
+
   private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-  /**
-   * Register a new user
-   */
   public User registerUser(RegisterRequest request) throws Exception {
     // Validate input
     if (request.getUsername() == null || request.getUsername().trim().isEmpty()) {
@@ -66,19 +73,32 @@ public class UserService {
     return userRepository.save(user);
   }
 
-  /**
-   * Find user by username
-   */
+  public List<UserSearchResponse> searchUsers(String query, int currentUserId) {
+
+    List<User> users = userRepository.searchUsers(query);
+
+    return users.stream().map(user -> {
+
+      String status = "none";
+
+      Optional<Friendship> f =
+          friendshipRepository.findByRequesterIdAndAddresseeIdOrRequesterIdAndAddresseeId(
+              currentUserId, user.getId(),
+              user.getId(), currentUserId
+          );
+
+      if (f.isPresent()) {
+        status = f.get().getStatus().name();
+      }
+
+      return new UserSearchResponse(user, status);
+
+    }).toList();
+  }
+
   public User findByUsername(String username) throws Exception {
     return userRepository.findByUsername(username)
         .orElseThrow(() -> new Exception("User not found"));
-  }
-
-  /**
-   * Searches users using sql query
-   */
-  public List<User> searchUsers(String query) {
-    return userRepository.searchUsers(query);
   }
 
   /**

@@ -1,32 +1,30 @@
 package com.calendarconnect.backend.controller;
 
-import com.calendarconnect.backend.model.User;
-import com.calendarconnect.backend.service.UserService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.calendarconnect.backend.dto.UserSearchResponse;
+import com.calendarconnect.backend.service.UserService;
 
 @RestController
 @RequestMapping("/api/user")
 @CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+  @Autowired
+  private UserService userService;
 
-    // GET USER BY USERNAME (THIS FIXES THE REACT ISSUE)
-    @GetMapping("/{username}")
-    public User getUser(@PathVariable String username) throws Exception {
-        return userService.findByUsername(username);
-    }
-
-    /**
-     * Searches users using sql query
-     */
-    @GetMapping("/search")
-    public List<UserSearchResponse> searchUsers(@RequestParam String query) {
-    return userService.searchUsers(query)
-        .stream()
-        .map(UserSearchResponse::new)
-        .toList();
-    }
+  @GetMapping("/search")
+  public List<UserSearchResponse> searchUsers(
+      @RequestParam String query,
+      @RequestParam int currentUserId
+  ) {
+    return userService.searchUsers(query, currentUserId);
+  }
 }
