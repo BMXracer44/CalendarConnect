@@ -38,10 +38,10 @@ CREATE TABLE friendships(
   
   FOREIGN KEY(requester_id) REFERENCES users(id)ON DELETE CASCADE,
   FOREIGN KEY(addressee_id) REFERENCES users(id) ON DELETE CASCADE, 
-  UNIQUE KEY unique_friendship(requester_id,addressee_id)-- Prevents duplicate records 
   
-  CONSTRAINT no_self_friend CHECK (requester_id <> addressee_id),
-  CONSTRAINT check_order CHECK (requester_id < addressee_id)
+  UNIQUE KEY unique_friendship(requester_id,addressee_id)-- Prevents duplicate records 
+  CONSTRAINT no_self_friend CHECK (requester_id <> addressee_id), --prevents self friending 
+  CONSTRAINT check_order CHECK (requester_id < addressee_id) -- prevents reciprocal duplicates 
 );
 -- Events Table 
 CREATE TABLE events(
