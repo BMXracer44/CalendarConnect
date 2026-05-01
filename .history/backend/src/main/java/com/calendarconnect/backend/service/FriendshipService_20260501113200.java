@@ -1,10 +1,11 @@
 package com.calendarconnect.backend.service;
 
-import com.calendarconnect.backend.dto.FriendRequestDTO;
+import com.calendarconnect.backend.dto.UserSearchResponse;
 import com.calendarconnect.backend.model.Friendship;
 import com.calendarconnect.backend.model.User;
 import com.calendarconnect.backend.repository.FriendshipRepository;
 import com.calendarconnect.backend.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,57 +44,55 @@ public class FriendshipService {
 
     Friendship f = friendshipRepository
         .findByRequesterIdAndAddresseeIdOrRequesterIdAndAddresseeId(from, to, to, from)
-        .orElseThrow(() -> new RuntimeException("Request not found"));
+        .orElseThrow();
 
     f.setStatus(Friendship.Status.accepted);
-
     friendshipRepository.save(f);
   }
 
-  // ================= GET PENDING =================
-  public List<FriendRequestDTO> getPendingRequests(int userId) {
+  // ================= DECLINE =================
+  public void declineRequest(int from, int to) {
+
+    Friendship f = friendshipRepository
+        .findByRequesterIdAndAddresseeIdOrRequesterIdAndAddresseeId(from, to, to, from)
+        .orElseThrow();
+
+    f.setStatus(Friendship.Status.declined);
+    friendshipRepository.save(f);
+  }
+
+  // ================= FRIENDS LIST =================
+  public List<UserSearchResponse> getFriends(int userId) {
 
     return friendshipRepository.findAll().stream()
         .filter(f ->
-            f.getAddresseeId() != null &&
-            f.getAddresseeId().equals(userId) &&
-            f.getStatus() == Friendship.Status.pending
+            (f.getRequesterId() == userId || f.getAddresseeId() == userId)
+            && f.getStatus() == Friendship.Status.accepted
         )
         .map(f -> {
-          User u = userRepository.findById(f.getRequesterId()).orElse(null);
+          int friendId = (f.getRequesterId() == userId)
+              ? f.getAddresseeId()
+              : f.getRequesterId();
 
-          return new FriendRequestDTO(
-              f.getId(),
-              f.getRequesterId(),
-              u != null ? u.getUsername() : "Unknown"
-          );
+          User user = userRepository.findById(friendId).orElseThrow();
+
+          return new UserSearchResponse(user, "accepted");
         })
         .toList();
   }
-  public List<FriendRequestDTO> getFriends(int userId) {
 
-  return friendshipRepository.findAll().stream()
-      .filter(f ->
-          f.getStatus() == Friendship.Status.accepted &&
-          (
-              f.getRequesterId().equals(userId) ||
-              f.getAddresseeId().equals(userId)
-          )
-      )
-      .map(f -> {
+  // ================= PENDING REQUESTS =================
+  public List<UserSearchResponse> getPendingRequests(int userId) {
 
-        int friendId = f.getRequesterId().equals(userId)
-            ? f.getAddresseeId()
-            : f.getRequesterId();
-
-        User u = userRepository.findById(friendId).orElse(null);
-
-        return new FriendRequestDTO(
-            f.getId(),
-            friendId,
-            u != null ? u.getUsername() : "Unknown"
-        );
-      })
-      .toList();
-}
+    return friendshipRepository.findAll().stream()
+        .filter(f ->
+            f.getAddresseeId() == userId &&
+            f.getStatus() == Friendship.Status.pending
+        )
+        .map(f -> {
+          User requester = userRepository.findById(f.getRequesterId()).orElseThrow();
+          return new UserSearchResponse(requester, "pending");
+        })
+        .toList();
+  }
 }

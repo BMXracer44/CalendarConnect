@@ -38,8 +38,4 @@ public class FriendshipController {
   public List<FriendRequestDTO> getRequests(@PathVariable int userId) {
     return friendshipService.getPendingRequests(userId);
   }
-  @GetMapping("/{userId}")
-  public List<FriendRequestDTO> getFriends(@PathVariable int userId) {
-    return friendshipService.getFriends(userId);
-  }
 }

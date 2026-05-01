@@ -653,120 +653,84 @@ body {
   position: relative;
 }
 
-/* Bell button (matches login button style) */
-.bell-button {
-  position: relative;
-
-  padding: 10px 14px;
-
-  border: none;
-  border-radius: 12px;
-
-  background: #667eea;
-  color: white;
-
-  cursor: pointer;
-
-  font-size: 16px;
-
-  transition: 0.2s ease;
-}
-
-.bell-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-}
-
-/* Notification badge */
-.bell-count {
+.dropdown {
   position: absolute;
-  top: -6px;
-  right: -6px;
+  right: 0;
+  top: 40px;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  width: 200px;
+}
+.friends-card {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
 
-  background: #ef4444;
-  color: white;
+/* =========================
+   FRIENDS PAGE (LOGIN STYLE)
+========================= */
+.friends-container {
+  min-height: calc(100vh - 80px);
 
-  font-size: 11px;
-  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 
-  width: 18px;
-  height: 18px;
+  padding: 40px 20px;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.friends-card {
+  width: 100%;
+  max-width: 520px;
+
+  background: white;
+
+  padding: 50px 45px;
+
+  border-radius: 18px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+.friend-item button:hover {
+  transform: translateY(-1px);
+}
+.friends-container {
+  min-height: calc(100vh - 80px);
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  border-radius: 50%;
-}
-
-/* DROPDOWN CARD (MATCH LOGIN CARD STYLE) */
-.dropdown-card {
-  position: absolute;
-  right: 0;
-  top: 50px;
-
-  width: 260px;
-
-  background: white;
-
-  padding: 20px;
-
-  border-radius: 16px;
-
-  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-
-  animation: fadeIn 0.2s ease;
-
-  z-index: 9999;
-}
-
-.dropdown-card h4 {
-  margin: 0 0 12px 0;
-  font-size: 16px;
-  color: #333;
-}
-
-/* each request row */
-.dropdown-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  padding: 10px;
-
-  background: #f4f6fb;
-
-  border-radius: 10px;
-
-  margin-bottom: 8px;
-}
-
-.dropdown-item span {
-  font-size: 14px;
-  color: #333;
-}
-
-/* accept button matches login button */
-.accept-btn {
-  padding: 6px 10px;
-
-  border: none;
-  border-radius: 10px;
+  padding: 40px 20px;
 
   background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-
-  font-size: 12px;
-  font-weight: 600;
-
-  cursor: pointer;
 }
 
-.accept-btn:hover {
-  transform: translateY(-2px);
-}
+/* SAME STYLE AS LOGIN CARD */
+.friends-card {
+  width: 100%;
+  max-width: 520px;
 
-.empty-text {
-  font-size: 13px;
-  color: #777;
+  background: #ffffff;
+
+  padding: 50px 45px;
+
+  border-radius: 18px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 25px;
+
+  animation: fadeIn 0.4s ease-in-out;
 }

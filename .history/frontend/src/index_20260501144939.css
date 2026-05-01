@@ -653,102 +653,110 @@ body {
   position: relative;
 }
 
-/* Bell button (matches login button style) */
-.bell-button {
-  position: relative;
-
-  padding: 10px 14px;
-
-  border: none;
-  border-radius: 12px;
-
-  background: #667eea;
-  color: white;
-
-  cursor: pointer;
-
-  font-size: 16px;
-
-  transition: 0.2s ease;
-}
-
-.bell-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-}
-
-/* Notification badge */
-.bell-count {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-
-  background: #ef4444;
-  color: white;
-
-  font-size: 11px;
-  font-weight: bold;
-
-  width: 18px;
-  height: 18px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  border-radius: 50%;
-}
-
-/* DROPDOWN CARD (MATCH LOGIN CARD STYLE) */
-.dropdown-card {
+.dropdown {
   position: absolute;
   right: 0;
-  top: 50px;
-
-  width: 260px;
-
+  top: 40px;
   background: white;
-
-  padding: 20px;
-
-  border-radius: 16px;
-
-  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-
-  animation: fadeIn 0.2s ease;
-
-  z-index: 9999;
+  padding: 10px;
+  border-radius: 10px;
+  width: 200px;
+}
+.friends-card {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
-.dropdown-card h4 {
-  margin: 0 0 12px 0;
-  font-size: 16px;
+/* =========================
+   FRIENDS HEADER
+========================= */
+.friends-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.friends-header h2 {
+  margin: 0;
+  font-size: 22px;
   color: #333;
 }
 
-/* each request row */
-.dropdown-item {
+/* =========================
+   SEARCH SECTION (TOP)
+========================= */
+.search-dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  padding: 15px;
+
+  background: #f4f6fb;
+  border-radius: 14px;
+}
+
+/* =========================
+   FRIEND REQUESTS SECTION
+========================= */
+.friends-requests {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  padding: 15px;
+
+  background: #f9fafc;
+  border-radius: 14px;
+}
+
+.friends-requests h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #444;
+}
+
+/* =========================
+   FRIENDS LIST SECTION
+========================= */
+.friends-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  padding: 15px;
+
+  background: #ffffff;
+  border-radius: 14px;
+}
+
+/* =========================
+   EACH FRIEND ROW
+========================= */
+.friend-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  padding: 10px;
+  padding: 12px 14px;
 
   background: #f4f6fb;
+  border-radius: 12px;
 
-  border-radius: 10px;
-
-  margin-bottom: 8px;
+  transition: 0.2s ease;
 }
 
-.dropdown-item span {
-  font-size: 14px;
-  color: #333;
+.friend-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
 }
 
-/* accept button matches login button */
-.accept-btn {
-  padding: 6px 10px;
+/* =========================
+   SMALL BUTTON STYLE INSIDE LIST
+========================= */
+.friend-item button {
+  padding: 8px 12px;
 
   border: none;
   border-radius: 10px;
@@ -760,13 +768,73 @@ body {
   font-weight: 600;
 
   cursor: pointer;
+
+  transition: 0.2s ease;
 }
 
-.accept-btn:hover {
-  transform: translateY(-2px);
+.friend-item button:hover {
+  transform: translateY(-1px);
+}
+.friends-container {
+  min-height: calc(100vh - 80px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 40px 20px;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
 }
 
-.empty-text {
-  font-size: 13px;
-  color: #777;
+/* SAME STYLE AS LOGIN CARD */
+.friends-card {
+  width: 100%;
+  max-width: 520px;
+
+  background: #ffffff;
+
+  padding: 50px 45px;
+
+  border-radius: 18px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 25px;
+
+  animation: fadeIn 0.4s ease-in-out;
+}
+/* =========================
+   FRIENDS PAGE (LOGIN STYLE)
+========================= */
+.friends-container {
+  min-height: calc(100vh - 80px);
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 40px 20px;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.friends-card {
+  width: 100%;
+  max-width: 520px;
+
+  background: white;
+
+  padding: 50px 45px;
+
+  border-radius: 18px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }

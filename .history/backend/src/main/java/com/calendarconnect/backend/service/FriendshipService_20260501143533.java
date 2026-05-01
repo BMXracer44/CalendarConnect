@@ -70,30 +70,4 @@ public class FriendshipService {
         })
         .toList();
   }
-  public List<FriendRequestDTO> getFriends(int userId) {
-
-  return friendshipRepository.findAll().stream()
-      .filter(f ->
-          f.getStatus() == Friendship.Status.accepted &&
-          (
-              f.getRequesterId().equals(userId) ||
-              f.getAddresseeId().equals(userId)
-          )
-      )
-      .map(f -> {
-
-        int friendId = f.getRequesterId().equals(userId)
-            ? f.getAddresseeId()
-            : f.getRequesterId();
-
-        User u = userRepository.findById(friendId).orElse(null);
-
-        return new FriendRequestDTO(
-            f.getId(),
-            friendId,
-            u != null ? u.getUsername() : "Unknown"
-        );
-      })
-      .toList();
-}
 }

@@ -1,11 +1,9 @@
 package com.calendarconnect.backend.controller;
 
-import com.calendarconnect.backend.dto.FriendRequestDTO;
+import com.calendarconnect.backend.model.Friendship;
 import com.calendarconnect.backend.service.FriendshipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/friends")
@@ -15,7 +13,7 @@ public class FriendshipController {
   @Autowired
   private FriendshipService friendshipService;
 
-  // ================= SEND =================
+  // ================= ADD FRIEND =================
   @PostMapping("/add")
   public void sendRequest(
       @RequestParam int from,
@@ -24,7 +22,7 @@ public class FriendshipController {
     friendshipService.sendRequest(from, to);
   }
 
-  // ================= ACCEPT =================
+  // ================= ACCEPT FRIEND =================
   @PostMapping("/accept")
   public void acceptRequest(
       @RequestParam int from,
@@ -32,14 +30,8 @@ public class FriendshipController {
   ) {
     friendshipService.acceptRequest(from, to);
   }
-
-  // ================= GET REQUESTS =================
   @GetMapping("/requests/{userId}")
-  public List<FriendRequestDTO> getRequests(@PathVariable int userId) {
-    return friendshipService.getPendingRequests(userId);
-  }
-  @GetMapping("/{userId}")
-  public List<FriendRequestDTO> getFriends(@PathVariable int userId) {
-    return friendshipService.getFriends(userId);
-  }
+public List<Friendship> getRequests(@PathVariable int userId) {
+  return friendshipService.getPendingRequests(userId);
+}
 }
