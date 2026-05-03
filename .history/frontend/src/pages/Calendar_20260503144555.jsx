@@ -121,13 +121,13 @@ function Calendar() {
     }
   };
 
-  const handleEventClick = (info) => {
-  const e = info.event;
+  const formatForInput = (date) => {
+  if (!date) return "";
+  return new Date(date).toISOString().slice(0, 16);
+};
 
-  const formatForInput = (dateString) => {
-    if (!dateString) return "";
-    return new Date(dateString).toISOString().slice(0, 16);
-  };
+const handleEventClick = (info) => {
+  const e = info.event;
 
   const eventData = {
     id: e.id,
@@ -135,7 +135,7 @@ function Calendar() {
     description: e.extendedProps?.description,
     location: e.extendedProps?.location,
 
-    // 🔥 FIX IS HERE (IMPORTANT CHANGE)
+    // 🔥 FIX IS HERE (IMPORTANT)
     startDatetime: formatForInput(e.start),
     endDatetime: formatForInput(e.end),
 
@@ -145,15 +145,8 @@ function Calendar() {
 
   setSelectedEvent(eventData);
 
-  setEditTitle(eventData.title || "");
-  setEditDescription(eventData.description || "");
-  setEditLocation(eventData.location || "");
-
-  // 🔥 THESE NOW RECEIVE CLEAN FORMAT
   setEditStartDatetime(eventData.startDatetime);
   setEditEndDatetime(eventData.endDatetime);
-
-  setEditIsPublic(eventData.isPublic ?? true);
 
   setIsEditing(false);
   setShowViewModal(true);

@@ -121,43 +121,7 @@ function Calendar() {
     }
   };
 
-  const handleEventClick = (info) => {
-  const e = info.event;
-
-  const formatForInput = (dateString) => {
-    if (!dateString) return "";
-    return new Date(dateString).toISOString().slice(0, 16);
-  };
-
-  const eventData = {
-    id: e.id,
-    title: e.title.replace("🔒 ", ""),
-    description: e.extendedProps?.description,
-    location: e.extendedProps?.location,
-
-    // 🔥 FIX IS HERE (IMPORTANT CHANGE)
-    startDatetime: formatForInput(e.start),
-    endDatetime: formatForInput(e.end),
-
-    isPublic: e.extendedProps?.isPublic,
-    userId: e.extendedProps?.userId
-  };
-
-  setSelectedEvent(eventData);
-
-  setEditTitle(eventData.title || "");
-  setEditDescription(eventData.description || "");
-  setEditLocation(eventData.location || "");
-
-  // 🔥 THESE NOW RECEIVE CLEAN FORMAT
-  setEditStartDatetime(eventData.startDatetime);
-  setEditEndDatetime(eventData.endDatetime);
-
-  setEditIsPublic(eventData.isPublic ?? true);
-
-  setIsEditing(false);
-  setShowViewModal(true);
-};
+    
 
   const updateEvent = async (e) => {
     e.preventDefault();

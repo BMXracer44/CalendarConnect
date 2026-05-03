@@ -122,42 +122,31 @@ function Calendar() {
   };
 
   const handleEventClick = (info) => {
-  const e = info.event;
+    const e = info.event;
 
-  const formatForInput = (dateString) => {
-    if (!dateString) return "";
-    return new Date(dateString).toISOString().slice(0, 16);
+    const eventData = {
+      id: e.id,
+      title: e.title.replace("🔒 ", ""),
+      description: e.extendedProps?.description,
+      location: e.extendedProps?.location,
+      startDatetime: e.startStr,
+      endDatetime: e.endStr,
+      isPublic: e.extendedProps?.isPublic,
+      userId: e.extendedProps?.userId
+    };
+
+    setSelectedEvent(eventData);
+
+    setEditTitle(eventData.title || "");
+    setEditDescription(eventData.description || "");
+    setEditLocation(eventData.location || "");
+    setEditStartDatetime(eventData.startDatetime || "");
+    setEditEndDatetime(eventData.endDatetime || "");
+    setEditIsPublic(eventData.isPublic ?? true);
+
+    setIsEditing(false);
+    setShowViewModal(true);
   };
-
-  const eventData = {
-    id: e.id,
-    title: e.title.replace("🔒 ", ""),
-    description: e.extendedProps?.description,
-    location: e.extendedProps?.location,
-
-    // 🔥 FIX IS HERE (IMPORTANT CHANGE)
-    startDatetime: formatForInput(e.start),
-    endDatetime: formatForInput(e.end),
-
-    isPublic: e.extendedProps?.isPublic,
-    userId: e.extendedProps?.userId
-  };
-
-  setSelectedEvent(eventData);
-
-  setEditTitle(eventData.title || "");
-  setEditDescription(eventData.description || "");
-  setEditLocation(eventData.location || "");
-
-  // 🔥 THESE NOW RECEIVE CLEAN FORMAT
-  setEditStartDatetime(eventData.startDatetime);
-  setEditEndDatetime(eventData.endDatetime);
-
-  setEditIsPublic(eventData.isPublic ?? true);
-
-  setIsEditing(false);
-  setShowViewModal(true);
-};
 
   const updateEvent = async (e) => {
     e.preventDefault();
@@ -226,18 +215,36 @@ function Calendar() {
       setErrorMessage("Server error during delete");
     }
   };
-const formatForInput = (dateString) => {
-  if (!dateString) return "";
-
-  return new Date(dateString)
-    .toISOString()
-    .slice(0, 16);
+const formatForInput = (date) => {
+  if (!date) return "";
+  return new Date(date).toISOString().slice(0, 16);
 };
-  const closeModal = () => {
-    setShowViewModal(false);
-    setIsEditing(false);
-    setSelectedEvent(null);
+
+const handleEventClick = (info) => {
+  const e = info.event;
+
+  const eventData = {
+    id: e.id,
+    title: e.title.replace("🔒 ", ""),
+    description: e.extendedProps?.description,
+    location: e.extendedProps?.location,
+
+    // 🔥 FIX IS HERE (IMPORTANT)
+    startDatetime: formatForInput(e.start),
+    endDatetime: formatForInput(e.end),
+
+    isPublic: e.extendedProps?.isPublic,
+    userId: e.extendedProps?.userId
   };
+
+  setSelectedEvent(eventData);
+
+  setEditStartDatetime(eventData.startDatetime);
+  setEditEndDatetime(eventData.endDatetime);
+
+  setIsEditing(false);
+  setShowViewModal(true);
+};
 
   if (!user) return <p>Please log in</p>;
 
