@@ -56,17 +56,16 @@ const Friends = () => {
 
   // ================= ACCEPT REQUEST =================
   const acceptFriend = (fromId) => {
-  fetch(
-    `http://localhost:8080/api/friends/accept?from=${fromId}&to=${user.id}`,
-    { method: "POST" }
-  )
-    .then(() => {
-      loadFriends();
-      loadRequests();
-      loadSentRequests(); // 🔥 ADD THIS
-    })
-    .catch(() => console.log("Accept failed"));
-};
+    fetch(
+      `http://localhost:8080/api/friends/accept?from=${fromId}&to=${user.id}`,
+      { method: "POST" }
+    )
+      .then(() => {
+        loadFriends();
+        loadRequests();
+      })
+      .catch(() => console.log("Accept failed"));
+  };
   const loadSentRequests = () => {
   fetch(`http://localhost:8080/api/friends/requests/sent/${user.id}`)
     .then((res) => res.json())

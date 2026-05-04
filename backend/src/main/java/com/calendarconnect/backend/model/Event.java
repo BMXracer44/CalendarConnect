@@ -1,10 +1,16 @@
 package com.calendarconnect.backend.model;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "events")
@@ -14,7 +20,6 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //FIX: use Long everywhere
     @Column(name = "creator_id", nullable = false)
     private Long creatorId;
 
@@ -33,7 +38,6 @@ public class Event {
     @Column(name = "end_datetime", nullable = false)
     private LocalDateTime endDatetime;
 
-    // ✔ KEEP BOOLEAN BUT STANDARDIZE GETTERS
     @Column(name = "is_public", nullable = false)
     private Boolean isPublic;
 
@@ -104,8 +108,6 @@ public class Event {
     public void setEndDatetime(LocalDateTime endDatetime) {
         this.endDatetime = endDatetime;
     }
-
-    // ✅ FIXED BOOLEAN ACCESSORS (IMPORTANT FOR DTO MAPPING)
 
     public Boolean getIsPublic() {
         return isPublic;

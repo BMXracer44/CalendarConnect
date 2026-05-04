@@ -55,7 +55,7 @@ const Friends = () => {
   };
 
   // ================= ACCEPT REQUEST =================
-  const acceptFriend = (fromId) => {
+  cconst acceptFriend = (fromId) => {
   fetch(
     `http://localhost:8080/api/friends/accept?from=${fromId}&to=${user.id}`,
     { method: "POST" }

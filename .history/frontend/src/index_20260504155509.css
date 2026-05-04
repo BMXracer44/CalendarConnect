@@ -299,52 +299,14 @@ body {
 ========================= */
 .calendar-page {
   min-height: calc(100vh - 80px);
+
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
+  align-items: flex-start;
+
   padding: 40px 20px;
+
   background: linear-gradient(135deg, #667eea, #764ba2);
-}
-
-/* =========================
-   CALENDAR OUTER WRAPPER
-   Single centered column that owns both
-   the controls row and the calendar block.
-========================= */
-.calendar-outer {
-  width: 100%;
-  max-width: 1100px;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-/* Controls row: [Hide/Show]   My Calendar   [+ Add Event] */
-.calendar-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  width: 100%;
-}
-
-.calendar-title {
-  margin: 0;
-  color: white;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  font-size: 28px;
-  text-align: center;
-  flex: 1;
-}
-
-/* =========================
-   CALENDAR LAYOUT
-   position:relative so the overlay
-   sidebar can anchor to it.
-========================= */
-.calendar-layout {
-  position: relative;
-  width: 100%;
 }
 
 /* =========================
@@ -923,32 +885,30 @@ body {
   padding-left: 12px;
 }
 
-/* =========================
-   FRIENDS SECTION TITLES (INCLUDE SENT REQUESTS)
-========================= */
-.search-dropdown h2,
-.friends-requests h3,
-.friends-list h3,
-.friends-sent-requests h3 {
-  margin: 0 0 14px 0;
+/* ACCENT BAR FOR HEADINGS */
+.search-dropdown h2::before,
+.friends-requests h3::before,
+.friends-list h3::before {
+  content: "";
 
-  font-size: 18px;
-  font-weight: 800;
+  position: absolute;
+  left: 0;
+  top: 2px;
 
-  color: #333;
+  width: 4px;
+  height: 100%;
 
-  position: relative;
+  border-radius: 4px;
 
-  padding-left: 12px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
 }
 
 /* =========================
-   FRIENDS SECTION CARDS (INCLUDE SENT)
+   FRIENDS SECTION CARDS
 ========================= */
 .search-dropdown,
 .friends-requests,
-.friends-list,
-.friends-sent-requests {
+.friends-list {
   background: #f9fafb;
 
   padding: 18px;
@@ -962,26 +922,24 @@ body {
   transition: 0.2s ease;
 }
 
-/* hover effect same as others */
+/* subtle hover effect */
 .search-dropdown:hover,
 .friends-requests:hover,
-.friends-list:hover,
-.friends-sent-requests:hover {
+.friends-list:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 25px rgba(0,0,0,0.08);
 }
 
 /* =========================
-   EMPTY STATES (INCLUDE SENT)
+   EMPTY STATES
 ========================= */
 .friends-requests p,
-.friends-list p,
-.friends-sent-requests p {
+.friends-list p {
   color: #888;
   font-size: 13px;
   margin-top: 8px;
 }
-/*=========================
+/* =========================
    GLOBAL
 ========================= */
 body {
@@ -1337,6 +1295,21 @@ body {
   cursor: default;
 }
 
+
+/* =========================
+   CALENDAR PAGE
+========================= */
+.calendar-page {
+  min-height: calc(100vh - 80px);
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 40px 20px;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
 
 /* =========================
    MODAL
@@ -1799,149 +1772,43 @@ body {
   font-size: 13px;
   color: #777;
 }
+/* =========================
+   SENT REQUESTS = SAME AS FRIENDS LIST
+========================= */
 
-/* TOGGLE SWITCH */
-.toggle-switch {
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 22px;
-  flex-shrink: 0;
+.friends-sent-requests {
+  margin-top: 20px;
 }
 
-.toggle-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.toggle-slider {
-  position: absolute;
-  inset: 0;
-  background-color: #d1d5db;
-  border-radius: 22px;
-  cursor: pointer;
-  transition: 0.25s ease;
-}
-
-.toggle-slider::before {
-  content: "";
-  position: absolute;
-  height: 16px;
-  width: 16px;
-  left: 3px;
-  top: 3px;
-  background: white;
-  border-radius: 50%;
-  transition: 0.25s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
-
-.toggle-switch input:checked + .toggle-slider {
-  background-color: var(--toggle-color, #667eea);
-}
-
-.toggle-switch input:checked + .toggle-slider::before {
-  transform: translateX(18px);
-}
-
-/* SIDEBAR */
-/* ── SIDEBAR (overlay, anchored top-left of .calendar-layout) ── */
-.sidebar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 100;
-
-  background: white;
-  border-radius: 18px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.18);
-  overflow: hidden;
-
-  width: 260px;
-  opacity: 1;
-  transform: translateX(0);
-  transition: opacity 0.25s ease, transform 0.25s ease, width 0.25s ease;
-}
-
-.sidebar.closed {
-  opacity: 0;
-  transform: translateX(-20px);
-  width: 0;
-  pointer-events: none;
-}
-
-.sidebar-content {
-  padding: 20px;
-  width: 220px;
-}
-
-/* ── CALENDAR MAIN (always full width, never shifts) ── */
-.calendar-main {
-  width: 100%;
-  background: white;
-  padding: 20px;
-  border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-}
-
-/* Sidebar Controls */
-.sidebar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.sidebar-header h3 {
-  margin: 0;
-  font-size: 18px;
+.friends-sent-requests h3 {
+  font-size: 16px;
   color: #333;
+  margin-bottom: 12px;
 }
 
-.select-all-btn {
-  background: none;
-  border: none;
-  color: #667eea;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0;
-}
-
-.select-all-btn:hover {
-  text-decoration: underline;
-}
-
-/* Friend Toggle Row */
-.friend-toggle {
+/* FORCE SAME STYLE AS FRIENDS LIST */
+.friends-sent-requests .friend-item {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.friend-info {
-  display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 15px;
-  color: #444;
+
+  padding: 12px 14px;
+  margin-bottom: 10px;
+
+  background: #f4f6fb;
+  border-radius: 12px;
+
+  transition: 0.2s ease;
+}
+
+.friends-sent-requests .friend-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+}
+
+/* match friends list text */
+.friends-sent-requests .friend-item span {
+  font-size: 14px;
+  color: #333;
   font-weight: 500;
-}
-
-.color-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-}
-
-/* Custom Checkbox */
-.friend-toggle input[type="checkbox"] {
-  accent-color: #667eea;
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
 }
