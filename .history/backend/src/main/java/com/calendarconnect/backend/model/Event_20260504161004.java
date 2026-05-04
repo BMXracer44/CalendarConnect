@@ -5,7 +5,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "events")
@@ -15,6 +14,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    //FIX: use Long everywhere
     @Column(name = "creator_id", nullable = false)
     private Long creatorId;
 
@@ -33,17 +33,13 @@ public class Event {
     @Column(name = "end_datetime", nullable = false)
     private LocalDateTime endDatetime;
 
+    // ✔ KEEP BOOLEAN BUT STANDARDIZE GETTERS
     @Column(name = "is_public", nullable = false)
     private Boolean isPublic;
 
-    // ✅ FIXED: proper List mapping
-    @ElementCollection
-    @CollectionTable(
-        name = "event_friends",
-        joinColumns = @JoinColumn(name = "event_id")
-    )
-    @Column(name = "friend_id")
-    private List<Long> friendsAt;
+    
+    @Column(name = "friends_at")
+    private list friendsAt;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -113,20 +109,14 @@ public class Event {
         this.endDatetime = endDatetime;
     }
 
+    // ✅ FIXED BOOLEAN ACCESSORS (IMPORTANT FOR DTO MAPPING)
+
     public Boolean getIsPublic() {
         return isPublic;
     }
 
     public void setIsPublic(Boolean isPublic) {
         this.isPublic = isPublic;
-    }
-
-    public List<Long> getFriendsAt() {
-        return friendsAt;
-    }
-
-    public void setFriendsAt(List<Long> friendsAt) {
-        this.friendsAt = friendsAt;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -143,5 +133,13 @@ public class Event {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+    
+     public list getFriendsAt() {
+        return friendsAt;
+    }
+
+    public void setFriendsAt(list friendsAt) {
+        this.friendsAt = friendsAt;
     }
 }
