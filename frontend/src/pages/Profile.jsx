@@ -18,7 +18,7 @@ const Profile = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // ================= LOAD PROFILE =================
+  // LOAD PROFILE
   useEffect(() => {
     const fetchProfile = async () => {
       if (!user?.username) return;
@@ -41,7 +41,7 @@ const Profile = () => {
         const data = await res.json();
 
         console.log("PROFILE DATA:", data);
-
+        // Map backend fields to frontend state
         setFormData({
           username: data.username || "",
           email: data.email || "",
@@ -61,7 +61,7 @@ const Profile = () => {
     fetchProfile();
   }, [user]);
 
-  // ================= HANDLE INPUT =================
+  // HANDLE INPUT
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -69,7 +69,7 @@ const Profile = () => {
     });
   };
 
-  // ================= HANDLE IMAGE =================
+  // HANDLE IMAGE 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -82,13 +82,13 @@ const Profile = () => {
     }));
   };
 
-  // ================= UPDATE PROFILE =================
+  //  UPDATE PROFILE
   const handleUpdate = async (e) => {
     e.preventDefault();
 
     setError("");
     setSuccess("");
-
+    // Map frontend state back to backend fields
     try {
       const res = await fetch(
         `http://localhost:8080/api/user/update/${user.username}`,
@@ -110,7 +110,7 @@ const Profile = () => {
           })
         }
       );
-
+      
       const data = await res.json();
 
       if (res.ok) {
@@ -125,12 +125,12 @@ const Profile = () => {
   };
 
   if (!user) return <p>Please log in to view profile.</p>;
-
+  // Render profile 
   return (
     <div className="profile-container">
       <div className="profile-card">
 
-        {/* ================= LEFT SIDE ================= */}
+        {/*  LEFT SIDE */}
         <div className="profile-left">
           <h2>{formData.username}</h2>
 
@@ -141,7 +141,7 @@ const Profile = () => {
               style={{ width: "120px", borderRadius: "50%" }}
             />
           )}
-
+          // Display profile info
           <p><strong>Email:</strong> {formData.email}</p>
           <p><strong>First Name:</strong> {formData.firstName}</p>
           <p><strong>Last Name:</strong> {formData.lastName}</p>
@@ -150,13 +150,13 @@ const Profile = () => {
           <p><strong>Bio:</strong> {formData.bio}</p>
         </div>
 
-        {/* ================= RIGHT SIDE ================= */}
+        {/* RIGHT SIDE */}
         <div className="profile-right">
           <h3>Update Profile</h3>
-
+          // Display errors/success messages
           {error && <p style={{ color: "red" }}>{error}</p>}
           {success && <p style={{ color: "green" }}>{success}</p>}
-
+        
           <form onSubmit={handleUpdate}>
 
             <input

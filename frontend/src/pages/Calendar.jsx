@@ -8,17 +8,17 @@ import { AuthContext } from "../context/AuthContext";
 
 function Calendar() {
   const { user } = useContext(AuthContext);
-
+  // Event format
   const [events, setEvents] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-
+  // Selected event
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   const [errorMessage, setErrorMessage] = useState("");
-
+  // Edit form states
   const [editTitle, setEditTitle] = useState("");
   const [editDescription, setEditDescription] = useState("");
   const [editLocation, setEditLocation] = useState("");
@@ -37,7 +37,7 @@ function Calendar() {
 
   const formatDateTime = (dateString) => {
     if (!dateString) return "";
-
+    // date format 
     return new Date(dateString).toLocaleString("en-US", {
       year: "numeric",
       month: "short",
@@ -104,7 +104,7 @@ function Calendar() {
       }
 
       setErrorMessage("");
-
+      // Data format reset
       setFormData({
         title: "",
         description: "",
@@ -122,42 +122,40 @@ function Calendar() {
   };
 
   const handleEventClick = (info) => {
-  const e = info.event;
+    const e = info.event;
 
-  const formatForInput = (dateString) => {
-    if (!dateString) return "";
-    return new Date(dateString).toISOString().slice(0, 16);
+    const formatForInput = (dateString) => {
+      if (!dateString) return "";
+      return new Date(dateString).toISOString().slice(0, 16);
+    };
+    // Extract event data for viewing/editing
+    const eventData = {
+      id: e.id,
+      title: e.title.replace("🔒 ", ""),
+      description: e.extendedProps?.description,
+      location: e.extendedProps?.location,
+
+      startDatetime: formatForInput(e.start),
+      endDatetime: formatForInput(e.end),
+
+      isPublic: e.extendedProps?.isPublic,
+      userId: e.extendedProps?.userId
+    };
+    // Set selected event and populate edit form
+    setSelectedEvent(eventData);
+
+    setEditTitle(eventData.title || "");
+    setEditDescription(eventData.description || "");
+    setEditLocation(eventData.location || "");
+
+    setEditStartDatetime(eventData.startDatetime);
+    setEditEndDatetime(eventData.endDatetime);
+
+    setEditIsPublic(eventData.isPublic ?? true);
+
+    setIsEditing(false);
+    setShowViewModal(true);
   };
-
-  const eventData = {
-    id: e.id,
-    title: e.title.replace("🔒 ", ""),
-    description: e.extendedProps?.description,
-    location: e.extendedProps?.location,
-
-    // 🔥 FIX IS HERE (IMPORTANT CHANGE)
-    startDatetime: formatForInput(e.start),
-    endDatetime: formatForInput(e.end),
-
-    isPublic: e.extendedProps?.isPublic,
-    userId: e.extendedProps?.userId
-  };
-
-  setSelectedEvent(eventData);
-
-  setEditTitle(eventData.title || "");
-  setEditDescription(eventData.description || "");
-  setEditLocation(eventData.location || "");
-
-  // 🔥 THESE NOW RECEIVE CLEAN FORMAT
-  setEditStartDatetime(eventData.startDatetime);
-  setEditEndDatetime(eventData.endDatetime);
-
-  setEditIsPublic(eventData.isPublic ?? true);
-
-  setIsEditing(false);
-  setShowViewModal(true);
-};
 
   const updateEvent = async (e) => {
     e.preventDefault();
@@ -189,7 +187,7 @@ function Calendar() {
         setErrorMessage(errorData.error || "Update conflict detected");
         return;
       }
-
+      // Clear error and refresh events
       setErrorMessage("");
       setIsEditing(false);
       setShowViewModal(false);
@@ -226,19 +224,19 @@ function Calendar() {
       setErrorMessage("Server error during delete");
     }
   };
-const formatForInput = (dateString) => {
-  if (!dateString) return "";
+  const formatForInput = (dateString) => {
+    if (!dateString) return "";
 
-  return new Date(dateString)
-    .toISOString()
-    .slice(0, 16);
-};
+    return new Date(dateString)
+      .toISOString()
+      .slice(0, 16);
+  };
   const closeModal = () => {
     setShowViewModal(false);
     setIsEditing(false);
     setSelectedEvent(null);
   };
-
+  // Authentication check
   if (!user) return <p>Please log in</p>;
 
   return (
@@ -258,7 +256,7 @@ const formatForInput = (dateString) => {
           Add Event
         </button>
       </div>
-
+      /* Calendar component with plugins and event handlers */
       <FullCalendar
         plugins={[
           dayGridPlugin,
@@ -339,7 +337,7 @@ const formatForInput = (dateString) => {
           </div>
         </div>
       )}
-
+    // View/Edit Modal
       {showViewModal && selectedEvent && (
         <div className="modal-overlay">
           <div className="modal-box">
@@ -351,18 +349,18 @@ const formatForInput = (dateString) => {
                   onClick={() => setIsEditing(true)}
                   style={{ cursor: "pointer" }}
                 >
-                  ✏️
+
                 </span>
 
                 <span
                   onClick={deleteEvent}
                   style={{ cursor: "pointer", color: "red" }}
                 >
-                  🗑️
+
                 </span>
 
                 <span onClick={closeModal} style={{ cursor: "pointer" }}>
-                  ✖️
+
                 </span>
               </div>
             </div>

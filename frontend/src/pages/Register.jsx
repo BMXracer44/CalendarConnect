@@ -8,12 +8,12 @@ const Register = () => {
     username: "",
     email: "",
     password: "",
-    confirmPassword: "", 
+    confirmPassword: "",
     first_name: "",
     last_name: "",
     birthdate: "",
     phone_number: "",
-    bio: "", //Bio box does not have same format
+    bio: "",
     profile_picture_url: ""
   });
 
@@ -29,16 +29,16 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    // Basic client-side validation
     if (formData.password !== formData.confirmPassword) { //There is no input box to enter in a second password for confirmation
       setError("Passwords do not match");
       setSuccess("");
       return;
     }
-
+    // Prepare payload
     try {
       const { confirmPassword, ...payload } = formData;
-
+      // Map frontend fields to backend expected fields
       const response = await fetch("http://localhost:8080/api/register", {
         method: "POST",
         headers: {
@@ -48,11 +48,11 @@ const Register = () => {
       });
 
       const data = await response.json();
-
+      // Debug response
       if (response.ok) {
         setSuccess("Account created successfully!");
         setError("");
-
+        // redirect to login after short delay
         setTimeout(() => {
           navigate("/");
         }, 1000);
@@ -69,18 +69,18 @@ const Register = () => {
           bio: "",
           profile_picture_url: ""
         });
-
+        // Failed registration
       } else {
         setError(data.message || "Registration failed");
         setSuccess("");
       }
-
+      // Network/server error - front/back not communicating
     } catch (err) {
       setError("Server not reachable");
       setSuccess("");
     }
   };
-
+  // input change
   return (
     <div className="login-container">
       <div className="login-card register-card">
