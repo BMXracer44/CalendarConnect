@@ -43,7 +43,7 @@ public class FriendshipController {
     return friendshipService.getFriends(userId);
   }
   @GetMapping("/requests/sent/{userId}")
-  public List<FriendRequestDTO> getSentRequests(@PathVariable int userId) {
-    return friendshipService.getSentRequests(userId);
-  }
+public List<FriendRequestDTO> getSentRequests(@PathVariable int userId) {
+  return friendshipService.getSentRequests(userId);
+}
 }

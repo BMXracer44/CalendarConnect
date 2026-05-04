@@ -885,32 +885,30 @@ body {
   padding-left: 12px;
 }
 
-/* =========================
-   FRIENDS SECTION TITLES (INCLUDE SENT REQUESTS)
-========================= */
-.search-dropdown h2,
-.friends-requests h3,
-.friends-list h3,
-.friends-sent-requests h3 {
-  margin: 0 0 14px 0;
+/* ACCENT BAR FOR HEADINGS */
+.search-dropdown h2::before,
+.friends-requests h3::before,
+.friends-list h3::before {
+  content: "";
 
-  font-size: 18px;
-  font-weight: 800;
+  position: absolute;
+  left: 0;
+  top: 2px;
 
-  color: #333;
+  width: 4px;
+  height: 100%;
 
-  position: relative;
+  border-radius: 4px;
 
-  padding-left: 12px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
 }
 
 /* =========================
-   FRIENDS SECTION CARDS (INCLUDE SENT)
+   FRIENDS SECTION CARDS
 ========================= */
 .search-dropdown,
 .friends-requests,
-.friends-list,
-.friends-sent-requests {
+.friends-list {
   background: #f9fafb;
 
   padding: 18px;
@@ -924,26 +922,24 @@ body {
   transition: 0.2s ease;
 }
 
-/* hover effect same as others */
+/* subtle hover effect */
 .search-dropdown:hover,
 .friends-requests:hover,
-.friends-list:hover,
-.friends-sent-requests:hover {
+.friends-list:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 25px rgba(0,0,0,0.08);
 }
 
 /* =========================
-   EMPTY STATES (INCLUDE SENT)
+   EMPTY STATES
 ========================= */
 .friends-requests p,
-.friends-list p,
-.friends-sent-requests p {
+.friends-list p {
   color: #888;
   font-size: 13px;
   margin-top: 8px;
 }
-/*=========================
+/* =========================
    GLOBAL
 ========================= */
 body {
@@ -1298,7 +1294,6 @@ body {
 
   cursor: default;
 }
-
 
 /* =========================
    CALENDAR PAGE

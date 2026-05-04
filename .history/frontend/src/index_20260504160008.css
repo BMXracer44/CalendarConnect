@@ -934,16 +934,15 @@ body {
 }
 
 /* =========================
-   EMPTY STATES (INCLUDE SENT)
+   EMPTY STATES
 ========================= */
 .friends-requests p,
-.friends-list p,
-.friends-sent-requests p {
+.friends-list p {
   color: #888;
   font-size: 13px;
   margin-top: 8px;
 }
-/*=========================
+/* =========================
    GLOBAL
 ========================= */
 body {

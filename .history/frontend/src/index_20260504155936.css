@@ -904,46 +904,43 @@ body {
   padding-left: 12px;
 }
 
-/* =========================
-   FRIENDS SECTION CARDS (INCLUDE SENT)
-========================= */
-.search-dropdown,
-.friends-requests,
-.friends-list,
-.friends-sent-requests {
-  background: #f9fafb;
+/* ACCENT BAR */
+.search-dropdown h2::before,
+.friends-requests h3::before,
+.friends-list h3::before,
+.friends-sent-requests h3::before {
+  content: "";
 
-  padding: 18px;
+  position: absolute;
+  left: 0;
+  top: 2px;
 
-  border-radius: 14px;
+  width: 4px;
+  height: 100%;
 
-  margin-bottom: 18px;
+  border-radius: 4px;
 
-  border: 1px solid rgba(0,0,0,0.05);
-
-  transition: 0.2s ease;
+  background: linear-gradient(135deg, #667eea, #764ba2);
 }
 
-/* hover effect same as others */
+/* subtle hover effect */
 .search-dropdown:hover,
 .friends-requests:hover,
-.friends-list:hover,
-.friends-sent-requests:hover {
+.friends-list:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 25px rgba(0,0,0,0.08);
 }
 
 /* =========================
-   EMPTY STATES (INCLUDE SENT)
+   EMPTY STATES
 ========================= */
 .friends-requests p,
-.friends-list p,
-.friends-sent-requests p {
+.friends-list p {
   color: #888;
   font-size: 13px;
   margin-top: 8px;
 }
-/*=========================
+/* =========================
    GLOBAL
 ========================= */
 body {
