@@ -37,6 +37,10 @@ public class Event {
     @Column(name = "is_public", nullable = false)
     private Boolean isPublic;
 
+    
+    @Column(name = "friends_at")
+    private list isPublic;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -129,5 +133,13 @@ public class Event {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+    
+     public list getFriendsAt() {
+        return friendsAt;
+    }
+
+    public void setFriendsAt(list friendsAt) {
+        this.friendsAt = friendsAt;
     }
 }
