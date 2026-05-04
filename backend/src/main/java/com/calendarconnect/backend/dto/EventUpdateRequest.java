@@ -17,20 +17,21 @@ public class EventUpdateRequest {
     // A primitive 'boolean' defaults to 'false' if missing, which might accidentally 
     // make a public event private! The object 'Boolean' defaults to 'null', which is safe.
     private Boolean isPublic; 
-
+    private List friendsAt;
     // --- Constructors ---
 
     public EventUpdateRequest() {
     }
 
     public EventUpdateRequest(String title, String description, String location, 
-                              LocalDateTime startDatetime, LocalDateTime endDatetime, Boolean isPublic) {
+                              LocalDateTime startDatetime, LocalDateTime endDatetime, Boolean isPublic, List friendsAt) {
         this.title = title;
         this.description = description;
         this.location = location;
         this.startDatetime = startDatetime;
         this.endDatetime = endDatetime;
         this.isPublic = isPublic;
+        this.friendsAt = friendsAt;
     }
 
     // --- Getters and Setters ---
@@ -52,4 +53,7 @@ public class EventUpdateRequest {
 
     public Boolean getIsPublic() { return isPublic; }
     public void setIsPublic(Boolean isPublic) { this.isPublic = isPublic; }
+    
+    public Boolean getFriendsAt() { return friendsAt; }
+    public void setFriendsAt(List friendsAt) { this.friendsAt = friendsAt; }
 }
