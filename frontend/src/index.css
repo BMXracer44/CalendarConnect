@@ -341,7 +341,8 @@ body {
    ADD EVENT BUTTON
 ========================= */
 .addevent {
-  padding: 12px 18px;
+  width: 80px;
+  height: 50px;
 
   border: none;
   border-radius: 12px;
@@ -358,6 +359,45 @@ body {
 
 .addevent:hover {
   transform: translateY(-2px);
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+.toggle input {
+  display: none;
+}
+
+.switch {
+  width: 40px;
+  height: 20px;
+  background: #ccc;
+  border-radius: 20px;
+  position: relative;
+}
+
+.switch::after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: 0.2s;
+}
+
+.toggle input:checked + .switch {
+  background: #4caf50;
+}
+
+.toggle input:checked + .switch::after {
+  left: 22px;
 }
 
 /* =========================

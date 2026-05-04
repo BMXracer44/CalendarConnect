@@ -39,6 +39,8 @@ public class EventController {
         }
     }
 
+    
+
     // GET
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getUserEvents(@PathVariable Long userId) {

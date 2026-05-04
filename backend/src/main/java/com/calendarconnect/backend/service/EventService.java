@@ -45,7 +45,8 @@ public class EventService {
         event.setEndDatetime(request.getEndDatetime());
         event.setIsPublic(request.getIsPublic());
         event.setCreatorId(userId);
-        
+
+
         return eventRepository.save(event);
     }
 

@@ -22,6 +22,8 @@ function Calendar() {
   const [editTitle, setEditTitle] = useState("");
   const [editDescription, setEditDescription] = useState("");
   const [editLocation, setEditLocation] = useState("");
+  const [editFriends, setEditFriends] = useState("");
+  const [friendsInput, setFriendsInput] = useState("");
   const [editStartDatetime, setEditStartDatetime] = useState("");
   const [editEndDatetime, setEditEndDatetime] = useState("");
   const [editIsPublic, setEditIsPublic] = useState(true);
@@ -30,6 +32,7 @@ function Calendar() {
     title: "",
     description: "",
     location: "",
+    friends: [],
     startDatetime: "",
     endDatetime: "",
     isPublic: true
@@ -254,7 +257,7 @@ const formatForInput = (dateString) => {
 
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <h1>My Calendar</h1>
-        <button className="addevent" onClick={() => setShowModal(true)}>
+        <button className="addevent" onClick={() => setShowModal(true)} >
           Add Event
         </button>
       </div>
@@ -302,6 +305,24 @@ const formatForInput = (dateString) => {
               />
 
               <input
+                placeholder="Friend(s) Username (seperate by comma for multiple)"
+                value={friendsInput}
+                onChange={(e) =>
+                  { 
+                    const value = e.target.value; 
+                    
+                    setFriendsInput(value);
+
+                    const array = value
+                      .split(",")
+                      .map((item) => item.trim())
+                      .filter((item) => item !== "");
+
+                    setFormData({ ...formData, friends: array});
+                  }}
+              />
+
+              <input
                 type="datetime-local"
                 value={formData.startDatetime}
                 onChange={(e) =>
@@ -317,7 +338,10 @@ const formatForInput = (dateString) => {
                 }
               />
 
-              <label>
+              {'\n\n'}
+
+              <label className="toggle">
+                <span>{formData.isPublic ? "Public" : "Private"}</span>
                 <input
                   type="checkbox"
                   checked={formData.isPublic}
@@ -328,7 +352,7 @@ const formatForInput = (dateString) => {
                     })
                   }
                 />
-                {formData.isPublic ? " Public" : " Private"}
+                <span className="switch"></span>
               </label>
 
               <button type="submit">Create</button>
@@ -372,6 +396,7 @@ const formatForInput = (dateString) => {
                 <p><b>{selectedEvent.title}</b></p>
                 <p>{selectedEvent.description}</p>
                 <p>{selectedEvent.location}</p>
+                {/* List friends who are invited*/}
                 <p><b>Start:</b> {formatDateTime(selectedEvent.startDatetime)}</p>
                 <p><b>End:</b> {formatDateTime(selectedEvent.endDatetime)}</p>
                 <p><b>{selectedEvent.isPublic ? "Public" : "Private"}</b></p>
@@ -394,6 +419,25 @@ const formatForInput = (dateString) => {
                 />
 
                 <input
+                  value={editFriends}
+                  onChange={(e) =>
+                    { 
+                      const value = e.target.value; 
+
+                      setEditFriends(value);
+
+                      const array = value
+                        .split(",")
+                        .map((item) => item.trim())
+                        .filter((item) => item !== "");
+
+                      setFormData({ ...formData, friends: array});
+
+                      console.log("Friends array:", array)
+                    }}
+                />
+
+                <input
                   type="datetime-local"
                   value={editStartDatetime}
                   onChange={(e) => setEditStartDatetime(e.target.value)}
@@ -405,13 +449,14 @@ const formatForInput = (dateString) => {
                   onChange={(e) => setEditEndDatetime(e.target.value)}
                 />
 
-                <label>
+                <label className="toggle">
+                  <span>{formData.isPublic ? "Public" : "Private"}</span>
                   <input
                     type="checkbox"
                     checked={editIsPublic}
                     onChange={(e) => setEditIsPublic(e.target.checked)}
                   />
-                  {editIsPublic ? " Public" : " Private"}
+                  <span className="switch"></span>
                 </label>
 
                 <button type="submit">Save</button>

@@ -44,5 +44,5 @@ public class EventCreateRequest {
 
     public Boolean getIsPublic() { return isPublic; }
     public void setIsPublic(Boolean isPublic) { this.isPublic = isPublic; }
-
+    
 }

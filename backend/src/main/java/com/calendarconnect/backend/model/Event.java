@@ -105,6 +105,7 @@ public class Event {
         this.endDatetime = endDatetime;
     }
 
+
     // ✅ FIXED BOOLEAN ACCESSORS (IMPORTANT FOR DTO MAPPING)
 
     public Boolean getIsPublic() {
