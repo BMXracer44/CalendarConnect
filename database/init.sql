@@ -36,12 +36,17 @@ CREATE TABLE friendships(
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   
-  FOREIGN KEY(requester_id) REFERENCES users(id)ON DELETE CASCADE,
+  FOREIGN KEY(requester_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY(addressee_id) REFERENCES users(id) ON DELETE CASCADE, 
   
-  UNIQUE KEY unique_friendship(requester_id,addressee_id)-- Prevents duplicate records 
-  CONSTRAINT no_self_friend CHECK (requester_id <> addressee_id), --prevents self friending 
-  CONSTRAINT check_order CHECK (requester_id < addressee_id) -- prevents reciprocal duplicates 
+  -- Prevents duplicate records 
+  UNIQUE KEY unique_friendship(requester_id,addressee_id),
+
+  -- prevents self friending 
+  CONSTRAINT no_self_friend CHECK (requester_id <> addressee_id), 
+
+  -- prevents reciprocal duplicates 
+  CONSTRAINT check_order CHECK (requester_id < addressee_id) 
 );
 -- Events Table 
 CREATE TABLE events(
