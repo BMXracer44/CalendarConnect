@@ -46,7 +46,7 @@ public class EventResponse {
             event.getEndDatetime(),
             event.getIsPublic(),
             event.getCreatorId(),
-            evet.getFriendsAt()// ✅ FIXED HERE
+            event.getFriendsAt()// ✅ FIXED HERE
         );
     }
 
