@@ -45,6 +45,7 @@ public class EventService {
         event.setEndDatetime(request.getEndDatetime());
         event.setIsPublic(request.getIsPublic());
         event.setCreatorId(userId);
+        event.setFriendsAt(friendsAt);
         
         return eventRepository.save(event);
     }
@@ -104,6 +105,8 @@ public class EventService {
         if (request.getIsPublic() != null) {
             event.setIsPublic(request.getIsPublic());
         }
+        if (request.getFriendsAt() != null) {
+            event.setFriendsAt(request.getFriendsAt());
 
         return eventRepository.save(event);
     }
