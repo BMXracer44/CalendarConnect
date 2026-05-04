@@ -36,8 +36,8 @@ public class EventCreateRequest {
     public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }
 
-    public List getfriendsAt(){return List friendsAt}
-    public void setfriendsAt(){this.friendsAt = friendsAt}
+    public List getfriendsAt(){return List friendsAt;}
+    public void setfriendsAt(){this.friendsAt = friendsAt;}
     
     public LocalDateTime getStartDatetime() { return startDatetime; }
     public void setStartDatetime(LocalDateTime startDatetime) { this.startDatetime = startDatetime; }
