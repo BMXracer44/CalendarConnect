@@ -39,7 +39,7 @@ public class Event {
 
     
     @Column(name = "friends_at")
-    private list isPublic;
+    private list friendsAt;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
