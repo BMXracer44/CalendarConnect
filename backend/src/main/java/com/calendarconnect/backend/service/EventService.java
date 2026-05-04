@@ -1,17 +1,17 @@
 package com.calendarconnect.backend.service;
 
-import com.calendarconnect.backend.dto.EventCreateRequest;
-import com.calendarconnect.backend.dto.EventUpdateRequest;
-import com.calendarconnect.backend.dto.EventResponse;
-import com.calendarconnect.backend.model.Event;
-import com.calendarconnect.backend.repository.EventRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
+import com.calendarconnect.backend.dto.EventCreateRequest;
+import com.calendarconnect.backend.dto.EventResponse;
+import com.calendarconnect.backend.dto.EventUpdateRequest;
+import com.calendarconnect.backend.model.Event;
+import com.calendarconnect.backend.repository.EventRepository;
 
 @Service
 public class EventService {
@@ -108,9 +108,7 @@ public class EventService {
         return eventRepository.save(event);
     }
 
-    // =========================
     // DELETE EVENT
-    // =========================
     public void deleteEvent(Long id) {
 
         if (!eventRepository.existsById(id)) {
@@ -118,5 +116,12 @@ public class EventService {
         }
 
         eventRepository.deleteById(id);
+    }
+
+    public List<EventResponse> getPublicEventsByUser(Long userId) {
+        return eventRepository.findByCreatorIdAndIsPublicTrue(userId)
+                .stream()
+                .map(EventResponse::fromEntity)
+                .toList();
     }
 }

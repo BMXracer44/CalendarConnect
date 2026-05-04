@@ -1,13 +1,14 @@
 package com.calendarconnect.backend.repository;
 
-import com.calendarconnect.backend.model.Event;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import com.calendarconnect.backend.model.Event;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
@@ -19,6 +20,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findByCreatorId(Long creatorId);
 
     List<Event> findByIsPublicTrue();
+
+    List<Event> findByCreatorIdAndIsPublicTrue(Long creatorId);
 
     // Checks if a specific user has overlapping events
     // Creating a new event with no eventID
