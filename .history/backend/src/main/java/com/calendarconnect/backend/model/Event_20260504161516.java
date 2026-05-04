@@ -1,21 +1,11 @@
 package com.calendarconnect.backend.model;
 
-import java.time.LocalDateTime;
-
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-<<<<<<< HEAD
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-=======
 import java.time.LocalDateTime;
 import java.util.List;
->>>>>>> 66e0fddda2862544bfe0a3eab8ac438572ade5c8
 
 @Entity
 @Table(name = "events")
