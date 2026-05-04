@@ -41,6 +41,10 @@ public class Event {
     @Column(name = "is_public", nullable = false)
     private Boolean isPublic;
 
+    
+    @Column(name = "friends_at")
+    private list friendsAt;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

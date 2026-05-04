@@ -13,13 +13,15 @@ public class EventResponse {
     private LocalDateTime endDatetime;
     private Boolean isPublic;
     private Long userId;
+    private List friendsAt;
+    
 
     public EventResponse() {}
 
     public EventResponse(Long id, String title, String description,
                          String location, LocalDateTime startDatetime,
                          LocalDateTime endDatetime, Boolean isPublic,
-                         Long userId) {
+                         Long userId, List friendsAt) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -28,6 +30,7 @@ public class EventResponse {
         this.endDatetime = endDatetime;
         this.isPublic = isPublic;
         this.userId = userId;
+        this.friendsAt = friendsAt;
     }
 
     // =========================
@@ -42,7 +45,8 @@ public class EventResponse {
             event.getStartDatetime(),
             event.getEndDatetime(),
             event.getIsPublic(),
-            event.getCreatorId()   // ✅ FIXED HERE
+            event.getCreatorId(),
+            evet.getFriendsAt()// ✅ FIXED HERE
         );
     }
 
@@ -55,6 +59,7 @@ public class EventResponse {
     public LocalDateTime getEndDatetime() { return endDatetime; }
     public Boolean getIsPublic() { return isPublic; }
     public Long getUserId() { return userId; }
+    public List getFriendsAt() { return friendsAt; }
 
     // setters
     public void setId(Long id) { this.id = id; }
@@ -65,4 +70,5 @@ public class EventResponse {
     public void setEndDatetime(LocalDateTime endDatetime) { this.endDatetime = endDatetime; }
     public void setIsPublic(Boolean isPublic) { this.isPublic = isPublic; }
     public void setUserId(Long userId) { this.userId = userId; }
+    public void setFriendsAt(List friendsAt) { this.friendsAt = friendsAt; }
 }
