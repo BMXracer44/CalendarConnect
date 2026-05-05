@@ -1,6 +1,13 @@
 package com.calendarconnect.backend.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "friendships")
@@ -10,14 +17,14 @@ public class Friendship {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  // 🔥 MAP TO YOUR ACTUAL DB COLUMN NAMES
-  @Column(name = "user1_id")
+  @Column(name = "requester_id", nullable = false)
   private Integer requesterId;
 
-  @Column(name = "user2_id")
+  @Column(name = "addressee_id", nullable = false)
   private Integer addresseeId;
 
   @Enumerated(EnumType.STRING)
+  @Column(name = "status")
   private Status status;
 
   public enum Status {

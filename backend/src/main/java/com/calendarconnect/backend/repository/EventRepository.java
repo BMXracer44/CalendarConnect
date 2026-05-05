@@ -47,4 +47,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             @Param("newStartTime") LocalDateTime newStartTime,
             @Param("newEndTime") LocalDateTime newEndTime
     );
+
+    @Query(value = "SELECT u.username FROM users u JOIN event_attendees ea ON u.id = ea.user_id WHERE ea.event_id = :eventId AND ea.status = 'going'", nativeQuery = true)
+    List<String> findAttendeeUsernames(@Param("eventId") Long eventId);
 }
