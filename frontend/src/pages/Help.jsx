@@ -164,4 +164,4 @@ const Help = () => {
 };
 
 
-export default Help;//Add Guides: how to manage profile, how to navigate calender,
+export default Help;
