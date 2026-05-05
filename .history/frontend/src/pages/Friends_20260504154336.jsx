@@ -56,27 +56,21 @@ const Friends = () => {
 
   // ================= ACCEPT REQUEST =================
   const acceptFriend = (fromId) => {
-  fetch(
-    `http://localhost:8080/api/friends/accept?from=${fromId}&to=${user.id}`,
-    { method: "POST" }
-  )
-    .then(() => {
-      loadFriends();
-      loadRequests();
-      loadSentRequests(); // 🔥 ADD THIS
-    })
-    .catch(() => console.log("Accept failed"));
-};
+    fetch(
+      `http://localhost:8080/api/friends/accept?from=${fromId}&to=${user.id}`,
+      { method: "POST" }
+    )
+      .then(() => {
+        loadFriends();
+        loadRequests();
+      })
+      .catch(() => console.log("Accept failed"));
+  };
   const loadSentRequests = () => {
   fetch(`http://localhost:8080/api/friends/requests/sent/${user.id}`)
     .then((res) => res.json())
-    .then((data) => {
-      setSentRequests(Array.isArray(data) ? data : []);
-    })
-    .catch(() => {
-      console.log("Failed to load sent requests");
-      setSentRequests([]);
-    });
+    .then((data) => setSentRequests(data))
+    .catch(() => console.log("Failed to load sent requests"));
 };
 
   return (
@@ -104,19 +98,21 @@ const Friends = () => {
           ))}
         </div>
 
-        {/* ================= SENT REQUESTS ================= */}
-        <div className="friends-sent-requests">
-          <h3>Sent Requests</h3>
+        {/* ================= FRIEND REQUESTS ================= */}
+        <div className="friends-requests">
+          <h3>Friend Requests</h3>
 
-          {sentRequests.length === 0 && <p>No sent requests</p>}
+          {requests.length === 0 && <p>No new requests</p>}
 
-          {sentRequests.map((r) => (
+          {requests.map((r) => (
             <div className="friend-item" key={r.id}>
               <span>{r.username}</span>
-              <button disabled>Pending</button>
+              <button onClick={() => acceptFriend(r.id)}>
+                Accept
+              </button>
             </div>
           ))}
-</div>
+        </div>
 
         {/* ================= FRIENDS LIST ================= */}
         <div className="friends-list">
