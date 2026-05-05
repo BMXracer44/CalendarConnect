@@ -86,4 +86,24 @@ public class EventController {
     public ResponseEntity<?> getPublicUserEvents(@PathVariable Long userId) {
         return ResponseEntity.ok(eventService.getPublicEventsByUser(userId));
     }
+
+    // SEND INVITE
+    @PostMapping("/{eventId}/invite/{friendId}")
+    public ResponseEntity<?> inviteFriend(@PathVariable Long eventId, @PathVariable Long friendId) {
+        eventService.inviteFriend(eventId, friendId);
+        return ResponseEntity.ok(Map.of("message", "Invite sent successfully"));
+    }
+
+    // RESPOND TO INVITE (Accept/Decline)
+    @PutMapping("/{eventId}/respond/{userId}")
+    public ResponseEntity<?> respondToInvite(@PathVariable Long eventId, @PathVariable Long userId, @RequestParam String status) {
+        eventService.respondToInvite(eventId, userId, status);
+        return ResponseEntity.ok(Map.of("message", "Response recorded"));
+    }
+
+    // GET PENDING INVITES (For the Notification Bell)
+    @GetMapping("/invites/{userId}")
+    public ResponseEntity<?> getPendingInvites(@PathVariable Long userId) {
+        return ResponseEntity.ok(eventService.getPendingInvites(userId));
+    }
 }

@@ -5,17 +5,12 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-<<<<<<< HEAD
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-=======
-import java.time.LocalDateTime;
-import java.util.List;
->>>>>>> 66e0fddda2862544bfe0a3eab8ac438572ade5c8
 
 @Entity
 @Table(name = "events")
@@ -45,15 +40,6 @@ public class Event {
 
     @Column(name = "is_public", nullable = false)
     private Boolean isPublic;
-
-    // ✅ FIXED: proper List mapping
-    @ElementCollection
-    @CollectionTable(
-        name = "event_friends",
-        joinColumns = @JoinColumn(name = "event_id")
-    )
-    @Column(name = "friend_id")
-    private List<Long> friendsAt;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -129,14 +115,6 @@ public class Event {
 
     public void setIsPublic(Boolean isPublic) {
         this.isPublic = isPublic;
-    }
-
-    public List<Long> getFriendsAt() {
-        return friendsAt;
-    }
-
-    public void setFriendsAt(List<Long> friendsAt) {
-        this.friendsAt = friendsAt;
     }
 
     public LocalDateTime getCreatedAt() {

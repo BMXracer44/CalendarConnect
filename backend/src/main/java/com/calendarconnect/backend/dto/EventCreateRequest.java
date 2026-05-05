@@ -1,9 +1,11 @@
 package com.calendarconnect.backend.dto;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 public class EventCreateRequest {
 
@@ -35,9 +37,6 @@ public class EventCreateRequest {
 
     public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }
-
-    public List getFriendsAt(){return List friendsAt;}
-    public void setFriendsAt(){this.friendsAt = friendsAt;}
     
     public LocalDateTime getStartDatetime() { return startDatetime; }
     public void setStartDatetime(LocalDateTime startDatetime) { this.startDatetime = startDatetime; }
