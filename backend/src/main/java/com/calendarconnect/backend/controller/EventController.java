@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/events")
+@CrossOrigin(origins = "http://localhost:3000")
 public class EventController {
 
     @Autowired
@@ -105,5 +107,24 @@ public class EventController {
     @GetMapping("/invites/{userId}")
     public ResponseEntity<?> getPendingInvites(@PathVariable Long userId) {
         return ResponseEntity.ok(eventService.getPendingInvites(userId));
+    }
+
+    // GET SINGLE EVENT (For the notification bell)
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getEventById(@PathVariable Long id) {
+        Event event = eventService.updateEvent(id, new EventUpdateRequest()); // Quick hack to fetch event safely
+        return ResponseEntity.ok(EventResponse.fromEntity(event));
+    }
+
+    // GET ACCEPTED EVENTS FOR A USER'S CALENDAR
+    @GetMapping("/accepted/{userId}")
+    public ResponseEntity<?> getAcceptedEvents(@PathVariable Long userId) {
+        return ResponseEntity.ok(eventService.getAcceptedEvents(userId));
+    }
+
+    // GET USERNAMES OF ACCEPTED ATTENDEES FOR AN EVENT MODAL
+    @GetMapping("/{eventId}/attendees")
+    public ResponseEntity<?> getEventAttendees(@PathVariable Long eventId) {
+        return ResponseEntity.ok(eventService.getEventAttendees(eventId));
     }
 }

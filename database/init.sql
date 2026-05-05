@@ -43,10 +43,7 @@ CREATE TABLE friendships(
   UNIQUE KEY unique_friendship(requester_id,addressee_id),
 
   -- prevents self friending 
-  CONSTRAINT no_self_friend CHECK (requester_id <> addressee_id), 
-
-  -- prevents reciprocal duplicates 
-  CONSTRAINT check_order CHECK (requester_id < addressee_id) 
+  CONSTRAINT no_self_friend CHECK (requester_id <> addressee_id) 
 );
 -- Events Table 
 CREATE TABLE events(

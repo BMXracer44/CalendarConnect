@@ -11,8 +11,6 @@ import com.calendarconnect.backend.dto.EventCreateRequest;
 import com.calendarconnect.backend.dto.EventResponse;
 import com.calendarconnect.backend.dto.EventUpdateRequest;
 import com.calendarconnect.backend.model.Event;
-import com.calendarconnect.backend.model.EventAttendee;
-import com.calendarconnect.backend.repository.EventAttendeeRepository;
 import com.calendarconnect.backend.repository.EventRepository;
 
 @Service
@@ -128,17 +126,21 @@ public class EventService {
     }
 
     @Autowired
-    private EventAttendeeRepository eventAttendeeRepository;
+    private com.calendarconnect.backend.repository.EventAttendeeRepository eventAttendeeRepository;
 
     // INVITE FRIEND TO EVENT
     public void inviteFriend(Long eventId, Long friendId) {
-        EventAttendee invite = new EventAttendee(eventId, friendId, "invited");
+        // Creates the invite in the database with the default status "invited"
+        com.calendarconnect.backend.model.EventAttendee invite = 
+            new com.calendarconnect.backend.model.EventAttendee(eventId, friendId, "invited");
         eventAttendeeRepository.save(invite);
     }
 
     // UPDATE INVITE STATUS (Accept/Decline)
+
     public void respondToInvite(Long eventId, Long userId, String status) {
-        EventAttendee invite = eventAttendeeRepository.findById(new com.calendarconnect.backend.model.EventAttendeeId(eventId, userId))
+        com.calendarconnect.backend.model.EventAttendee invite = 
+            eventAttendeeRepository.findById(new com.calendarconnect.backend.model.EventAttendeeId(eventId, userId))
             .orElseThrow(() -> new RuntimeException("Invite not found"));
         
         invite.setStatus(status); // "going" or "declined"
@@ -146,7 +148,20 @@ public class EventService {
     }
 
     // GET PENDING INVITES FOR USER
-    public List<EventAttendee> getPendingInvites(Long userId) {
+    public List<com.calendarconnect.backend.model.EventAttendee> getPendingInvites(Long userId) {
         return eventAttendeeRepository.findByUserIdAndStatus(userId, "invited");
+    }
+
+    public List<EventResponse> getAcceptedEvents(Long userId) {
+        return eventAttendeeRepository.findByUserIdAndStatus(userId, "going")
+                .stream()
+                .map(attendee -> eventRepository.findById(attendee.getEventId()).orElse(null))
+                .filter(event -> event != null)
+                .map(EventResponse::fromEntity)
+                .toList();
+    }
+
+    public List<String> getEventAttendees(Long eventId) {
+        return eventRepository.findAttendeeUsernames(eventId);
     }
 }
