@@ -31,9 +31,9 @@ const Register = () => {
     });
   };
 
-  // ==========================================
+
   // BLOB LOGIC FOR FILE INPUT
-  // ==========================================
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -51,7 +51,8 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) { //There is no input box to enter in a second password for confirmation
+    //There is no input box to enter in a second password for confirmation
+    if (formData.password !== formData.confirmPassword) { 
       setError("Passwords do not match");
       setSuccess("");
       return;
@@ -66,7 +67,8 @@ const Register = () => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(payload) // Sends the blob link to the database
+        // Sends the blob link to the database
+        body: JSON.stringify(payload) 
       });
 
       const data = await response.json();

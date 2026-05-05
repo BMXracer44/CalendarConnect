@@ -16,7 +16,7 @@ const Profile = () => {
   });
 
   // NEW: State to hold the physical file before uploading
-  const [selectedFile, setSelectedFile] = useState(null); 
+  const [selectedFile, setSelectedFile] = useState(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -107,7 +107,7 @@ const Profile = () => {
       if (res.ok) {
         setSuccess("Profile updated successfully!");
         // Clear the selected file so they don't upload it twice
-        setSelectedFile(null); 
+        setSelectedFile(null);
       } else {
         const data = await res.json();
         setError(data.message || "Update failed");
@@ -134,51 +134,51 @@ const Profile = () => {
               src={formData.profilePictureUrl || DEFAULT_AVATAR}
               onError={(e) => { e.target.src = DEFAULT_AVATAR; }} // Safety net if the image fails to load
               alt="Profile"
-              style={{ 
-                width: "120px", 
-                height: "120px", 
-                borderRadius: "50%", 
-                objectFit: "cover", 
+              style={{
+                width: "120px",
+                height: "120px",
+                borderRadius: "50%",
+                objectFit: "cover",
                 border: "4px solid white",
                 boxShadow: "0 4px 10px rgba(0,0,0,0.1)"
               }}
             />
           )}
 
-          <p><strong>Email:</strong> {formData.email}</p>
-          <p><strong>First Name:</strong> {formData.firstName}</p>
-          <p><strong>Last Name:</strong> {formData.lastName}</p>
-          <p><strong>Birthdate:</strong> {formData.birthdate}</p>
-          <p><strong>Phone:</strong> {formData.phoneNumber}</p>
-          <p><strong>Bio:</strong> {formData.bio}</p>
+            <p><strong>Email:</strong> {formData.email}</p>
+            <p><strong>First Name:</strong> {formData.firstName}</p>
+            <p><strong>Last Name:</strong> {formData.lastName}</p>
+            <p><strong>Birthdate:</strong> {formData.birthdate}</p>
+            <p><strong>Phone:</strong> {formData.phoneNumber}</p>
+            <p><strong>Bio:</strong> {formData.bio}</p>
+          </div>
+
+          {/* RIGHT SIDE */}
+          <div className="profile-right">
+            <h3>Update Profile</h3>
+
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            {success && <p style={{ color: "green" }}>{success}</p>}
+
+            <form onSubmit={handleUpdate}>
+              <input name="username" placeholder="Username" value={formData.username} onChange={handleChange} />
+              <input name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
+              <input name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleChange} />
+              <input name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleChange} />
+              <input type="date" name="birthdate" value={formData.birthdate} onChange={handleChange} />
+              <input name="phoneNumber" placeholder="Phone Number" value={formData.phoneNumber} onChange={handleChange} />
+              <input name="bio" placeholder="Bio" value={formData.bio} onChange={handleChange} />
+
+              {/* Back to a file input! */}
+              <input type="file" accept="image/*" onChange={handleFileChange} />
+
+              <button type="submit">Update Profile</button>
+            </form>
+          </div>
+
         </div>
-
-        {/* RIGHT SIDE */}
-        <div className="profile-right">
-          <h3>Update Profile</h3>
-
-          {error && <p style={{ color: "red" }}>{error}</p>}
-          {success && <p style={{ color: "green" }}>{success}</p>}
-
-          <form onSubmit={handleUpdate}>
-            <input name="username" placeholder="Username" value={formData.username} onChange={handleChange} />
-            <input name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
-            <input name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleChange} />
-            <input name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleChange} />
-            <input type="date" name="birthdate" value={formData.birthdate} onChange={handleChange} />
-            <input name="phoneNumber" placeholder="Phone Number" value={formData.phoneNumber} onChange={handleChange} />
-            <input name="bio" placeholder="Bio" value={formData.bio} onChange={handleChange} />
-            
-            {/* Back to a file input! */}
-            <input type="file" accept="image/*" onChange={handleFileChange} />
-
-            <button type="submit">Update Profile</button>
-          </form>
-        </div>
-
       </div>
-    </div>
-  );
+      );
 };
 
-export default Profile;
+      export default Profile;
