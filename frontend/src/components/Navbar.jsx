@@ -55,6 +55,7 @@ const Navbar = () => {
           <>
             <Link className="nav-link" to="/">Login</Link>
             <Link className="nav-link" to="/register">Register</Link>
+            <Link className="nav-link" to="/help">Help</Link>
           </>
         ) : (
           <>
@@ -100,6 +101,7 @@ const Navbar = () => {
 
             <Link className="nav-link" to="/calendar">Calendar</Link>
             <Link className="nav-link" to="/friends">Friends</Link>
+            <Link className="nav-link" to="/help">Help</Link>
 
             <button className="nav-button" onClick={handleLogout}>
               Logout
