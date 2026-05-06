@@ -143,7 +143,7 @@ const Profile = () => {
                 boxShadow: "0 4px 10px rgba(0,0,0,0.1)"
               }}
             />
-          )
+          
 
             <p><strong>Email:</strong> {formData.email}</p>
             <p><strong>First Name:</strong> {formData.firstName}</p>
