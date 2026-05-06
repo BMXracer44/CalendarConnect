@@ -15,16 +15,22 @@ const Friends = () => {
   const loadFriends = () => {
     fetch(`http://localhost:8080/api/friends/${user.id}`)
       .then((res) => res.json())
-      .then((data) => setFriends(data))
-      .catch(() => console.log("Failed to load friends"));
+      .then((data) => setFriends(Array.isArray(data) ? data : data?.data || []))
+      .catch(() => {
+        console.log("Failed to load friends");
+        setFriends([]);
+      });
   };
 
   // ================= LOAD REQUESTS =================
   const loadRequests = () => {
     fetch(`http://localhost:8080/api/friends/requests/${user.id}`)
       .then((res) => res.json())
-      .then((data) => setRequests(data))
-      .catch(() => console.log("Failed to load requests"));
+      .then((data) => setRequests(Array.isArray(data) ? data : data?.data || []))
+      .catch(() => {
+        console.log("Failed to load requests");
+        setRequests([]);
+      });
   };
 
   useEffect(() => {
@@ -40,8 +46,11 @@ const Friends = () => {
       `http://localhost:8080/api/user/search?query=${search}&currentUserId=${user.id}`
     )
       .then((res) => res.json())
-      .then((data) => setResults(data))
-      .catch(() => console.log("Search failed"));
+      .then((data) => setResults(Array.isArray(data) ? data : data?.data || []))
+      .catch(() => {
+        console.log("Search failed");
+        setResults([]);
+      });
   };
 
   // ================= SEND REQUEST =================
@@ -81,16 +90,20 @@ const Friends = () => {
       });
   };
   const loadSentRequests = () => {
-  fetch(`http://localhost:8080/api/friends/requests/sent/${user.id}`)
-    .then((res) => res.json())
-    .then((data) => {
-      setSentRequests(Array.isArray(data) ? data : []);
-    })
-    .catch(() => {
-      console.log("Failed to load sent requests");
-      setSentRequests([]);
-    });
-};
+    fetch(`http://localhost:8080/api/friends/requests/sent/${user.id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setSentRequests(Array.isArray(data) ? data : []);
+      })
+      .catch(() => {
+        console.log("Failed to load sent requests");
+        setSentRequests([]);
+      });
+  };
+
+  const safeFriends = Array.isArray(friends) ? friends : [];
+  const safeResults = Array.isArray(results) ? results : [];
+  const safeSentRequests = Array.isArray(sentRequests) ? sentRequests : [];
 
   return (
     <div className="friends-container">
@@ -109,7 +122,7 @@ const Friends = () => {
 
           <button onClick={searchUsers}>Search</button>
 
-          {results.map((u) => (
+          {safeResults.map((u) => (
             <div className="friend-item" key={u.id}>
               <span>{u.username}</span>
               <button onClick={() => addFriend(u.id)}>Add</button>
@@ -121,9 +134,9 @@ const Friends = () => {
         <div className="friends-sent-requests">
           <h3>Sent Requests</h3>
 
-          {sentRequests.length === 0 && <p>No sent requests</p>}
+          {safeSentRequests.length === 0 && <p>No sent requests</p>}
 
-          {sentRequests.map((r) => (
+          {safeSentRequests.map((r) => (
             <div className="friend-item" key={r.id}>
               <span>{r.username}</span>
               <button disabled>Pending</button>
@@ -135,9 +148,9 @@ const Friends = () => {
         <div className="friends-list">
           <h3>Your Friends</h3>
 
-          {friends.length === 0 && <p>No friends yet</p>}
+          {safeFriends.length === 0 && <p>No friends yet</p>}
 
-          {friends.map((f) => (
+          {safeFriends.map((f) => (
             <div className="friend-item" key={f.id}>
               <span>{f.username}</span>
             </div>
