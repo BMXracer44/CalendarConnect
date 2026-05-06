@@ -72,3 +72,12 @@ CREATE TABLE event_attendees (
   FOREIGN KEY (user_id) REFERENCES users(id)
     ON DELETE CASCADE
 );
+
+Create TABLE support_tickets(
+  id INT AUTO_INCREMENT Primary Key,
+  contact_info VARCHAR(100) NOT NULL,
+  tag ENUM('BUG', 'HELP', 'RESET') NOT NULL,
+  description TEXT NOT NULL,
+  status ENUM('Open','In_Progress', 'Resolved') DEFAULT 'Open',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+);
