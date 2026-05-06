@@ -66,11 +66,16 @@ const Help = () => {
             placeholder="Enter your Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            style={{ width: "100%", padding: "10px", marginBottom: "15px", fontFamily: "inherit" }}
             required
           />
 
 
-          <select value={tag} onChange={(e) => setTag(e.target.value)}>
+          <select 
+            value={tag} 
+            onChange={(e) => setTag(e.target.value)}
+            style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+          >
             <option value="BUG">Bug</option>
             <option value="HELP">Help</option>
             <option value="RESET">Reset</option>
@@ -83,6 +88,7 @@ const Help = () => {
             onChange={(e) => setDescription(e.target.value)}
             required
             rows="4"
+            style={{ width: "100%", padding: "10px", marginBottom: "15px", fontFamily: "inherit" }}
           />
 
 

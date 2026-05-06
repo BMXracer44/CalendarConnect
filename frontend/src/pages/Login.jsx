@@ -53,7 +53,7 @@ const Login = () => {
       <div className="login-card">
         <h2>Login</h2>
         <p>Welcome back</p>
-        // Display errors/success messages
+        {/*Display errors/success messages*/}
         {error && <p className="error-text">{error}</p>}
         {success && <p className="success-text">{success}</p>}
         {/* Login form */}
@@ -65,7 +65,7 @@ const Login = () => {
             onChange={(e) => setUsername(e.target.value)}
             required
           />
-          // Password input
+          {/* Password input*/}
           <input
             type="password"
             placeholder="Password"
@@ -73,10 +73,10 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          // Submit button
+          {/* Submit button*/}
           <button type="submit">Login</button>
         </form>
-        // Link to registration page
+        {/* Link to registration page */}
         <div className="bottom-text">
           Don't have an account? <a href="/register">Sign up</a>
         </div>
