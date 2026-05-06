@@ -56,7 +56,7 @@ const Login = () => {
         // Display errors/success messages
         {error && <p className="error-text">{error}</p>}
         {success && <p className="success-text">{success}</p>}
-        // Login form
+        {/* Login form */}
         <form onSubmit={handleSubmit}>
           <input
             type="text"
