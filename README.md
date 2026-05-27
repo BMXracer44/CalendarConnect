@@ -33,3 +33,10 @@ npm run start
 ```
 
 After following these instructions, you should have a Calendar Connect program running on your own machine!
+
+This project was used as a final project for Software Engineering at the University of Wisconsin - Whitewater 
+This project is owned by the University of Wisconsin - Whitewater 
+
+Original collaborators for the project include Alex Ferguson, Connor Fry, Kade DeSormeau, Ian Dillavou, Brittany Sanford, Shreya Gupta, and Blair Atwood
+
+Current collaborators include Alex Ferguson, Kade DeSormeau, Brittany Sanford, and Blair Atwood
