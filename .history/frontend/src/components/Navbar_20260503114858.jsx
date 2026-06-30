@@ -17,7 +17,7 @@ const Navbar = () => {
   const loadRequests = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8080/api/friends/requests/${user.id}`
+        `/api/friends/requests/${user.id}`
       );
 
       const data = await res.json();
@@ -38,7 +38,7 @@ const Navbar = () => {
 
   const acceptFriend = async (fromId) => {
     await fetch(
-      `http://localhost:8080/api/friends/accept?from=${fromId}&to=${user.id}`,
+      `/api/friends/accept?from=${fromId}&to=${user.id}`,
       { method: "POST" }
     );
 

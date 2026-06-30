@@ -12,7 +12,7 @@ const userId = user?.id ?? user?.userId;
 
   // ================= LOAD FRIENDS =================
   const loadFriends = async () => {
-    const res = await fetch(`http://localhost:8080/api/friends/${userId}`);
+    const res = await fetch(`/api/friends/${userId}`);
     const data = await res.json();
     setFriends(data);
   };
@@ -20,7 +20,7 @@ const userId = user?.id ?? user?.userId;
   // ================= LOAD REQUESTS =================
   const loadRequests = async () => {
     const res = await fetch(
-      `http://localhost:8080/api/friends/requests/${userId}`
+      `/api/friends/requests/${userId}`
     );
     const data = await res.json();
     setRequests(data);
@@ -36,7 +36,7 @@ const userId = user?.id ?? user?.userId;
   // ================= ADD FRIEND =================
   const addFriend = async (friendId) => {
     await fetch(
-      `http://localhost:8080/api/friends/add?from=${userId}&to=${friendId}`,
+      `/api/friends/add?from=${userId}&to=${friendId}`,
       { method: "POST" }
     );
 
@@ -48,7 +48,7 @@ const userId = user?.id ?? user?.userId;
   if (!userId || !friendId) return;
 
   await fetch(
-    `http://localhost:8080/api/friends/accept?from=${friendId}&to=${userId}`,
+    `/api/friends/accept?from=${friendId}&to=${userId}`,
     { method: "POST" }
   );
 };
@@ -56,7 +56,7 @@ const userId = user?.id ?? user?.userId;
   // ================= REMOVE FRIEND =================
   const removeFriend = async (friendId) => {
     await fetch(
-      `http://localhost:8080/api/friends/remove?userId=${userId}&friendId=${friendId}`,
+      `/api/friends/remove?userId=${userId}&friendId=${friendId}`,
       { method: "DELETE" }
     );
 
@@ -68,7 +68,7 @@ const userId = user?.id ?? user?.userId;
     if (!query) return;
 
     const res = await fetch(
-      `http://localhost:8080/api/users/search?query=${query}`
+      `/api/users/search?query=${query}`
     );
     const data = await res.json();
     setSearchResults(data);

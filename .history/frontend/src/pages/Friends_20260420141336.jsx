@@ -10,7 +10,7 @@ const Friends = () => {
   // LOAD FRIENDS
   const loadFriends = async () => {
     const res = await fetch(
-      `http://localhost:8080/api/friends/${user.id}`,
+      `/api/friends/${user.id}`,
       {
         headers: {
           Authorization: `Bearer ${user.token}`
@@ -28,7 +28,7 @@ const Friends = () => {
 
   // INVITE FRIEND TO EVENT
   const inviteFriend = async (friendId) => {
-    await fetch("http://localhost:8080/api/events/invite", {
+    await fetch("/api/events/invite", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

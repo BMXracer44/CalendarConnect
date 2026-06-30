@@ -12,7 +12,7 @@ import com.calendarconnect.backend.repository.UserRepository;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class UserController {
 
   @Autowired

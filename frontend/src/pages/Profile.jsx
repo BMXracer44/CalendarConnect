@@ -28,7 +28,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       if (!user?.username) return;
       try {
-        const res = await fetch(`http://localhost:8080/api/user/${user.username}`, {
+        const res = await fetch(`/api/user/${user.username}`, {
           headers: { Authorization: `Bearer ${user.token}` }
         });
 
@@ -82,7 +82,7 @@ const Profile = () => {
     // Map frontend state back to backend fields
     try {
       const res = await fetch(
-        `http://localhost:8080/api/user/update/${user.username}`,
+        `/api/user/update/${user.username}`,
         {
           method: "PUT",
           headers: {

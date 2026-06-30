@@ -17,7 +17,7 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         // Allow React frontend
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        config.setAllowedOrigins(List.of("*"));
 
         // Allow all HTTP methods
         config.setAllowedMethods(List.of(

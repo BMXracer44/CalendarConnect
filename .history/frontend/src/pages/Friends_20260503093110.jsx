@@ -12,7 +12,7 @@ const Friends = () => {
 
   // ================= LOAD FRIENDS =================
   const loadFriends = () => {
-    fetch(`http://localhost:8080/api/friends/${user.id}`)
+    fetch(`/api/friends/${user.id}`)
       .then((res) => res.json())
       .then((data) => setFriends(data))
       .catch(() => console.log("Failed to load friends"));
@@ -20,7 +20,7 @@ const Friends = () => {
 
   // ================= LOAD REQUESTS =================
   const loadRequests = () => {
-    fetch(`http://localhost:8080/api/friends/requests/${user.id}`)
+    fetch(`/api/friends/requests/${user.id}`)
       .then((res) => res.json())
       .then((data) => setRequests(data))
       .catch(() => console.log("Failed to load requests"));
@@ -36,7 +36,7 @@ const Friends = () => {
   // ================= SEARCH USERS =================
   const searchUsers = () => {
     fetch(
-      `http://localhost:8080/api/user/search?query=${search}&currentUserId=${user.id}`
+      `/api/user/search?query=${search}&currentUserId=${user.id}`
     )
       .then((res) => res.json())
       .then((data) => setResults(data))
@@ -56,7 +56,7 @@ const Friends = () => {
     }
 
     fetch(
-      `http://localhost:8080/api/friends/add?from=${user.id}&to=${toId}`,
+      `/api/friends/add?from=${user.id}&to=${toId}`,
       { method: "POST" }
     )
       .then(() => alert("Friend request sent"))
@@ -66,7 +66,7 @@ const Friends = () => {
   // ================= ACCEPT REQUEST =================
   const acceptFriend = (fromId) => {
     fetch(
-      `http://localhost:8080/api/friends/accept?from=${fromId}&to=${user.id}`,
+      `/api/friends/accept?from=${fromId}&to=${user.id}`,
       { method: "POST" }
     )
       .then(() => {
@@ -79,7 +79,7 @@ const Friends = () => {
   // ================= REMOVE FRIEND =================
   const removeFriend = (friendId) => {
     fetch(
-      `http://localhost:8080/api/friends/remove?userId=${user.id}&friendId=${friendId}`,
+      `/api/friends/remove?userId=${user.id}&friendId=${friendId}`,
       { method: "DELETE" }
     )
       .then(() => {

@@ -15,7 +15,7 @@ const Friends = () => {
   const loadFriends = async () => {
     if (!userId) return;
 
-    const res = await fetch(`http://localhost:8080/api/friends/${userId}`);
+    const res = await fetch(`/api/friends/${userId}`);
     const data = await res.json();
     setFriends(data);
   };
@@ -25,7 +25,7 @@ const Friends = () => {
     if (!userId) return;
 
     const res = await fetch(
-      `http://localhost:8080/api/friends/requests/${userId}`
+      `/api/friends/requests/${userId}`
     );
     const data = await res.json();
     setRequests(data);
@@ -44,7 +44,7 @@ const Friends = () => {
     if (!userId || !friendId) return;
 
     await fetch(
-      `http://localhost:8080/api/friends/add?from=${userId}&to=${friendId}`,
+      `/api/friends/add?from=${userId}&to=${friendId}`,
       { method: "POST" }
     );
 
@@ -59,7 +59,7 @@ const Friends = () => {
     }
 
     await fetch(
-      `http://localhost:8080/api/friends/accept?from=${friendId}&to=${userId}`,
+      `/api/friends/accept?from=${friendId}&to=${userId}`,
       { method: "POST" }
     );
 
@@ -72,7 +72,7 @@ const Friends = () => {
     if (!userId || !friendId) return;
 
     await fetch(
-      `http://localhost:8080/api/friends/remove?userId=${userId}&friendId=${friendId}`,
+      `/api/friends/remove?userId=${userId}&friendId=${friendId}`,
       { method: "DELETE" }
     );
 
@@ -84,7 +84,7 @@ const Friends = () => {
     if (!query || !userId) return;
 
     const res = await fetch(
-      `http://localhost:8080/api/users/search?query=${query}&currentUserId=${userId}`
+      `/api/users/search?query=${query}&currentUserId=${userId}`
     );
     const data = await res.json();
     setSearchResults(data);

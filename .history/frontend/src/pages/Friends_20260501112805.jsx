@@ -12,14 +12,14 @@ const Friends = () => {
 
   // ================= LOAD FRIENDS =================
   const loadFriends = async () => {
-    const res = await fetch(`http://localhost:8080/api/friends/${user.id}`);
+    const res = await fetch(`/api/friends/${user.id}`);
     const data = await res.json();
     setFriends(Array.isArray(data) ? data : []);
   };
 
   // ================= LOAD REQUESTS =================
   const loadRequests = async () => {
-    const res = await fetch(`http://localhost:8080/api/friends/requests/${user.id}`);
+    const res = await fetch(`/api/friends/requests/${user.id}`);
     const data = await res.json();
     setRequests(Array.isArray(data) ? data : []);
   };
@@ -34,7 +34,7 @@ const Friends = () => {
   // ================= SEARCH =================
   const searchUsers = async () => {
     const res = await fetch(
-      `http://localhost:8080/api/user/search?query=${search}&currentUserId=${user.id}`
+      `/api/user/search?query=${search}&currentUserId=${user.id}`
     );
     const data = await res.json();
     setResults(Array.isArray(data) ? data : []);
@@ -43,7 +43,7 @@ const Friends = () => {
   // ================= ADD FRIEND =================
   const addFriend = async (id) => {
     await fetch(
-      `http://localhost:8080/api/friends/add?from=${user.id}&to=${id}`,
+      `/api/friends/add?from=${user.id}&to=${id}`,
       { method: "POST" }
     );
     searchUsers();
@@ -52,7 +52,7 @@ const Friends = () => {
   // ================= ACCEPT =================
   const accept = async (id) => {
     await fetch(
-      `http://localhost:8080/api/friends/accept?from=${id}&to=${user.id}`,
+      `/api/friends/accept?from=${id}&to=${user.id}`,
       { method: "POST" }
     );
 
@@ -63,7 +63,7 @@ const Friends = () => {
   // ================= DECLINE =================
   const decline = async (id) => {
     await fetch(
-      `http://localhost:8080/api/friends/decline?from=${id}&to=${user.id}`,
+      `/api/friends/decline?from=${id}&to=${user.id}`,
       { method: "POST" }
     );
 

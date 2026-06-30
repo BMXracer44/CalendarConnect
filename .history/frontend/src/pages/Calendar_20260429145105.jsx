@@ -16,7 +16,7 @@ const createEvent = async (e) => {
     console.log("CREATING EVENT:", payload);
 
     const res = await fetch(
-      `http://localhost:8080/api/events?userId=${user.id}`,
+      `/api/events?userId=${user.id}`,
       {
         method: "POST",
         headers: {

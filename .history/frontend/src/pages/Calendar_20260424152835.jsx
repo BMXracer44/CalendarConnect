@@ -21,7 +21,7 @@ function Calendar() {
       if (!user?.id) return;
 
       const res = await fetch(
-        `http://localhost:8080/api/events/user/${user.id}`,
+        `/api/events/user/${user.id}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`
@@ -64,7 +64,7 @@ function Calendar() {
   // =========================
   const deleteEvent = async (id) => {
     const res = await fetch(
-      `http://localhost:8080/api/events/${id}`,
+      `/api/events/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -83,7 +83,7 @@ function Calendar() {
     e.preventDefault();
 
     const res = await fetch(
-      `http://localhost:8080/api/events/${editEvent.id}`,
+      `/api/events/${editEvent.id}`,
       {
         method: "PUT",
         headers: {

@@ -37,7 +37,7 @@ const loadEvents = async () => {
     }
 
     const res = await fetch(
-      `http://localhost:8080/api/events/user/${user.id}`,
+      `/api/events/user/${user.id}`,
       {
         headers: {
           Authorization: `Bearer ${user.token}`
@@ -120,7 +120,7 @@ const loadEvents = async () => {
         return;
       }
 
-     const res = await fetch(`http://localhost:8080/api/events?userId=${user.id}`, {
+     const res = await fetch(`/api/events?userId=${user.id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

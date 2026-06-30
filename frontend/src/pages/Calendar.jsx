@@ -70,12 +70,12 @@ function Calendar() {
 
   const loadMyEvents = async () => {
     try {
-      const res = await fetch(`http://localhost:8080/api/events/user/${user.id}`);
+      const res = await fetch(`/api/events/user/${user.id}`);
       const myData = await res.json();
 
       let accData = [];
       try {
-        const accRes = await fetch(`http://localhost:8080/api/events/accepted/${user.id}`);
+        const accRes = await fetch(`/api/events/accepted/${user.id}`);
         if (accRes.ok) accData = await accRes.json();
       } catch (e) {}
 
@@ -95,7 +95,7 @@ function Calendar() {
 
   const loadFriends = async () => {
     try {
-      const res = await fetch(`http://localhost:8080/api/friends/${user.id}`);
+      const res = await fetch(`/api/friends/${user.id}`);
       const data = await res.json();
       
       setFriends(data.map((friend, index) => ({ 
@@ -109,18 +109,18 @@ function Calendar() {
   // ================= NOTIFICATION LOGIC =================
   const loadNotifications = async () => {
     try {
-      const frRes = await fetch(`http://localhost:8080/api/friends/requests/${user.id}`);
+      const frRes = await fetch(`/api/friends/requests/${user.id}`);
       const frData = await frRes.json();
       setFriendRequests(frData || []);
     } catch (err) { }
 
     try {
-      const invRes = await fetch(`http://localhost:8080/api/events/invites/${user.id}`);
+      const invRes = await fetch(`/api/events/invites/${user.id}`);
       if (invRes.ok) {
         const invData = await invRes.json();
         const populatedInvites = await Promise.all(invData.map(async (invite) => {
           try {
-            const eventRes = await fetch(`http://localhost:8080/api/events/${invite.eventId}`);
+            const eventRes = await fetch(`/api/events/${invite.eventId}`);
             if (eventRes.ok) {
               const eventData = await eventRes.json();
               return { ...invite, eventTitle: eventData.title };
@@ -135,7 +135,7 @@ function Calendar() {
 
   const respondToEvent = async (eventId, status) => {
     try {
-      await fetch(`http://localhost:8080/api/events/${eventId}/respond/${user.id}?status=${status}`, { method: "PUT" });
+      await fetch(`/api/events/${eventId}/respond/${user.id}?status=${status}`, { method: "PUT" });
       setEventInvites(prev => prev.filter(inv => inv.eventId !== eventId));
       if (status === "going") {
         loadMyEvents(); 
@@ -145,7 +145,7 @@ function Calendar() {
 
   const acceptFriend = async (fromId) => {
     try {
-      await fetch(`http://localhost:8080/api/friends/accept?from=${fromId}&to=${user.id}`, { method: "POST" });
+      await fetch(`/api/friends/accept?from=${fromId}&to=${user.id}`, { method: "POST" });
       setFriendRequests(prev => prev.filter(req => req.requesterId !== fromId));
       loadFriends(); 
     } catch (err) { setErrorMessage("Failed to accept friend request."); }
@@ -163,7 +163,7 @@ function Calendar() {
   const sendInvites = async () => {
     try {
       for (let friendId of friendsToInvite) {
-        const res = await fetch(`http://localhost:8080/api/events/${inviteModalEvent.id}/invite/${friendId}`, { method: "POST" });
+        const res = await fetch(`/api/events/${inviteModalEvent.id}/invite/${friendId}`, { method: "POST" });
         if (!res.ok) throw new Error("Backend error");
       }
       alert("Invitations sent successfully!");
@@ -183,7 +183,7 @@ function Calendar() {
 
   const fetchFriendEvents = async (friendId) => {
     try {
-      const res = await fetch(`http://localhost:8080/api/events/user/${friendId}/public`);
+      const res = await fetch(`/api/events/user/${friendId}/public`);
       const data = await res.json();
       const friendColor = friends.find(f => f.id === friendId)?.color || "#000";
       const formatted = data.map(e => ({
@@ -214,7 +214,7 @@ function Calendar() {
     }
     const safePayload = { ...formData, startDatetime: formData.startDatetime.substring(0, 16), endDatetime: formData.endDatetime.substring(0, 16) };
     try {
-      const res = await fetch(`http://localhost:8080/api/events?userId=${user.id}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(safePayload) });
+      const res = await fetch(`/api/events?userId=${user.id}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(safePayload) });
       if (!res.ok) { const errorData = await res.json(); setErrorMessage(errorData.error || "Event conflict detected"); return; }
       setErrorMessage(""); setFormData({ title: "", description: "", location: "", startDatetime: "", endDatetime: "", isPublic: true });
       setShowModal(false); loadMyEvents();
@@ -226,7 +226,7 @@ function Calendar() {
     if (!editTitle || !editStartDatetime || !editEndDatetime) { setErrorMessage("Title and dates cannot be empty!"); return; }
     const safeUpdatePayload = { title: editTitle, description: editDescription, location: editLocation, startDatetime: editStartDatetime.substring(0, 16), endDatetime: editEndDatetime.substring(0, 16), isPublic: editIsPublic };
     try {
-      const res = await fetch(`http://localhost:8080/api/events/${selectedEvent.id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(safeUpdatePayload) });
+      const res = await fetch(`/api/events/${selectedEvent.id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(safeUpdatePayload) });
       if (!res.ok) { const errorData = await res.json(); setErrorMessage(errorData.error || "Update conflict detected"); return; }
       setErrorMessage(""); setIsEditing(false); setShowViewModal(false); loadMyEvents();
     } catch (err) { setErrorMessage("Server error. Please try again."); }
@@ -264,7 +264,7 @@ function Calendar() {
     setEventAttendees([]); 
 
     try {
-      const attRes = await fetch(`http://localhost:8080/api/events/${eventData.id}/attendees`);
+      const attRes = await fetch(`/api/events/${eventData.id}/attendees`);
       if (attRes.ok) {
         const names = await attRes.json();
         setEventAttendees(names);
@@ -275,7 +275,7 @@ function Calendar() {
   const deleteEvent = async () => {
     if (!selectedEvent?.id) return;
     try {
-      const res = await fetch(`http://localhost:8080/api/events/${selectedEvent.id}`, { method: "DELETE" });
+      const res = await fetch(`/api/events/${selectedEvent.id}`, { method: "DELETE" });
       if (!res.ok) {
         const data = await res.json();
         setErrorMessage(data.error || "Delete failed");

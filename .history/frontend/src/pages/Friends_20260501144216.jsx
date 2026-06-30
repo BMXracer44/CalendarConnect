@@ -15,7 +15,7 @@ const Friends = () => {
   const loadFriends = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8080/api/friends/${user.id}`
+        `/api/friends/${user.id}`
       );
 
       if (!res.ok) throw new Error("Failed friends");
@@ -32,7 +32,7 @@ const Friends = () => {
   const loadRequests = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8080/api/friends/requests/${user.id}`
+        `/api/friends/requests/${user.id}`
       );
 
       if (!res.ok) throw new Error("Failed requests");
@@ -51,7 +51,7 @@ const Friends = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:8080/api/user/search?query=${search}&currentUserId=${user.id}`
+        `/api/user/search?query=${search}&currentUserId=${user.id}`
       );
 
       if (!res.ok) throw new Error("Search failed");
@@ -68,7 +68,7 @@ const Friends = () => {
   const addFriend = async (toId) => {
     try {
       const res = await fetch(
-        `http://localhost:8080/api/friends/add?from=${user.id}&to=${toId}`,
+        `/api/friends/add?from=${user.id}&to=${toId}`,
         { method: "POST" }
       );
 
@@ -85,7 +85,7 @@ const Friends = () => {
   const acceptFriend = async (fromId) => {
     try {
       const res = await fetch(
-        `http://localhost:8080/api/friends/accept?from=${fromId}&to=${user.id}`,
+        `/api/friends/accept?from=${fromId}&to=${user.id}`,
         { method: "POST" }
       );
 

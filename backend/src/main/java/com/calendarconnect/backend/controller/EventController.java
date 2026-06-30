@@ -27,7 +27,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/events")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class EventController {
 
     @Autowired

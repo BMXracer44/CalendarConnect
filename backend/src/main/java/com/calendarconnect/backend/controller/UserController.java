@@ -21,7 +21,7 @@ import com.calendarconnect.backend.service.UserService;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class UserController {
 
   @Autowired
@@ -84,7 +84,7 @@ public class UserController {
             java.nio.file.Files.copy(file.getInputStream(), filePath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
 
             // 3. Hand the permanent URL back to React!
-            String fileUrl = "http://localhost:8080/uploads/" + filename;
+            String fileUrl = "/uploads/" + filename;
             return ResponseEntity.ok(java.util.Map.of("url", fileUrl));
 
         } catch (Exception e) {

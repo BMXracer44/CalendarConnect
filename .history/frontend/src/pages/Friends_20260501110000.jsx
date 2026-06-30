@@ -13,7 +13,7 @@ const Friends = () => {
   const loadFriends = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8080/api/friends/${user.id}`,
+        `/api/friends/${user.id}`,
         {
           headers: { Authorization: `Bearer ${user.token}` }
         }
@@ -34,7 +34,7 @@ const Friends = () => {
   // ================= SEARCH USERS =================
   const handleSearch = async () => {
     const res = await fetch(
-      `http://localhost:8080/api/user/search?query=${search}&currentUserId=${user.id}`,
+      `/api/user/search?query=${search}&currentUserId=${user.id}`,
       {
         headers: { Authorization: `Bearer ${user.token}` }
       }
@@ -47,7 +47,7 @@ const Friends = () => {
   // ================= ADD FRIEND =================
   const addFriend = async (friendId) => {
     await fetch(
-      `http://localhost:8080/api/friends/add?from=${user.id}&to=${friendId}`,
+      `/api/friends/add?from=${user.id}&to=${friendId}`,
       {
         method: "POST",
         headers: { Authorization: `Bearer ${user.token}` }
@@ -60,7 +60,7 @@ const Friends = () => {
   // ================= ACCEPT FRIEND =================
   const acceptFriend = async (friendId) => {
     await fetch(
-      `http://localhost:8080/api/friends/accept?from=${friendId}&to=${user.id}`,
+      `/api/friends/accept?from=${friendId}&to=${user.id}`,
       {
         method: "POST",
         headers: { Authorization: `Bearer ${user.token}` }

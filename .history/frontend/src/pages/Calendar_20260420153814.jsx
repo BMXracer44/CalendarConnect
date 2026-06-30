@@ -27,7 +27,7 @@ function Calendar() {
   const loadEvents = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8080/api/events/user/${user.id}`,
+        `/api/events/user/${user.id}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`
@@ -176,7 +176,7 @@ function App() {
 
     try {
       const res = await fetch(
-        "http://localhost:8080/api/events/create",
+        "/api/events/create",
         {
           method: "POST",
           headers: {

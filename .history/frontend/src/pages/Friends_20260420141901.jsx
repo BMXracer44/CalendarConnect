@@ -11,7 +11,7 @@ const Friends = () => {
   const loadFriends = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8080/api/friends/${user.id}`,
+        `/api/friends/${user.id}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`

@@ -25,7 +25,6 @@ const Profile = () => {
 
       try {
         const res = await fetch(
-          `http://localhost:8080/api/user/${user.username}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`
@@ -84,7 +83,6 @@ const Profile = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:8080/api/user/update/${user.username}`,
         {
           method: "PUT",
           headers: {

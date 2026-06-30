@@ -17,7 +17,7 @@ const Friends = () => {
   const loadFriends = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8080/api/friends/${user.id}`,
+        `/api/friends/${user.id}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`
@@ -48,7 +48,7 @@ const Friends = () => {
     setSearching(true);
 
     const res = await fetch(
-      `http://localhost:8080/api/users/search?query=${search}`,
+      `/api/users/search?query=${search}`,
       {
         headers: {
           Authorization: `Bearer ${user.token}`
@@ -63,7 +63,7 @@ const Friends = () => {
 
   // ADD FRIEND
   const addFriend = async (friendId) => {
-    await fetch("http://localhost:8080/api/friends/add", {
+    await fetch("/api/friends/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

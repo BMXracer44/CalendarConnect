@@ -12,7 +12,7 @@ function Login() {
       password: password,
     };
 
-    fetch("http://localhost:8080/login", {
+    fetch("/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -31,7 +31,7 @@ function Calendar() {
       if (!user?.id) return;
 
       const res = await fetch(
-        `http://localhost:8080/api/events/user/${user.id}`,
+        `/api/events/user/${user.id}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`
@@ -110,7 +110,7 @@ function Calendar() {
     };
 
     try {
-      const url = `http://localhost:8080/api/events/${selectedEvent.id}`;
+      const url = `/api/events/${selectedEvent.id}`;
 
       const res = await fetch(url, {
         method: "PUT",

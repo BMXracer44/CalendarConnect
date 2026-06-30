@@ -11,7 +11,7 @@ import com.calendarconnect.backend.service.FriendshipService;
 
 @RestController
 @RequestMapping("/api/friends")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class FriendshipController {
 
   @Autowired

@@ -66,7 +66,7 @@ const Profile = () => {
       }
 
       const response = await fetch(
-        `http://localhost:8080/api/user/update/${safeUser.id}`,
+        `/api/user/update/${safeUser.id}`,
         {
           method: "PUT",
           headers: {

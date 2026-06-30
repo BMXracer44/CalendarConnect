@@ -11,14 +11,14 @@ const Friends = () => {
 
   // ================= LOAD FRIENDS =================
   const loadFriends = () => {
-    fetch(`http://localhost:8080/api/friends/${user.id}`)
+    fetch(`/api/friends/${user.id}`)
       .then((res) => res.json())
       .then(setFriends);
   };
 
   // ================= LOAD REQUESTS =================
   const loadRequests = () => {
-    fetch(`http://localhost:8080/api/friends/requests/${user.id}`)
+    fetch(`/api/friends/requests/${user.id}`)
       .then((res) => res.json())
       .then(setRequests);
   };
@@ -33,7 +33,7 @@ const Friends = () => {
   // ================= SEARCH USERS =================
   const searchUsers = () => {
     fetch(
-      `http://localhost:8080/api/user/search?query=${search}&currentUserId=${user.id}`
+      `/api/user/search?query=${search}&currentUserId=${user.id}`
     )
       .then((res) => res.json())
       .then(setResults);
@@ -44,7 +44,7 @@ const Friends = () => {
     if (!toId) return;
 
     fetch(
-      `http://localhost:8080/api/friends/add?from=${user.id}&to=${toId}`,
+      `/api/friends/add?from=${user.id}&to=${toId}`,
       { method: "POST" }
     ).then(loadFriends);
   };
@@ -52,7 +52,7 @@ const Friends = () => {
   // ================= REMOVE FRIEND =================
   const removeFriend = (friendId) => {
     fetch(
-      `http://localhost:8080/api/friends/remove?userId=${user.id}&friendId=${friendId}`,
+      `/api/friends/remove?userId=${user.id}&friendId=${friendId}`,
       { method: "DELETE" }
     ).then(loadFriends);
   };
@@ -60,7 +60,7 @@ const Friends = () => {
   // ================= ACCEPT REQUEST =================
   const acceptFriend = (fromId) => {
     fetch(
-      `http://localhost:8080/api/friends/accept?from=${fromId}&to=${user.id}`,
+      `/api/friends/accept?from=${fromId}&to=${user.id}`,
       { method: "POST" }
     ).then(() => {
       loadFriends();

@@ -14,7 +14,7 @@ const Help = () => {
 
 
     try {
-      const response = await fetch("http://localhost:8080/api/support/submit", {
+      const response = await fetch("/api/support/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

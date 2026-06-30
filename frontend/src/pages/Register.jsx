@@ -62,7 +62,7 @@ const Register = () => {
       // Remove confirmPassword, keep everything else (including the blob URL)
       const { confirmPassword, ...payload } = formData;
       // Map frontend fields to backend expected fields
-      const response = await fetch("http://localhost:8080/api/register", {
+      const response = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
