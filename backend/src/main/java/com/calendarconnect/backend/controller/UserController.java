@@ -21,7 +21,7 @@ import com.calendarconnect.backend.service.UserService;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://calendarconnect.app", allowCredentials = "true")
 public class UserController {
 
   @Autowired

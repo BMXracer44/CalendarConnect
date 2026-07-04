@@ -27,7 +27,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/events")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://calendarconnect.app", allowCredentials = "true")
 public class EventController {
 
     @Autowired
