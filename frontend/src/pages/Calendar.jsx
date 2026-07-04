@@ -55,8 +55,17 @@ function Calendar() {
   };
 
   const formatForInput = (dateString) => {
-    if (!dateString) return "";
-    return new Date(dateString).toISOString().slice(0, 16);
+    if (!dateObj) return "";
+  
+    // We manually extract the local time components to prevent UTC shifting
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    const hours = String(dateObj.getHours()).padStart(2, '0');
+    const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+  
+    // Assemble it into the exact format <input type="datetime-local"> demands
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
 
   // ================= LOAD DATA =================
