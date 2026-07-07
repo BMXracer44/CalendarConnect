@@ -47,14 +47,26 @@ function Calendar() {
   const [editEndDatetime, setEditEndDatetime] = useState("");
   const [editIsPublic, setEditIsPublic] = useState(true);
 
-  const formatDateTime = (dateString) => {
-    if (!dateString) return "";
-    return new Date(dateString).toLocaleString("en-US", {
-      year: "numeric", month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: true
-    });
-  };
+const formatDateTime = (dateValue) => {
+  if (!dateValue) return "";
+  
+  let dateObj;
+  
+  // Check if it's already a Date object or if it's a string
+  if (dateValue instanceof Date) {
+    dateObj = dateValue;
+  } else {
+    // Convert "YYYY-MM-DDTHH:mm" to "YYYY/MM/DD HH:mm" to force browsers to use Local Time
+    const safeString = typeof dateValue === 'string' ? dateValue.replace(/-/g, '/').replace('T', ' ') : dateValue;
+    dateObj = new Date(safeString);
+  }
 
-  const formatForInput = (dateString) => {
+  return dateObj.toLocaleString("en-US", {
+    year: "numeric", month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: true
+  });
+};
+
+  const formatForInput = (dateObj) => {
     if (!dateObj) return "";
   
     // We manually extract the local time components to prevent UTC shifting
